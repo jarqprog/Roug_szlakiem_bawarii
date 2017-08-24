@@ -20,6 +20,10 @@ Poziom doœwiadczenia (po uzyskaniu odpowiedniej iloœci punktów doœwiadczenia, bo
 Po zdobyciu punktu doœwiadczenia bohater uzyskuje punkt rozwoju, którym mo¿e zwiêkszyæ dowolny atrybut
  
 
+##################### Eventy
+
+Taki pomys³ - po wkroczeniu na kolejne pole (czyli po ka¿dym ruchu Postaci) mo¿emy robiæ test na event, niech to bêdzie 5 lub 10% szansa - takie przygodne eventy mog¹ byæ typu: spotykany wieœniak pozdrawia Ciê i mówi o plotce, ¿e w zagajniku Lamentuj¹cych Wierzb podobno grasuje ³otrzyk, a mieszkañcy jednej z wiosek oferuj¹ nagrodê temu, kto go przepêdzi.. LUB mostu prowadz¹cego do Niezmierzonego Lasu (tj. miejsce akcji Poziomu II) strze¿e przeraŸliwa bestia. Przepuœci tylko tego, kto zap³aci rubinami.. Tego typu plotki. Ewentualnie - atak g³odnego wilka (³atwy sposób na troszkê XP).
+
 
 
 
@@ -32,7 +36,10 @@ Warunek wyjœcia z poziomu, np. zebranie 9 rubinów (rubiny w okreœlonych lokacjac
 	wioska Szwarzwald
 	zagajnik „lament wierzb” z rabusiem
 
-Poziom II - "W lesie" - jakieœ przygody w lesie, niedŸwiedzie, wilki, gobliny 
+Poziom II - "Niezmierzony Las" - jakieœ przygody w lesie, niedŸwiedzie, wilki, gobliny. Nazwa: Niezmierzony Las.
+
+		przyk³adowy quest: leœniczy zgubi³ akcesoria miernicze i nie mo¿e zrobiæ pomiarów w Niezmierzonym Lesie ;) Poszukaj liczyd³a i liny pomiarowej :P
+
 
 Poziom III - "W górach"...
 
