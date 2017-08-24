@@ -1,0 +1,83 @@
+
+
+
+##################### Atrybuty podstawowe (wersja minimum)
+
+Atak (atak fizyczny)
+Obrona (wynika z pancerza, pomaga unikn¹æ zranienia przez atak fizyczny)
+Zwinnoœæ (wynika ze szybkoœci poruszania siê postaci, szybkoœæ reakcji pomaga unikn¹æ zranienia przez atak fizyczny - mo¿emy u¿yæ zamiast INICJATYWY!)
+
+##################### Atrybuty dodatkowe (wersja minimum)
+
+¯ycie (zdrowie bohatera, jeœli ¿ycie == 0, bohater ginie)
+Punkty doœwiadczenia (uzyskiwane w wyniki dzia³añ zakoñczonych sukcesem - wygrana w walce, ukoñczenie zadania, itd.)
+Poziom doœwiadczenia (po uzyskaniu odpowiedniej iloœci punktów doœwiadczenia, bohater awansuje na kolejny Poziom doœwiadczenia. Poziom na pocz¹tku gry == I. Zdobycie ka¿dego kolejnego poziomu wi¹¿e siê z uzbieraniem odpowiednio wiêkszej iloœci punktów doœwiadczenia, np.:
+
+
+	- awans na 2. poziom doœwiadczenia wymaga zdobycia 10 punktów doœwiadczenia	
+	- awans 3 i kolejny poziom doœwiadczenia wymaga zdobycia 1,7*(punkty doœwiadczenia wymagane na poprzednim poziomie) 
+
+Po zdobyciu punktu doœwiadczenia bohater uzyskuje punkt rozwoju, którym mo¿e zwiêkszyæ dowolny atrybut
+ 
+
+
+
+
+##################### Poziomy
+
+Poziom I - "W dolinie" - (³¹ki, bagno, rzeka, most na rzece,las) postaæ wyrusza z rodzinnej wioski w Bawarii. Ma dotrzeæ do... Spotyka wieœniaków, ³otrzyków, kupca, czarodzieja, trolla strzeg¹cego mostu. Mog¹ pojawiæ siê równie¿ imigranci.
+Warunek wyjœcia z poziomu, np. zebranie 9 rubinów (rubiny w okreœlonych lokacjach lub jako czêœæ losowego ³upu po pokonaniu przeciwnika albo jako nagroda za ukoñczenie questu*). 9 rubinów to cena, jak¹ troll pobiera za mo¿liwoœæ przejœcia przez most. Alternatywnie – trolla mo¿na zabiæ, natomiast jest to trudne (troll ma w³aœciwoœæ – kamienna skóra, co mocno podnosi atrybut OBRONA, czyni¹c trudnym zadanie obra¿eñ – ale przypakowany bohater typu: bersekrer – mo¿e sobie poradzi :) ).
+* przyk³adowy quest – na poczatku gry Gracz otrzymuje wskazówkê, ¿eby udaæ siê do wioski Szwarzwald. Wieœniacy prosz¹ bohatera o pomoc – w zagajniku w pobli¿u urzêduje rabuœ, który przyby³ niedawno z po³udnia, zza wielkiego morza na pompowanej ³ódce, i okrad³ wioskowy skarbiec (w tym kolekcjê gwoŸdzi bêd¹cych dum¹ so³tysa Hansa Mausera). Nagrod¹ za przepêdzenie rabusia jest 8 rubinów (w kryjówce Bohater znajdzie dodatkowo jeden rubin ;) ).
+	wa¿niejsze miejsca - studnia ¿ycia (uzupe³nia ¿ycie)
+	wioska Szwarzwald
+	zagajnik „lament wierzb” z rabusiem
+
+Poziom II - "W lesie" - jakieœ przygody w lesie, niedŸwiedzie, wilki, gobliny 
+
+Poziom III - "W górach"...
+
+POziom IV - "Wulkan"..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------
+
+Varia:
+
+
+
+Fabu³a - wprowadzenie (krótka historia), cel gry 
+Tworzenie mapy - tworzy mapy na ka¿dy poziom, mapa zawiera obiekty (bohater, przeszkody, przeciwniny, NPC..)
+Tworzenie UI - zawiera elementy do wyswietlenia (poza map¹), np. cechy bohatera, linie dialogowe, cechy obiektów wchodz¹cych w interakcjê 
+
+Funkcja display - wyœwietlanie wszystko powy¿ej na ekranie
+
+Mechanika prosta - poruszanie siê bohatera, w³aœciwoœci bohatera i innych obiektów, zdarzenia, walka, przedmioty, ekwipunek.
+
+Dwa poziomy - dwie mapy (dwa poziomy gry) z przygodami, obiektami, itd...
+
+
+
+Kilka obiektów gry - przeciwnicy, przyjaŸni NPC, przedmioty
+Parê przygód / zdarzeñ - podstawowe przygody, by gra zadzia³a³a, by kod móg³ byæ przetestowany
+
+Zaawansowane
+
+Mechanika zawansowana - wiêcej w³aœciwoœci obiektów, nowe testy, rodzaje zdarzeñ (dodatkowe funkcje), zastosowanie class
+Magia - rozszerzenie mechaniki o system magii (dodatkowe atrybuty, testy, przedmioty)
+Tworzenie postaci PLUS - gracz samodzielnie kreuje postaæ rozdziela punkty artybutów spoœród dostêpnej puli (w wersji prostej wybór miêdzy podstawowymi archetypami typu: wojownik, ³owca, z³odziej).
+Dodatkowa mapa - trzeci poziom gry, dodatkowe przygody, postaci, przeciwnicy
+
+
