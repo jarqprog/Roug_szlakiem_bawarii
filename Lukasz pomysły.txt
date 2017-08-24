@@ -1,0 +1,9 @@
+1. Wszystkie plansze powinny miec ascii art odpowiedni dla niej, np. na planszy "w dolinie" wydrukuje siê rzeczka zrobiona w ascii art.
+2. Obok planszy bedzie wyœwietlaæ siê du¿e okienko ( tam bêdzie postaæ ASCII która bohater która bohater spotka(przeciwnik lub przyjaciel) i na dole ma³e okienko ze szczegó³ami np. walki.
+3. zwinnoœæ decyduje kto zaczyna rzuty kostk¹.
+4. ilosc rzutów zalezy od liczby attack.
+4. kiedy gracz sie broni, pod uwage bierze siê punkty obrony.
+5. na planszy bêda ro¿ne obiekty ukryte. jesli na nie staniesz, losowany bêdzie event np. powid³a nieszczêœcia które zamieni¹ kolejnoœæ szybkoœæi przy nastêpnej walce.
+6. klasa np. z³odzieja bedzie brana pod uwage punkty zwinnoœæi a nie obrony. Wprowadzimy tez inne kombinacje, mo¿liwe np. u maga bêdzie brana p[od uwage atrybut magii zamiast ataku.
+7. na planszy po questach otrzymywac sie bedzie przedmioty typu miecz zbroja, ktore beda zmieniac punkty atrybutów
+8. kazda postac ma punkty zycia, traci siê je kiedy przegra runde w walce. Kiedy np. przegra sie rzut kostk¹ to traci siê jedno ¿ycie. kazda postac, wliczaj¹c bohatera, kiedy liczba zyc wyniesie zero - umiera
