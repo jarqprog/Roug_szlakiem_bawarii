@@ -7,3 +7,8 @@
 6. klasa np. z³odzieja bedzie brana pod uwage punkty zwinnoœæi a nie obrony. Wprowadzimy tez inne kombinacje, mo¿liwe np. u maga bêdzie brana p[od uwage atrybut magii zamiast ataku.
 7. na planszy po questach otrzymywac sie bedzie przedmioty typu miecz zbroja, ktore beda zmieniac punkty atrybutów
 8. kazda postac ma punkty zycia, traci siê je kiedy przegra runde w walce. Kiedy np. przegra sie rzut kostk¹ to traci siê jedno ¿ycie. kazda postac, wliczaj¹c bohatera, kiedy liczba zyc wyniesie zero - umiera
+
+
+
+9. plansza w notatniku import jako lista
+10. dotyk w 8 wszystkich kierunkach.
