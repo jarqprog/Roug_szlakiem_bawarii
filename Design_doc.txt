@@ -1,0 +1,80 @@
+
+
+
+##################### Atrybuty podstawowe (wersja minimum)
+
+Atak (atak fizyczny)
+Obrona (wynika z pancerza, pomaga uniknąć zranienia przez atak fizyczny)
+Zwinność (wynika ze szybkości poruszania się postaci, szybkość reakcji pomaga uniknąć zranienia przez atak fizyczny - możemy użyć zamiast INICJATYWY!)
+
+##################### Atrybuty dodatkowe (wersja minimum)
+
+Życie (zdrowie bohatera, jeśli życie == 0, bohater ginie)
+Punkty doświadczenia (uzyskiwane w wyniki działań zakończonych sukcesem - wygrana w walce, ukończenie zadania, itd.)
+Poziom doświadczenia (po uzyskaniu odpowiedniej ilości punktów doświadczenia, bohater awansuje na kolejny Poziom doświadczenia. Poziom na początku gry == I. Zdobycie każdego kolejnego poziomu wiąże się z uzbieraniem odpowiednio większej ilości punktów doświadczenia, np.:
+
+
+	- awans na 2. poziom doświadczenia wymaga zdobycia 10 punktów doświadczenia			
+	- awans 3 i kolejny poziom doświadczenia wymaga zdobycia  1,7*(punkty doświadczenia wymagane na poprzednim poziomie) 
+
+Po zdobyciu punktu doświadczenia bohater uzyskuje punkt rozwoju, którym może zwiększyć dowolny atrybut
+ 
+
+
+
+
+##################### Poziomy
+
+Poziom I - "W dolinie" - (łąki, bagno, rzeka, most na rzece,las) postać wyrusza z rodzinnej wioski w Bawarii. Ma dotrzeć do... Spotyka wieśniaków, łotrzyków, kupca, czarodzieja, trolla strzegącego mostu. Mogą pojawić się również imigranci.
+
+	ważniejsze miejsca - studnia życia (uzupełnia życie)
+
+Poziom II - "W lesie" - jakieś przygody w lesie, niedźwiedzie, wilki, gobliny 
+
+Poziom III - "W górach"...
+
+POziom IV - "Wulkan"..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------
+
+Varia:
+
+
+
+Fabuła - wprowadzenie (krótka historia), cel gry 
+Tworzenie mapy - tworzy mapy na każdy poziom, mapa zawiera obiekty (bohater, przeszkody, przeciwniny, NPC..)
+Tworzenie UI - zawiera elementy do wyswietlenia (poza mapą), np. cechy bohatera, linie dialogowe, cechy obiektów wchodzących w interakcję 
+
+Funkcja display - wyświetlanie wszystko powyżej na ekranie
+
+Mechanika prosta - poruszanie się bohatera, właściwości bohatera i innych obiektów, zdarzenia, walka, przedmioty, ekwipunek.
+
+Dwa poziomy - dwie mapy (dwa poziomy gry) z przygodami, obiektami, itd...
+
+
+
+Kilka obiektów gry - przeciwnicy, przyjaźni NPC, przedmioty
+Parę przygód / zdarzeń - podstawowe przygody, by gra zadziałała, by kod mógł być przetestowany
+
+Zaawansowane
+
+Mechanika zawansowana - więcej właściwości obiektów, nowe testy, rodzaje zdarzeń (dodatkowe funkcje), zastosowanie class
+Magia - rozszerzenie mechaniki o system magii (dodatkowe atrybuty, testy, przedmioty)
+Tworzenie postaci PLUS - gracz samodzielnie kreuje postać rozdziela punkty artybutów spośród dostępnej puli (w wersji prostej wybór między podstawowymi archetypami typu: wojownik, łowca, złodziej).
+Dodatkowa mapa - trzeci poziom gry, dodatkowe przygody, postaci, przeciwnicy
+
+ 
