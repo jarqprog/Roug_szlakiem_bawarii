@@ -1,47 +1,47 @@
 
-
+Bohater  = "Joul z Radomia"
 
 ##################### Atrybuty podstawowe (wersja minimum)
 
 Atak (atak fizyczny)
-Obrona (wynika z pancerza, pomaga unikn¹æ zranienia przez atak fizyczny)
-Zwinnoœæ (wynika ze szybkoœci poruszania siê postaci, szybkoœæ reakcji pomaga unikn¹æ zranienia przez atak fizyczny - mo¿emy u¿yæ zamiast INICJATYWY!)
+Obrona (wynika z pancerza, pomaga uniknï¿½ï¿½ zranienia przez atak fizyczny)
+Zwinnoï¿½ï¿½ (wynika ze szybkoï¿½ci poruszania siï¿½ postaci, szybkoï¿½ï¿½ reakcji pomaga uniknï¿½ï¿½ zranienia przez atak fizyczny - moï¿½emy uï¿½yï¿½ zamiast INICJATYWY!)
 
 ##################### Atrybuty dodatkowe (wersja minimum)
 
-¯ycie (zdrowie bohatera, jeœli ¿ycie == 0, bohater ginie)
-Punkty doœwiadczenia (uzyskiwane w wyniki dzia³añ zakoñczonych sukcesem - wygrana w walce, ukoñczenie zadania, itd.)
-Poziom doœwiadczenia (po uzyskaniu odpowiedniej iloœci punktów doœwiadczenia, bohater awansuje na kolejny Poziom doœwiadczenia. Poziom na pocz¹tku gry == I. Zdobycie ka¿dego kolejnego poziomu wi¹¿e siê z uzbieraniem odpowiednio wiêkszej iloœci punktów doœwiadczenia, np.:
+ï¿½ycie (zdrowie bohatera, jeï¿½li ï¿½ycie == 0, bohater ginie)
+Punkty doï¿½wiadczenia (uzyskiwane w wyniki dziaï¿½aï¿½ zakoï¿½czonych sukcesem - wygrana w walce, ukoï¿½czenie zadania, itd.)
+Poziom doï¿½wiadczenia (po uzyskaniu odpowiedniej iloï¿½ci punktï¿½w doï¿½wiadczenia, bohater awansuje na kolejny Poziom doï¿½wiadczenia. Poziom na poczï¿½tku gry == I. Zdobycie kaï¿½dego kolejnego poziomu wiï¿½ï¿½e siï¿½ z uzbieraniem odpowiednio wiï¿½kszej iloï¿½ci punktï¿½w doï¿½wiadczenia, np.:
 
 
-	- awans na 2. poziom doœwiadczenia wymaga zdobycia 10 punktów doœwiadczenia	
-	- awans 3 i kolejny poziom doœwiadczenia wymaga zdobycia 1,7*(punkty doœwiadczenia wymagane na poprzednim poziomie) 
+	- awans na 2. poziom doï¿½wiadczenia wymaga zdobycia 10 punktï¿½w doï¿½wiadczenia	
+	- awans 3 i kolejny poziom doï¿½wiadczenia wymaga zdobycia 1,7*(punkty doï¿½wiadczenia wymagane na poprzednim poziomie) 
 
-Po zdobyciu punktu doœwiadczenia bohater uzyskuje punkt rozwoju, którym mo¿e zwiêkszyæ dowolny atrybut
+Po zdobyciu punktu doï¿½wiadczenia bohater uzyskuje punkt rozwoju, ktï¿½rym moï¿½e zwiï¿½kszyï¿½ dowolny atrybut
  
 
 ##################### Eventy
 
-Taki pomys³ - po wkroczeniu na kolejne pole (czyli po ka¿dym ruchu Postaci) mo¿emy robiæ test na event, niech to bêdzie 5 lub 10% szansa - takie przygodne eventy mog¹ byæ typu: spotykany wieœniak pozdrawia Ciê i mówi o plotce, ¿e w zagajniku Lamentuj¹cych Wierzb podobno grasuje ³otrzyk, a mieszkañcy jednej z wiosek oferuj¹ nagrodê temu, kto go przepêdzi.. LUB mostu prowadz¹cego do Niezmierzonego Lasu (tj. miejsce akcji Poziomu II) strze¿e przeraŸliwa bestia. Przepuœci tylko tego, kto zap³aci rubinami.. Tego typu plotki. Ewentualnie - atak g³odnego wilka (³atwy sposób na troszkê XP).
+Taki pomysï¿½ - po wkroczeniu na kolejne pole (czyli po kaï¿½dym ruchu Postaci) moï¿½emy robiï¿½ test na event, niech to bï¿½dzie 5 lub 10% szansa - takie przygodne eventy mogï¿½ byï¿½ typu: spotykany wieï¿½niak pozdrawia Ciï¿½ i mï¿½wi o plotce, ï¿½e w zagajniku Lamentujï¿½cych Wierzb podobno grasuje ï¿½otrzyk, a mieszkaï¿½cy jednej z wiosek oferujï¿½ nagrodï¿½ temu, kto go przepï¿½dzi.. LUB mostu prowadzï¿½cego do Niezmierzonego Lasu (tj. miejsce akcji Poziomu II) strzeï¿½e przeraï¿½liwa bestia. Przepuï¿½ci tylko tego, kto zapï¿½aci rubinami.. Tego typu plotki. Ewentualnie - atak gï¿½odnego wilka (ï¿½atwy sposï¿½b na troszkï¿½ XP).
 
 
 
 
 ##################### Poziomy
 
-Poziom I - "W dolinie" - (³¹ki, bagno, rzeka, most na rzece,las) postaæ wyrusza z rodzinnej wioski w Bawarii. Ma dotrzeæ do... Spotyka wieœniaków, ³otrzyków, kupca, czarodzieja, trolla strzeg¹cego mostu. Mog¹ pojawiæ siê równie¿ imigranci.
-Warunek wyjœcia z poziomu, np. zebranie 9 rubinów (rubiny w okreœlonych lokacjach lub jako czêœæ losowego ³upu po pokonaniu przeciwnika albo jako nagroda za ukoñczenie questu*). 9 rubinów to cena, jak¹ troll pobiera za mo¿liwoœæ przejœcia przez most. Alternatywnie – trolla mo¿na zabiæ, natomiast jest to trudne (troll ma w³aœciwoœæ – kamienna skóra, co mocno podnosi atrybut OBRONA, czyni¹c trudnym zadanie obra¿eñ – ale przypakowany bohater typu: bersekrer – mo¿e sobie poradzi :) ).
-* przyk³adowy quest – na poczatku gry Gracz otrzymuje wskazówkê, ¿eby udaæ siê do wioski Szwarzwald. Wieœniacy prosz¹ bohatera o pomoc – w zagajniku w pobli¿u urzêduje rabuœ, który przyby³ niedawno z po³udnia, zza wielkiego morza na pompowanej ³ódce, i okrad³ wioskowy skarbiec (w tym kolekcjê gwoŸdzi bêd¹cych dum¹ so³tysa Hansa Mausera). Nagrod¹ za przepêdzenie rabusia jest 8 rubinów (w kryjówce Bohater znajdzie dodatkowo jeden rubin ;) ).
-	wa¿niejsze miejsca - studnia ¿ycia (uzupe³nia ¿ycie)
+Poziom I - "W dolinie" - (ï¿½ï¿½ki, bagno, rzeka, most na rzece,las) postaï¿½ wyrusza z rodzinnej wioski w Bawarii. Ma dotrzeï¿½ do... Spotyka wieï¿½niakï¿½w, ï¿½otrzykï¿½w, kupca, czarodzieja, trolla strzegï¿½cego mostu. Mogï¿½ pojawiï¿½ siï¿½ rï¿½wnieï¿½ imigranci.
+Warunek wyjï¿½cia z poziomu, np. zebranie 9 rubinï¿½w (rubiny w okreï¿½lonych lokacjach lub jako czï¿½ï¿½ losowego ï¿½upu po pokonaniu przeciwnika albo jako nagroda za ukoï¿½czenie questu*). 9 rubinï¿½w to cena, jakï¿½ troll pobiera za moï¿½liwoï¿½ï¿½ przejï¿½cia przez most. Alternatywnie ï¿½ trolla moï¿½na zabiï¿½, natomiast jest to trudne (troll ma wï¿½aï¿½ciwoï¿½ï¿½ ï¿½ kamienna skï¿½ra, co mocno podnosi atrybut OBRONA, czyniï¿½c trudnym zadanie obraï¿½eï¿½ ï¿½ ale przypakowany bohater typu: bersekrer ï¿½ moï¿½e sobie poradzi :) ).
+* przykï¿½adowy quest ï¿½ na poczatku gry Gracz otrzymuje wskazï¿½wkï¿½, ï¿½eby udaï¿½ siï¿½ do wioski Szwarzwald. Wieï¿½niacy proszï¿½ bohatera o pomoc ï¿½ w zagajniku w pobliï¿½u urzï¿½duje rabuï¿½, ktï¿½ry przybyï¿½ niedawno z poï¿½udnia, zza wielkiego morza na pompowanej ï¿½ï¿½dce, i okradï¿½ wioskowy skarbiec (w tym kolekcjï¿½ gwoï¿½dzi bï¿½dï¿½cych dumï¿½ soï¿½tysa Hansa Mausera). Nagrodï¿½ za przepï¿½dzenie rabusia jest 8 rubinï¿½w (w kryjï¿½wce Bohater znajdzie dodatkowo jeden rubin ;) ).
+	waï¿½niejsze miejsca - studnia ï¿½ycia (uzupeï¿½nia ï¿½ycie)
 	wioska Szwarzwald
-	zagajnik „lament wierzb” z rabusiem
+	zagajnik ï¿½lament wierzbï¿½ z rabusiem
 
-Poziom II - "Niezmierzony Las" - jakieœ przygody w lesie, niedŸwiedzie, wilki, gobliny. Nazwa: Niezmierzony Las.
+Poziom II - "Niezmierzony Las" - jakieï¿½ przygody w lesie, niedï¿½wiedzie, wilki, gobliny. Nazwa: Niezmierzony Las.
 
-		przyk³adowy quest: leœniczy zgubi³ akcesoria miernicze i nie mo¿e zrobiæ pomiarów w Niezmierzonym Lesie ;) Poszukaj liczyd³a i liny pomiarowej :P
+		przykï¿½adowy quest: leï¿½niczy zgubiï¿½ akcesoria miernicze i nie moï¿½e zrobiï¿½ pomiarï¿½w w Niezmierzonym Lesie ;) Poszukaj liczydï¿½a i liny pomiarowej :P
 
 
-Poziom III - "W górach"...
+Poziom III - "W gï¿½rach"...
 
 POziom IV - "Wulkan"..
 
@@ -65,26 +65,26 @@ Varia:
 
 
 
-Fabu³a - wprowadzenie (krótka historia), cel gry 
-Tworzenie mapy - tworzy mapy na ka¿dy poziom, mapa zawiera obiekty (bohater, przeszkody, przeciwniny, NPC..)
-Tworzenie UI - zawiera elementy do wyswietlenia (poza map¹), np. cechy bohatera, linie dialogowe, cechy obiektów wchodz¹cych w interakcjê 
+Fabuï¿½a - wprowadzenie (krï¿½tka historia), cel gry 
+Tworzenie mapy - tworzy mapy na kaï¿½dy poziom, mapa zawiera obiekty (bohater, przeszkody, przeciwniny, NPC..)
+Tworzenie UI - zawiera elementy do wyswietlenia (poza mapï¿½), np. cechy bohatera, linie dialogowe, cechy obiektï¿½w wchodzï¿½cych w interakcjï¿½ 
 
-Funkcja display - wyœwietlanie wszystko powy¿ej na ekranie
+Funkcja display - wyï¿½wietlanie wszystko powyï¿½ej na ekranie
 
-Mechanika prosta - poruszanie siê bohatera, w³aœciwoœci bohatera i innych obiektów, zdarzenia, walka, przedmioty, ekwipunek.
+Mechanika prosta - poruszanie siï¿½ bohatera, wï¿½aï¿½ciwoï¿½ci bohatera i innych obiektï¿½w, zdarzenia, walka, przedmioty, ekwipunek.
 
 Dwa poziomy - dwie mapy (dwa poziomy gry) z przygodami, obiektami, itd...
 
 
 
-Kilka obiektów gry - przeciwnicy, przyjaŸni NPC, przedmioty
-Parê przygód / zdarzeñ - podstawowe przygody, by gra zadzia³a³a, by kod móg³ byæ przetestowany
+Kilka obiektï¿½w gry - przeciwnicy, przyjaï¿½ni NPC, przedmioty
+Parï¿½ przygï¿½d / zdarzeï¿½ - podstawowe przygody, by gra zadziaï¿½aï¿½a, by kod mï¿½gï¿½ byï¿½ przetestowany
 
 Zaawansowane
 
-Mechanika zawansowana - wiêcej w³aœciwoœci obiektów, nowe testy, rodzaje zdarzeñ (dodatkowe funkcje), zastosowanie class
+Mechanika zawansowana - wiï¿½cej wï¿½aï¿½ciwoï¿½ci obiektï¿½w, nowe testy, rodzaje zdarzeï¿½ (dodatkowe funkcje), zastosowanie class
 Magia - rozszerzenie mechaniki o system magii (dodatkowe atrybuty, testy, przedmioty)
-Tworzenie postaci PLUS - gracz samodzielnie kreuje postaæ rozdziela punkty artybutów spoœród dostêpnej puli (w wersji prostej wybór miêdzy podstawowymi archetypami typu: wojownik, ³owca, z³odziej).
+Tworzenie postaci PLUS - gracz samodzielnie kreuje postaï¿½ rozdziela punkty artybutï¿½w spoï¿½rï¿½d dostï¿½pnej puli (w wersji prostej wybï¿½r miï¿½dzy podstawowymi archetypami typu: wojownik, ï¿½owca, zï¿½odziej).
 Dodatkowa mapa - trzeci poziom gry, dodatkowe przygody, postaci, przeciwnicy
 
 
