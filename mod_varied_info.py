@@ -9,7 +9,8 @@ def display_varied_info():
     '''
     info_to_display_list = [
     "Zapowiada się piękny dzień", "Zbiera się na burzę", "Noc była chłodna, ale poranek słoneczny i ciepły",
-    "Mam przeczycie, że coś się dziś zdarzy",
+    "Mam przeczucie, że coś się wydarzy",
+    "Jest bezpiecznie",
 
 
 
@@ -20,4 +21,5 @@ def display_varied_info():
 
     info_to_display = info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
 
-    return print(info_to_display)
+    return print(info_to_display,"\n")
+

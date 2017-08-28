@@ -1,12 +1,14 @@
 # Szlakiem Bawarii - plik roboczy Jarka
 import os, time, random  
+#from msvcrt import getch
 
 # custom modules:
 from mod_varied_info import display_varied_info
 import mod_enemy
 from mod_enemy import enemy_settings
 import mod_hero 
-from mod_hero import hero_settings
+from mod_hero import hero_settings, exp_nextlvl, display_exp, display_life, display_gold, display_location
+
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -83,27 +85,6 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def prints_hero_attributes(player_character):
-    print(player_character.name)
-    print(player_character.attrib_regular_dict)
-    print(player_character.inventory_dict)
-    print(player_character.onbody_dict)
-
-
-def prints_enemy_attributes(Enemy = None): # dla testów
-    if Enemy.genre == "animal" :
-        print("Jestem zwierzakiem, nie zabijajcie mnie! Jestem",enemy.name,"!")
-    else:
-        print("Zginiesz, głupcze!")
-
-    if Enemy.life_point < 20 :
-        print("Mam niską wytrzymałość!")
-    else:
-        print("Nie jestem taki słaby!")
-    Enemy = troll
-    print(Enemy.speach, Enemy.specials)
-
-
 def inventory_update(player_character, add_remove_items_dict):
     '''
     add or remove items from hero's inventory
@@ -122,58 +103,75 @@ def inventory_update(player_character, add_remove_items_dict):
     return player_character.inventory_dict
     
 
-def display_hero_chart(player_character): #### todo
-    """wyświetla kartę bohatera"""
+def display_hero_chart(player_character):
+    """display hero's chart - attributes, inventory items, wearing items"""
+    clear_screen() # czyści ekran
+    #################### ATTRIBUTES ############################
     # przekształca słownniki z atrybutami bohatera na listy kluczy i wartości:
     attrib_regular_key_list = list(player_character.attrib_regular_dict.keys())
     attrib_regular_value_list = list(player_character.attrib_regular_dict.values())
 
-    #################### Ekwipunek do wyświetlenia ############################
-    # player_character.inventory_dict
-    clear_screen() # czyści ekran
+    #################### INVENTORY ############################
+    # przekształca słownik ekwipunku bohatera na listy kluczy i wartości:
     inventory_key_list = list(player_character.inventory_dict.keys())
     inventory_value_list = list(player_character.inventory_dict.values())
 
+    #################### ON-BODY ############################
     # przedmioty noszone na sobie
     # przekształcenie kluczy i wartości słownka w listy
     onbody_key_list = list(player_character.onbody_dict.keys())
     onbody_value_list = list(player_character.onbody_dict.values())
-    # sprawdza najdłuższy ciąg w listach kluczy atrybutów/umiejętności/ekwipunku/na sobie
+
+
+    #################### OTHERS: life, exp, gold, location ############################
+    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja"]
+    # other_value_list element from functions:
+    other_value_list = [display_life(player_character),
+    display_exp(player_character),
+    display_gold(player_character),
+    display_location(player_character)]
+
+    # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
     # (pomoże to odpowiednio wydrukować tabelkę):
-    total_number_of_items = max(len(attrib_regular_key_list),len(inventory_key_list),len(onbody_key_list))
-    # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie - tworzy zmienne użyte przy druku tabeli:
-    printing_var = 0 #helps correctly print hero chart
-    attrib_regular_longest_arg = (max(len(x) for x in attrib_regular_key_list))+printing_var
+    total_number_of_items = max(len(attrib_regular_key_list),len(inventory_key_list),len(onbody_key_list),len(other_key_list))
     inventory_key_list.append("") # add to avoid error with "max" below
     inventory_value_list.append("") # add to avoid error with "max" below
-    inventory_longest_key_arg = (max(len(x) for x in inventory_key_list))+printing_var
-    inventory_longest_value_arg = (max(len(str(x)) for x in inventory_value_list))
+    
+    # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie - tworzy zmienne użyte przy druku tabeli:
+    printing_var = 3 #helps correctly print hero chart
+    long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var # longest attributes key
+    long_att_val = (max(len(str(x)) for x in attrib_regular_value_list)) # longest attributes value
+    long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var # longest inventory key
+    long_inv_val = (max(len(str(x)) for x in inventory_value_list)) # longest inventory value
+    long_onbody_key = (max(len(x) for x in onbody_key_list))+printing_var # longest onbody key
+    long_onbody_val = (max(len(x) for x in onbody_value_list))+printing_var # longest onbody value
+    long_other_key = (max(len(x) for x in other_key_list))+printing_var # longest onbody key
+    long_other_val = (max(len(x) for x in other_value_list))+printing_var # longest onbody value
+
     inventory_key_list.remove("") # remove - it's no longer needed
     inventory_value_list.remove("") # remove - it's no longer needed
-    onbody_value_longest_arg = (max(len(x) for x in onbody_value_list))+printing_var
-    onbody_key_longest_arg = (max(len(x) for x in onbody_key_list))+printing_var
-    onbody_value_longest_arg = (max(len(x) for x in onbody_value_list))+printing_var
-    sum_longest_arg = int(attrib_regular_longest_arg+inventory_longest_key_arg+inventory_longest_value_arg+onbody_key_longest_arg+onbody_value_longest_arg)
+    
+    sum_longest_arg = int(long_att_key+long_att_val+long_inv_key+long_inv_val
+    +long_onbody_key+long_onbody_val+long_other_key+long_other_val)
+    
     # ta część kodu rysuje tabelę:
     # zmienne do nagłówka: attrib_additional_dict = ,"doświadczenie":24, "poziom doświadczenia":1, "złoto":2 }
-    printing_var = 10 #helps correctly print hero chart
+    printing_var = 0 #helps correctly print hero chart
     h00 = player_character.name.ljust(printing_var)
     h01 = player_character.proffession.ljust(printing_var)
-    h02 = player_character.attrib_additional_dict["poziom doświadczenia"]
-    h03 = player_character.attrib_additional_dict["życie"]
-    h04 = player_character.attrib_additional_dict["pełne życie"]
-    h05 = player_character.attrib_additional_dict["doświadczenie"]
-    h06 = player_character.attrib_additional_dict["pkt do następnego poziomu"]
-    printing_var = 5 #helps correctly print hero chart
-    h1 = 'atrybuty:'.rjust(attrib_regular_longest_arg+printing_var)
-    printing_var = 10 #helps correctly print hero chart
-    h2 = 'w torbie:'.rjust(inventory_longest_key_arg+printing_var)
-    printing_var = 5 #helps correctly print hero chart
-    h3 = 'na sobie:'.rjust(inventory_longest_value_arg+onbody_key_longest_arg+printing_var)
-    print(u'\n\n','Karta postaci:\n\n',"imię:",h00,"klasa:",h01,'\tżycie:',h02,"/",h03,"\tdoświadczenie:",h05,"/",h06,'\n')
-    print(h1,h2,h3)
-    printing_var_head_bottom = 25 #helps correctly print hero chart
+
+    printing_var = 2 #helps correctly print hero chart
+    h1 = 'atrybuty:'.rjust(long_att_key+printing_var)
+    printing_var = 0
+    h2 = 'w torbie:'.rjust(long_att_val+long_inv_key+printing_var)
+    printing_var = 1
+    h3 = 'na sobie:'.rjust(long_inv_val+long_onbody_key+printing_var)
+    h4 = 'pozostałe:'.rjust(long_onbody_val+long_other_key+printing_var)
+    print(u'\n',h00,"-",h01,'\n')
+    print(h1,h2,h3,h4)
+    printing_var_head_bottom = 5 #helps correctly print hero chart
     print("-"*(sum_longest_arg+printing_var_head_bottom))
+
     for i in range(int(total_number_of_items)) :
         
         # printing attributes (atak, obrona...):
@@ -181,7 +179,7 @@ def display_hero_chart(player_character): #### todo
             int(len(attrib_regular_key_list)) >= i         
             if int(len(attrib_regular_key_list)) >= i:
                 iattrib = int(i)
-                attribKeyPrt = str(attrib_regular_key_list[iattrib])
+                attribKeyPrt = str(attrib_regular_key_list[iattrib])+':'
                 attribValuePrt = str(attrib_regular_value_list[iattrib])
         except:
             attribKeyPrt = ""
@@ -190,7 +188,7 @@ def display_hero_chart(player_character): #### todo
             int(len(inventory_key_list)) >= i         
             if int(len(inventory_key_list)) >= i:
                 iinventory = int(i)
-                inventoryKeyPrt = str(inventory_key_list[iinventory])
+                inventoryKeyPrt = str(inventory_key_list[iinventory])+':'
                 inventoryValuePrt = str(inventory_value_list[iinventory])
         except:
             inventoryKeyPrt = ""
@@ -199,62 +197,135 @@ def display_hero_chart(player_character): #### todo
             int(len(onbody_key_list)) >= i         
             if int(len(onbody_key_list)) >= i:
                 ionbody = int(i)
-                onbodyKeyPrt = str(onbody_key_list[ionbody])
+                onbodyKeyPrt = str(onbody_key_list[ionbody])+':'
                 onbodyValuePrt = str(onbody_value_list[ionbody])
         except:
             onbodyKeyPrt = ""
             onbodyValuePrt = ""
+        try:
+            int(len(other_key_list)) >= i         
+            if int(len(other_key_list)) >= i:
+                iother = int(i)
+                otherKeyPrt = str(other_key_list[ionbody])+':'
+                otherValuePrt = str(other_value_list[ionbody])
+        except:
+            otherKeyPrt = ""
+            otherValuePrt = ""
     # zmienne przeznaczone do druku poniżej, wprowadzone dla czyletności linii z 'print'
-        #longest_arg = 10
-        p1 = attribKeyPrt.rjust(attrib_regular_longest_arg)
-        p2 = attribValuePrt.ljust(4)
-        p3 = inventoryKeyPrt.rjust(inventory_longest_key_arg)
-        p4 = inventoryValuePrt.ljust(inventory_longest_value_arg)
-        p5 = onbodyKeyPrt.rjust(onbody_key_longest_arg)
-        p6 = onbodyValuePrt.ljust(onbody_value_longest_arg)
-    # wnętrze tabeli
-        print(u'| ',p1,u':',p2,u'| ',p3,u':',p4,u'|',p5,u':',p6,u'|')
+        p1 = attribKeyPrt.rjust(long_att_key)
+        p2 = attribValuePrt.ljust(long_att_val)
+        p3 = inventoryKeyPrt.rjust(long_inv_key)
+        p4 = inventoryValuePrt.ljust(long_inv_val)
+        p5 = onbodyKeyPrt.rjust(long_onbody_key)
+        p6 = onbodyValuePrt.ljust(long_onbody_val)
+        p7 = otherKeyPrt.rjust(long_other_key)
+        p8 = otherValuePrt.ljust(long_other_val)
+
+
+
+        # wnętrze tabeli
+        print(u'',p1,p2,p3,p4,p5,p6,p7,p8)
     # stopka tabeli
     print("-"*(sum_longest_arg+printing_var_head_bottom))
-    print("\nLokacja: Kto tu wejdzie, ten niechybnie zginie","\n...","\n")
+
+
+
+def map_maker(hero_position_h, hero_position_v): # usunąłem pętlę - będzie w głównej pętli raczej - obgadamy 
+    '''
+    displays map + implement player_character movement
+    '''
+
+    with open('mapa.txt', 'r') as myfile:
+        mapa = myfile.read()
+    mapa = list(mapa)
+    position_horizontal = hero_position_h
+    position_vertical = hero_position_v
+    lenght_of_the_map_plus_one = 61
+    map_copy = mapa[:]
+    map_copy[position_horizontal + position_vertical * 61] = "@"
+    print("".join(map_copy))
+    print("Press w, s, d or a:")
+    input_char = getch()
+    if input_char == b'w': 
+        map_copy[position_horizontal + position_vertical * 61] = "."
+        position_vertical -= 1
+        map_copy[position_horizontal + position_vertical * 61] = "@"
+    elif input_char == b's': 
+        map_copy[position_horizontal + position_vertical * 61] = "."
+        position_vertical += 1
+        map_copy[position_horizontal + position_vertical * 61] = "@"
+    elif input_char == b'd': 
+        map_copy[position_horizontal + position_vertical * 61] = "."
+        position_horizontal += 1
+        map_copy[position_horizontal + position_vertical * 61] = "@"
+    elif input_char == b'a': 
+        map_copy[position_horizontal + position_vertical * 61] = "."
+        position_horizontal -= 1
+        map_copy[position_horizontal + position_vertical * 61] = "@"
+    
+    clear_screen()
+     
+    hero_coordinates_position_list = [position_horizontal, position_vertical] # hero coordinates to export to main:
+
+    return hero_coordinates_position_list
+
 
 def main():
+    clear_screen()
     # ustawia nam podstawowe zmienne:
-    game_lvl = 0
+    game_lvl = 1
     add_remove_items_dict = {}
+
     # importuje nam Postać do głównej funkcji (w procesie tworzenie postaci lub ładowawnia gry nastapi update postaci):
     player_character = hero_settings()
-    game_lvl = 1
+
 
 ################ TU URUCHAMIAMY FUNKCJE:
     #intro() # tytuł, powitanie, wybór:
 
     ####### ładowanie gry LUB tworzenie bohatera LUB galeria sław LUB info o nas
     ####### po każdej z tych funkcji odpalamy główną pętlę:
-     
+    '''
+    roboczo wstawiam parę rzeczy dla bohatera - pomijamy na razie tworzenie bohatera lub załadowanie z save'a
+    '''
+
+    player_character.attrib_regular_dict = {"atak":30,"obrona":2, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
+    player_character.attrib_additional_dict = {"życie":13, "pełne życie":30, "doświadczenie":24, "poziom doświadczenia":1,"doświadczenie":12, "pkt do następnego poziomu": 30, "złoto":2 } 
+    ################## inventory_dict keep only names and values of items (without deep specyfication)
+    player_character.inventory_dict = {"nóż":1,"placki":50, "resztki mapy":1} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    ################################ show active items on Hero:
+    player_character.onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
+    ################################ przykładowy bohater (odpalenie funkcji hero_crea )
+    hero_position_h, hero_position_v = 13, 1 # sets character_player start position (horisontal/vertical)
+
+
+    player_character.location = 1
+    player_character.level = 2
+    player_character.actualLife -= 20
+    player_character.actualExp += 10
+    player_character.actualLife -=20
+    
+    display_hero_chart(player_character) #### tmp
+
+
+
     # ----- tu będzie funkcja do wyświetlania mapy
+    '''
+####################### MAIN LOOP:
+    while player_character.attrib_additional_dict["życie"] > 0:
+        clear_screen()
+        display_hero_chart(player_character)
+        display_varied_info() # display short random info :)
+        map_maker(hero_position_h, hero_position_v)
+        hero_coordinates_position_list = map_maker(hero_position_h, hero_position_v)
+        hero_position_h, hero_position_v = hero_coordinates_position_list[0] , hero_coordinates_position_list[1] # update hero's position
+    '''
+        
 
-    ''' testujemy'''
 
-    display_hero_chart(player_character)
-    # bawimy się modyfikacją inventory:
-    add_remove_items_dict = {"placek":1,"jacek":1}
-    player_character.inventory_dict = inventory_update(player_character, add_remove_items_dict)
-    add_remove_items_dict = {"placki":-11,"jacek":1}
-    player_character.inventory_dict = inventory_update(player_character, add_remove_items_dict)
-    display_hero_chart(player_character)
-    add_remove_items_dict = {"jacek":-10, "nóż":3, "placek":2}
-    player_character.inventory_dict = inventory_update(player_character, add_remove_items_dict)
-    display_hero_chart(player_character)
-    #losujemy przeciwnika (random), filtr ustawiony na przeciwników o levelu 4: 
-    imported_enemy_rnd = enemy_settings(name = None, loc = None, lvl = 4, gen = None)
-    #dodajemy jego inventory do inventory bohatera:
-    add_remove_items_dict = imported_enemy_rnd.treasure_dict
-    player_character.inventory_dict = inventory_update(player_character, add_remove_items_dict)
-    #wyświetlamy:
-    clear_screen()
-    display_hero_chart(player_character)
-    display_varied_info() 
+
+
+
 
 
 
