@@ -25,6 +25,9 @@ map_copy[position_horizontal + position_vertical * 81] = "@"
 while True:
     print("".join(map_copy))
     print("Press w, s, d or a to move, e for inventory, z for journal, p for help, g to save game, l to quit:")
+    print("\n/ __||_  /| |     /_\  | |/ /|_ _|| __||  \/  | | _ )  /_\\ \    / //_\  | _ \|_ _||_ _|")
+    print("\__ \ / / | |__  / _ \ | ' <  | | | _| | |\/| | | _ \ / _ \\ \/\/ // _ \ |   / | |  | |")
+    print("|___//___||____|/_/ \_\|_|\_\|___||___||_|  |_| |___//_/ \_\\_/\_//_/ \_\|_|_\|___||___|")
     input_char = getch()
     if input_char == 'w': 
         os.system('clear')
