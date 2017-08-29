@@ -57,21 +57,36 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
 ##### WEAPON ITEMS:
 
     # nóż
-    knife = Items("nóż", 1, "weapon", 1, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    knife = Items("nóż", 1, "weapon", 20, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
     knife.dmg_list = [1,1] # means that it increase min. and max. damage by 1
     knife.body_list = ["prawa ręka"] # will check if hero has something in "prawa ręka" key in hero's onbody_dict
     
     # miecz
-    sword = Items("miecz", 2, "weapon", 1, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    sword = Items("miecz", 2, "weapon", 100, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
     sword.dmg_list = [1,3] # means that it increase min. and max. damage by 1
     sword.body_list = ["prawa ręka"] # will check if hero has something in "prawa ręka" key in hero's onbody_dict
 
 ##### ARMOUR ITEMS:
 
     # hełm
-    helmet = Items("hełm", 1, "armour", 2, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    helmet = Items("hełm", 1, "armour", 200, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
     helmet.attrib_dict = {"obrona":1} # icreases "obrona" in hero's attribute dict by 1 (dict update)
     helmet.body_list = ["głowa"]
+
+    # hełm garnczkowy +1 obrony
+    helmet1 = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    helmet1.attrib_dict = {"obrona":2} # icreases "obrona" in hero's attribute dict by 1 (dict update)
+    helmet1.body_list = ["głowa"]
+
+
+##### JEWELS:
+
+    diament = Items("diament", 4, "jewels", 500, [3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    diament.info_list = ["diament! To bogactwo!!!"]
+    ruby = Items("rubin", 3, "jewels", 200, [2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    ruby.info_list = ["to bogactwo!!!"]
+
+
 
 ##### QUEST ITEMS:    
 
@@ -79,6 +94,8 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
     placek_sliwkowy.info_list = ["pyszności!"]
     wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 0, [1], None, dmg_list, attrib_dict, body_list, info_list)
     placek_sliwkowy.info_list = ["pyszności!"]
+
+##### JEWELS: 
 
 
     # data in (...) items:
@@ -88,10 +105,11 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
 ############## list of all items - we use this in functions below:
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet 
+    items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet,
+    helmet1,
     
     
-    
+    diament, ruby
     ]
 
 

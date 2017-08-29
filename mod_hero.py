@@ -22,6 +22,7 @@ class Hero:
         self.actualExp = 1 # actual number of exp points
         self.gold = 2 # wealt in pouch
         self.location = 1 # actual map level
+        self.dmg_list = [1,2]
 
         
 # BOHATER - inicjacja zmiennych ##############################
@@ -32,9 +33,6 @@ def hero_settings():
     '''
     # hero dicts:
     attrib_regular_dict = {"atak":3, "obrona":2, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
-    ################## items will go to another function (like enemies)
-    placek_sliwkowy = {u"name":"placek śliwkowy","related":"jedzenie","value":2,"info":"zjedz mnie","cena":2,"waga":1}
-    wolek_zbozowy = {u"name":"wołek zbożowy","related":"robak","value":10,"info":"jestem szkodnikiem","cena":0,"waga":0}   
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
     inventory_dict = {"nóż":1,"placki":10, "resztki mapy":1} #placki będzie można sprzedać albo nakarmić głodnego (quest)
@@ -89,4 +87,15 @@ def display_location(player_character):
         return "Kraina Gigantów"
     elif player_character.location == 4:
         return "Dymiąca Góra"
+
+
+
+def display_damage(player_character):
+    '''
+    display hero's actual min and max damage
+    '''
+    player_character.dmg_list
+
+
+    return (''.join((str(player_character.dmg_list[0]),'-',(str(player_character.dmg_list[1])))))
 

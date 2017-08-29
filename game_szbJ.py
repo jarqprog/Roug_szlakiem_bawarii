@@ -69,6 +69,18 @@ def hof_display(): #ładuje z pliku tekstowego hof.txt
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def items_list_to_dict(items_to_add):
+    '''
+    transform list of items to dictionary (used to update hero's inventory dict)
+    '''
+    items_dict = {}
+    for item in items_to_add:
+        if item in items_dict:
+            items_dict[item] += 1
+        else:
+            items_dict[item] = 1
+        
+    return items_dict
 
 def inventory_update(player_character, add_remove_items_dict):
     '''
@@ -87,6 +99,47 @@ def inventory_update(player_character, add_remove_items_dict):
 
     return player_character.inventory_dict
     
+def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, player_character = None):
+    '''
+    generates list with random items, maxloops - max number of generated items,
+    maxitem_lvl = max item level (from "items Class") that is allowed (if None - filter is off)
+    item_gen = allowed item genre from "items Class" (ex. "weapon", if None - filter is off)
+    '''
+    treasure_list = []
+    if maxitem_lvl == None: maxitem_lvl = 1
+    if maxloops == None: maxloops = 1
+    if maxloops > 0:        
+        for i in range(random.randint(1, maxloops)):
+            random_level = random.randint(1, maxitem_lvl) # randomly generates item level for each loop
+            generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, player_character = None)
+            treasure_list.append(generated_item.name)
+
+    else:
+        random_level = random_level = random.randint(1, maxitem_lvl)
+        generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, player_character = None)
+        treasure_list.append(generated_item.name)
+
+    # transform treasure list to dict:
+    # then update hero's inventory:
+    add_remove_items_dict = items_list_to_dict(treasure_list)
+    inventory_update(player_character, add_remove_items_dict)
+    display_hero_chart(player_character)
+
+    display_looted_items(add_remove_items_dict)
+    time.sleep(2) # temporary!!!!!!
+
+
+
+def display_looted_items(add_remove_items_dict):
+    '''
+    displays looted/buyed items (from "add_remove_items_dict")
+    '''
+    total_number_of_items = 0
+    print("\nDodano do torby:\n")
+    for item in add_remove_items_dict:
+        print(add_remove_items_dict[item],item)
+        total_number_of_items += int(add_remove_items_dict[item])
+
 
 def display_hero_chart(player_character):
     """display hero's chart - attributes, inventory items, wearing items"""
@@ -295,12 +348,18 @@ def main():
     display_hero_chart(player_character) #### tmp
 
     ###### zabawa z generowaniem przedmiotów (import do main - według nazwy lub filtrów - tak jak z wrogami :) )
-    imported_item = items_settings(name = "hełm", loc = None, lvl = None, gen = None, player_character = None)
+    '''imported_item = items_settings(name = "hełm", loc = None, lvl = None, gen = None, player_character = None)
     print(imported_item.name,imported_item.body_list,imported_item.price)
-    imported_item = items_settings(name = None, loc = None, lvl = 1, gen = None, player_character = None)
+    imported_item = items_settings(name = None, loc = None, lvl = 3, gen = None, player_character = None)
     print(imported_item.name,imported_item.body_list,imported_item.price)
     imported_item = items_settings(name = None, loc = None, lvl = 1, gen = "quest", player_character = None)
     print(imported_item.name,imported_item.body_list,imported_item.price)
+    '''
+    pausa = input("wpisz cokolwiek, by kontynuować, będziemy generować skarb :D")
+    treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, player_character = player_character) # mamy mało itemów, więc filtry wyłączyłem
+
+
+    display_hero_chart(player_character)
 
 
     # ----- tu będzie funkcja do wyświetlania mapy
