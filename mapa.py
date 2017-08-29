@@ -10,7 +10,7 @@ def getch():
     return ch
 
 
-with open('mapa.txt', 'r') as myfile:
+with open('mapa_forest.txt', 'r') as myfile:
     mapa = myfile.read()
 mapa = list(mapa)
 position_horizontal = 1
