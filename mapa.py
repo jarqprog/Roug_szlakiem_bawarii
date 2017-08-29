@@ -1,5 +1,7 @@
 import os
 os.system('clear')
+# Zawsze odstep 10 wierszy !!!
+print("\n" * 10)
 def getch():
     import sys, tty, termios
     fd = sys.stdin.fileno()
@@ -27,47 +29,59 @@ while True:
     if input_char == 'w': 
         os.system('clear')
         if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_vertical -= 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == 's': 
         os.system('clear')
         if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_vertical += 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == 'd':
         os.system('clear')
         if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_horizontal += 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == 'a':
         os.system('clear')
         if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_horizontal -= 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == 'e':
         os.system('clear')
-        print("tu powinien być ekwipunek")
+        print("\n" * 9)
+        print("Tu powinien być ekwipunek")
     elif input_char == 'z':
         os.system('clear')
-        print("tu powinien być dziennik")
+        print("\n" * 9)
+        print("Tu powinien być dziennik")
     elif input_char == 'p':
         os.system('clear')
-        print("tu powinien być pomoc")
+        print("\n" * 9)
+        print("Tu powinien być pomoc")
     elif input_char == 'g':
         os.system('clear')
-        print("tu powinien być zapis gry")
+        print("\n" * 9)
+        print("Tu powinien być zapis gry")
     elif input_char == 'l':
         os.system('clear')
         break

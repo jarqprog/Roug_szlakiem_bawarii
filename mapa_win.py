@@ -1,7 +1,9 @@
 import os
 from msvcrt import getch
 os.system('cls')
-with open('mapa_forest.txt', 'r') as myfile:
+# Zawsze odstep 10 wierszy !!!
+print("\n" * 10)
+with open('mapa_wulkan.txt', 'r') as myfile:
     mapa = myfile.read()
 mapa = list(mapa)
 position_horizontal = 1
@@ -16,47 +18,59 @@ while True:
     if input_char == b'w':
         os.system('cls') 
         if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_vertical -= 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == b's':
         os.system('cls')
         if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_vertical += 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == b'd':
         os.system('cls')
         if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_horizontal += 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == b'a':
         os.system('cls')
         if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
-            print("nie mozesz sie tu ruszyc")
+            print("\n" * 9)
+            print("Nie mozesz sie tu ruszyc")
         else:
+            print("\n" * 10)
             map_copy[position_horizontal + position_vertical * 81] = "."
             position_horizontal -= 1
             map_copy[position_horizontal + position_vertical * 81] = "@"
     elif input_char == b'e':
         os.system('cls')
-        print("tu powinien być ekwipunek")
+        print("\n" * 9)
+        print("Tu powinien być ekwipunek")
     elif input_char == b'z':
         os.system('cls')
-        print("tu powinien być dziennik")
+        print("\n" * 9)
+        print("Tu powinien być dziennik")
     elif input_char == b'p':
         os.system('cls')
-        print("tu powinien być pomoc")
+        print("\n" * 9)
+        print("Tu powinien być pomoc")
     elif input_char == b'g':
         os.system('cls')
-        print("tu powinien być zapis gry")
+        print("\n" * 9)
+        print("Tu powinien być zapis gry")
     elif input_char == b'l':
         os.system('cls')
         break
