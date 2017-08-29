@@ -7,26 +7,11 @@ from mod_varied_info import display_varied_info
 import mod_enemy
 from mod_enemy import enemy_settings
 import mod_hero 
-from mod_hero import hero_settings, exp_nextlvl, display_exp, display_life, display_gold, display_location
-
+from mod_hero import hero_settings, exp_nextlvl, display_exp, display_life, display_gold, display_location, display_damage
+import mod_items
+from mod_items import items_settings
 
 os.system('cls' if os.name == 'nt' else 'clear')
-
-class Inv_items:
-    '''
-    muszę dodać:
-    diamenty
-    rubiny
-    pierścień skurczybyka
-    nóż
-
-
-    '''
-    pass  
-
-
-
-
 
 def intro():
     """display title, player choose between new game / load game / credits / HOF"""
@@ -124,12 +109,14 @@ def display_hero_chart(player_character):
 
 
     #################### OTHERS: life, exp, gold, location ############################
-    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja"]
+    other_key_list = ["życie", "doświadczenie", "obrażenia", "złoto", "lokalizacja"]
     # other_value_list element from functions:
     other_value_list = [display_life(player_character),
     display_exp(player_character),
+    display_damage(player_character),
     display_gold(player_character),
-    display_location(player_character)]
+    display_location(player_character)
+    ]
 
     # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
     # (pomoże to odpowiednio wydrukować tabelkę):
@@ -307,6 +294,13 @@ def main():
     
     display_hero_chart(player_character) #### tmp
 
+    ###### zabawa z generowaniem przedmiotów (import do main - według nazwy lub filtrów - tak jak z wrogami :) )
+    imported_item = items_settings(name = "hełm", loc = None, lvl = None, gen = None, player_character = None)
+    print(imported_item.name,imported_item.body_list,imported_item.price)
+    imported_item = items_settings(name = None, loc = None, lvl = 1, gen = None, player_character = None)
+    print(imported_item.name,imported_item.body_list,imported_item.price)
+    imported_item = items_settings(name = None, loc = None, lvl = 1, gen = "quest", player_character = None)
+    print(imported_item.name,imported_item.body_list,imported_item.price)
 
 
     # ----- tu będzie funkcja do wyświetlania mapy
