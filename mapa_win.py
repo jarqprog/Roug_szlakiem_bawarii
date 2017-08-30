@@ -1,7 +1,27 @@
 import os
+import sys
+import time
 from msvcrt import getch
 os.system('cls')
-# Zawsze odstep 10 wierszy !!!
+# Komentarz ogólny : liczba wierszy na mapą zawsze musi być równa 10.
+
+
+def delay_print(s):
+    for c in s:
+        sys.stdout.write('%s' % c)
+        sys.stdout.flush()
+        time.sleep(0.03)
+
+
+def title_screen():
+    delay_print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ \n")
+    delay_print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|\n")
+    delay_print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | \n")
+    delay_print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
+    delay_print("\nROGUELIKE EXPERIENCE\n\n")
+    print("Press any key to continue")
+    input_char = getch()
+    os.system('cls')
 
 
 def collision(position):
@@ -17,7 +37,7 @@ def collision(position):
         print("Trafiłeś do gaju Łotrzyków.")
     elif position == "M":
         print("\n" * 9)
-        print(" most pilnowany przez trolla Silnorękiego")
+        print("Most pilnowany przez trolla Silnorękiego")
     elif position == "+":
         print("\n" * 9)
         print("Zródło życia")
@@ -128,4 +148,9 @@ def core():
             continue
 
 
-core()
+def main():
+    title_screen()
+    core()
+
+
+main()
