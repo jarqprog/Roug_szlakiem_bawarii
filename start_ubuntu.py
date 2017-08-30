@@ -3,7 +3,6 @@ import sys
 import time
 os.system('clear')
 # Komentarz ogólny : liczba wierszy na mapą zawsze musi być równa 10.
-print("\n" * 10)
 
 
 def delay_print(s):
