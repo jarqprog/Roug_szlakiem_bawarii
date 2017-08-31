@@ -1,13 +1,17 @@
 # Szlakiem Bawarii - plik roboczy Jarka
-import os, time, random  
+#!/usr/bin/python
+import os, time, random, math
 #from msvcrt import getch
 
 # custom modules:
 from mod_varied_info import display_varied_info
 import mod_enemy
-from mod_enemy import enemy_settings
+from mod_enemy import enemy_settings, attack_points_calc, defend_points_calc
+
 import mod_hero 
 from mod_hero import hero_settings, exp_nextlvl, display_exp, display_life, display_gold, display_location, display_damage
+from mod_hero import attack_points_calc, defend_points_calc
+
 import mod_items
 from mod_items import items_settings
 
@@ -82,51 +86,48 @@ def items_list_to_dict(items_to_add):
         
     return items_dict
 
-def inventory_update(player_character, add_remove_items_dict):
+def inventory_update(hero, add_remove_items_dict):
     '''
     add or remove items from hero's inventory
     '''
 
-    player_character.inventory_dict.update(add_remove_items_dict)
+    hero.inventory_dict.update(add_remove_items_dict)
 
     temp_dict = {} # temporary inventory dict
-    for item in player_character.inventory_dict:
+    for item in hero.inventory_dict:
         # if inventory key value is < 1 (empty position), remove item from inventory:
-        if player_character.inventory_dict[item] > 0:
-            temp_dict.update({item:player_character.inventory_dict[item]})
+        if hero.inventory_dict[item] > 0:
+            temp_dict.update({item:hero.inventory_dict[item]})
     
-    player_character.inventory_dict = temp_dict
+    hero.inventory_dict = temp_dict
 
-    return player_character.inventory_dict
+    return hero.inventory_dict
     
-def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, player_character = None):
+def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, hero = None):
     '''
     generates list with random items, maxloops - max number of generated items,
     maxitem_lvl = max item level (from "items Class") that is allowed (if None - filter is off)
     item_gen = allowed item genre from "items Class" (ex. "weapon", if None - filter is off)
     '''
-    treasure_list = []
-    if maxitem_lvl == None: maxitem_lvl = 1
-    if maxloops == None: maxloops = 1
-    if maxloops > 0:        
-        for i in range(random.randint(1, maxloops)):
-            random_level = random.randint(1, maxitem_lvl) # randomly generates item level for each loop
-            generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, player_character = None)
-            treasure_list.append(generated_item.name)
+    if maxloops != 0:
+    
+        treasure_list = []
+        if maxitem_lvl == None: maxitem_lvl = 1
+        if maxloops == None: maxloops = 1
+        if maxloops > 0:        
+            for i in range(random.randint(1, maxloops)):
+                random_level = random.randint(1, maxitem_lvl) # randomly generates item level for each loop
+                generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, hero = None)
+                treasure_list.append(generated_item.name)
+        
+        # transform treasure list to dict:
+        # then update hero's inventory:
+        add_remove_items_dict = items_list_to_dict(treasure_list)
+        inventory_update(hero, add_remove_items_dict)
+        display_hero_chart(hero = hero)
 
-    else:
-        random_level = random_level = random.randint(1, maxitem_lvl)
-        generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, player_character = None)
-        treasure_list.append(generated_item.name)
-
-    # transform treasure list to dict:
-    # then update hero's inventory:
-    add_remove_items_dict = items_list_to_dict(treasure_list)
-    inventory_update(player_character, add_remove_items_dict)
-    display_hero_chart(player_character)
-
-    display_looted_items(add_remove_items_dict)
-    time.sleep(2) # temporary!!!!!!
+        display_looted_items(add_remove_items_dict)
+        time.sleep(0.3) # temporary!!!!!!
 
 
 
@@ -137,38 +138,249 @@ def display_looted_items(add_remove_items_dict):
     total_number_of_items = 0
     print("\nDodano do torby:\n")
     for item in add_remove_items_dict:
-        print(add_remove_items_dict[item],item)
+        print(item,":", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
 
 
-def display_hero_chart(player_character):
+    ########################## Battle functions:
+def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
+    '''
+    display basic info about enemy compared to hero's stats 
+    '''
+    clear_screen()
+    mod_enemy.enemy_info(enemy = enemy)
+    # check what is main enemy attribut in combat
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+
+    enemy_dmg = "".join([str(enemy.dmg_list[0]),"-", str(enemy.dmg_list[1])]) # used below in enemy_to_display_list
+    printing_var = 2 # variable that helps in printing (used below)
+    # check max lenght of hero name and enemy name (which of them is longer) - used below in printing:
+    longest_name_lenght = max(len(str(x)) for x in (hero.name,enemy.name))
+    # make list of attributes names to print in table's head (siła, zwinność, percepcja...):
+    head_to_display_list1 = [""]+list(hero.attrib_dict.keys())
+    # make list of hero attributes values to print:
+    hero_to_display_list1 = [hero.name+':']+list(hero.attrib_dict.values())
+    # make list of enemy attributes values to print:
+    enem_to_display_list1 = [enemy.name+':']+list(enemy.attrib_dict.values())
+    # make list of other attributes names to print in table's head (życie, obrażenia, atak..)
+    head_to_display_list2 = ["", "życie", "obrażenia", "atak", "obrona", "gł. cecha"]
+    # make list of hero attributes values to print:
+    hero_to_display_list2 = [hero.name+':', str(hero.actualLife), str(display_damage(hero = hero))]+list([str(hero.attack), str(hero.defend), str(hero.combat_attribute)])
+    # make list of enemy attributes values to print:
+    enem_to_display_list2 = [enemy.name+':', enemy.actualLife, enemy_dmg]+list([str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
+    # search for the longest element in each lists (needed to print nice table with stats):
+
+    long_head = max(len(str(x)) for x in head_to_display_list1)+printing_var
+    long_hero = max(len(str(x)) for x in hero_to_display_list1)+printing_var
+    long_enem = max(len(str(x)) for x in enem_to_display_list1)+printing_var
+    # search for longest of the longest elements in lists:
+    longest_arg = max(list((int(x)) for x in (long_head,long_hero,long_enem)))
+
+    # attacker is first to display:
+    if attacker == hero:
+        defender = enemy
+        attacker_list1 = hero_to_display_list1
+        defender_list1 = enem_to_display_list1
+        attacker_list2 = hero_to_display_list2
+        defender_list2 = enem_to_display_list2
+    else: 
+        defender = hero
+        attacker_list1 = enem_to_display_list1
+        defender_list1 = hero_to_display_list1
+        attacker_list2 = enem_to_display_list2
+        defender_list2 = hero_to_display_list2
+
+
+    # for ex.:
+    # display_enemy(enemy = enemy_settings(name = None, loc = hero.location, lvl = None, gen = None))
+
+    # prints info about enemy and hero/enemy stats:
+    print("\nstatystki:".rjust(longest_arg))
+    for i in range(len(head_to_display_list1)): print(str(head_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print("\r")
+    for i in range(len(head_to_display_list1)): print(str(attacker_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print("\r")
+    for i in range(len(head_to_display_list1)): print(str(defender_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print('\n')
+    for i in range(len(head_to_display_list2)): print(str(head_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print("\r")
+    for i in range(len(head_to_display_list2)): print(str(attacker_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print("\r")
+    for i in range(len(head_to_display_list2)): print(str(defender_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    print("\n\n")
+
+    return attacker
+
+
+def priority_test(enemy = None, hero = None):
+    '''
+    who's attacker, who's defender
+    '''
+    # zwinność, percepcja i inteligencja have influence on this test:
+    hero_test_stats = (int(hero.attrib_dict["zwinność"])+int(hero.attrib_dict["percepcja"])+
+    int(hero.attrib_dict["inteligencja"]))
+    enem_test_stats = (int(enemy.attrib_dict["zwinność"])+int(enemy.attrib_dict["percepcja"])+int(enemy.attrib_dict["inteligencja"]))
+    print("Kto uzyskał inicjatywę? (test inicjatywy)")
+    time.sleep(1)
+    while True:
+        test_var1 = hero_test_stats + enem_test_stats
+        test_var2 = random.randint(1,test_var1)      
+        print('\r\r'+hero.name+":", hero_test_stats)
+        print('\r\r'+enemy.name+":", test_var2)
+        if hero_test_stats > test_var2:
+            print("atakuje",hero.name+'!')
+            attacker = hero
+            break
+          
+        elif hero_test_stats < test_var2:
+            print("\n\natakuje",enemy.name+'!')
+            attacker = enemy
+            break
+
+    time.sleep(1)
+    return attacker
+
+
+def game_over(hero = None): # todo!!!!!!!!!!!!!!!!!!
+    
+    print("game over")
+
+def rip(enemy = None, hero = None):
+    print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
+
+    game_over(hero = hero) 
+
+def win_fight(enemy = None, hero = None):
+    print(hero.name,"Zwycięstwo!")
+    pauza = input("\nnaciśnij ENTER, żeby kontynuować.")    
+    treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
+
+def counterattack(enemy = None, hero = None, attacker = None, attack = None):
+    '''
+    part of the fight mechanic (part of fight function) 
+    '''
+    #attacker = priority_test(enemy = enemy, hero = hero) 
+    # define attacker and defender:
+    if attacker == hero: defender = enemy
+    elif attacker == enemy: defender = hero
+
+    print("kontratak!")
+    counterattack_result = 0
+    print('\n'+defender.name, " kontratakuje: rzuca",str(defender.attrib_dict[str(defender.combat_attribute)]),"razy kością K4:")
+    damage = random.randint(defender.dmg_list[0], defender.dmg_list[1])
+    for i in range(int(defender.attrib_dict[str(defender.combat_attribute)])):
+        counterattack_var = random.randint(1,4)
+        print((str(counterattack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        counterattack_result += counterattack_var
+    print("\n\nRezultat:")
+    print(defender.name+':',counterattack_result,'+',defender.attack,"(atak):", counterattack_result+defender.attack)
+    print(attacker.name+':', attack), time.sleep(0.5)
+    if attack < counterattack_result+defender.attack:
+        attacker.actualLife -= damage
+        print(defender.name, "zadał obrażenia:", attacker.name, "stracił", damage, "pkt. życia")
+        time.sleep(0.3)
+        if defender == hero:
+            hero.actualExp += damage
+            print(hero.name+", zdobyto doświadczenie:", damage)
+            return hero.actualExp
+
+
+        if defender.actualLife < 0:
+            defender.actualLife = 0
+            combat_end = 1
+            return combat_end
+
+
+    else:
+        print(attacker.name, "obronił się!")
+        time.sleep(1.5)
+        attacker_change = 1
+        return attacker_change
+            
+            
+
+def fight(enemy = None, hero = None, attacker = None):
+    '''
+    fight mechanic = hit
+    '''
+
+    # define attacker and defender:
+    if attacker == hero: defender = enemy
+    elif attacker == enemy: defender = hero 
+
+    attacker_change = 0
+
+    attack_result = 0
+    defend_result = 0
+    print(attacker.name, "atakuje: rzuca",attacker.attrib_dict[str(attacker.combat_attribute)],"razy kością K4:")
+    for i in range(int(attacker.attrib_dict[str(attacker.combat_attribute)])):
+        attack_var = random.randint(1,4)
+        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        attack_result += attack_var
+    print('\n'+defender.name, "broni się: rzuca",str(defender.attrib_dict["zwinność"]),"razy kością K4:")
+    for i in range(int(defender.attrib_dict["zwinność"])):
+        defend_var = random.randint(1,4)
+        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        defend_result += defend_var
+        
+    print("\n\nRezultat:")
+    print(attacker.name+':',attack_result,'+',attacker.attack,"(atak):", attack_result+attacker.attack)
+    print(defender.name+':',defend_result,'+',defender.defend,"(obrona):", defend_result+defender.defend)
+    if attack_result+attacker.attack <= defend_result+defender.defend:
+        print(defender.name, "obronił się!")
+        time.sleep(0.3)
+        attacker_change = 1
+        #attacker = priority_test(enemy = enemy, hero = hero)
+        #if float(defend_result+defender.defend) > (float(attack_result+attacker.attack)*1.2):
+        attack = int(attack_result+attacker.attack)
+        counterattack(enemy = enemy, hero = hero, attacker = attacker, attack = attack)
+        return attacker_change
+
+    else:
+        damage = random.randint(attacker.dmg_list[0], attacker.dmg_list[1])
+        print(attacker.name, "zadał obrażenia:", defender.name, "stracił", damage, "pkt. życia")
+        time.sleep(0.3)
+        defender.actualLife -= damage
+        if attacker == hero:
+            hero.actualExp += damage
+            print(hero.name+", zdobyto doświadczenie:", damage)
+        if defender.actualLife < 0:
+            defender.actualLife = 0
+            combat_end = 1
+            time.sleep(0.3)
+            return combat_end
+
+def display_hero_chart(hero = None):
     """display hero's chart - attributes, inventory items, wearing items"""
     clear_screen() # czyści ekran
     #################### ATTRIBUTES ############################
     # przekształca słownniki z atrybutami bohatera na listy kluczy i wartości:
-    attrib_regular_key_list = list(player_character.attrib_regular_dict.keys())
-    attrib_regular_value_list = list(player_character.attrib_regular_dict.values())
+    attrib_regular_key_list = list(hero.attrib_dict.keys())
+    attrib_regular_value_list = list(hero.attrib_dict.values())
 
     #################### INVENTORY ############################
     # przekształca słownik ekwipunku bohatera na listy kluczy i wartości:
-    inventory_key_list = list(player_character.inventory_dict.keys())
-    inventory_value_list = list(player_character.inventory_dict.values())
+    inventory_key_list = list(hero.inventory_dict.keys())
+    inventory_value_list = list(hero.inventory_dict.values())
 
     #################### ON-BODY ############################
     # przedmioty noszone na sobie
     # przekształcenie kluczy i wartości słownka w listy
-    onbody_key_list = list(player_character.onbody_dict.keys())
-    onbody_value_list = list(player_character.onbody_dict.values())
+    onbody_key_list = list(hero.onbody_dict.keys())
+    onbody_value_list = list(hero.onbody_dict.values())
 
 
     #################### OTHERS: life, exp, gold, location ############################
-    other_key_list = ["życie", "doświadczenie", "obrażenia", "złoto", "lokalizacja"]
+    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak", "obrona", "obrażenia", "pancerz" ]
     # other_value_list element from functions:
-    other_value_list = [display_life(player_character),
-    display_exp(player_character),
-    display_damage(player_character),
-    display_gold(player_character),
-    display_location(player_character)
+    other_value_list = [display_life(hero = hero),
+    display_exp(hero = hero),
+    display_gold(hero = hero),
+    display_location(hero = hero),
+    str(hero.attack),
+    str(hero.defend),
+    display_damage(hero = hero),
+    mod_hero.display_armour(hero = hero)
     ]
 
     # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
@@ -197,8 +409,8 @@ def display_hero_chart(player_character):
     # ta część kodu rysuje tabelę:
     # zmienne do nagłówka: attrib_additional_dict = ,"doświadczenie":24, "poziom doświadczenia":1, "złoto":2 }
     printing_var = 0 #helps correctly print hero chart
-    h00 = player_character.name.ljust(printing_var)
-    h01 = player_character.proffession.ljust(printing_var)
+    h00 = hero.name.ljust(printing_var)
+    h01 = hero.proffession.ljust(printing_var)
 
     printing_var = 2 #helps correctly print hero chart
     h1 = 'atrybuty:'.rjust(long_att_key+printing_var)
@@ -214,7 +426,7 @@ def display_hero_chart(player_character):
 
     for i in range(int(total_number_of_items)) :
         
-        # printing attributes (atak, obrona...):
+        # printing attributes (siła, zwinność...):
         try:
             int(len(attrib_regular_key_list)) >= i         
             if int(len(attrib_regular_key_list)) >= i:
@@ -272,7 +484,7 @@ def display_hero_chart(player_character):
 
 def map_maker(hero_position_h, hero_position_v): # usunąłem pętlę - będzie w głównej pętli raczej - obgadamy 
     '''
-    displays map + implement player_character movement
+    displays map + implement hero movement
     '''
 
     with open('mapa.txt', 'r') as myfile:
@@ -312,12 +524,33 @@ def map_maker(hero_position_h, hero_position_v): # usunąłem pętlę - będzie 
 
 def main():
     clear_screen()
-    # ustawia nam podstawowe zmienne:
+    # set basic variables:
     game_lvl = 1
     add_remove_items_dict = {}
 
-    # importuje nam Postać do głównej funkcji (w procesie tworzenie postaci lub ładowawnia gry nastapi update postaci):
-    player_character = hero_settings()
+    ######################## HERO CLASS IMPORT TO MAIN: 
+    hero = hero_settings()
+    hero.attack = mod_hero.attack_points_calc(hero = hero)
+    hero.defend = mod_hero.defend_points_calc(hero = hero)
+    mod_hero.combat_attribute_default(hero = hero)
+
+
+    hero.max_armour = mod_hero.amour_max_calc(hero = hero)
+    #hero.combat_attribute = mod_hero.combat_attribute_default(hero = hero)
+
+    ### here we can add next hero methods...
+
+    ######################## ENEMY CLASS IMPORT TO MAIN:
+    enemy = enemy_settings(name = None, loc = None, lvl = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    ### here we can add next enemy methods...
+
+
+
+
+
 
 
 ################ TU URUCHAMIAMY FUNKCJE:
@@ -325,49 +558,103 @@ def main():
 
     ####### ładowanie gry LUB tworzenie bohatera LUB galeria sław LUB info o nas
     ####### po każdej z tych funkcji odpalamy główną pętlę:
+
+
+
+
     '''
     roboczo wstawiam parę rzeczy dla bohatera - pomijamy na razie tworzenie bohatera lub załadowanie z save'a
     '''
-
-    player_character.attrib_regular_dict = {"atak":30,"obrona":2, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
-    player_character.attrib_additional_dict = {"życie":13, "pełne życie":30, "doświadczenie":24, "poziom doświadczenia":1,"doświadczenie":12, "pkt do następnego poziomu": 30, "złoto":2 } 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    player_character.inventory_dict = {"nóż":1,"placki":50, "resztki mapy":1} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    hero.inventory_dict = {"nóż":1,"placki":50, "resztki mapy":1} #placki będzie można sprzedać albo nakarmić głodnego (quest)
     ################################ show active items on Hero:
-    player_character.onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
+    hero.onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero_position_h, hero_position_v = 13, 1 # sets character_player start position (horisontal/vertical)
 
 
-    player_character.location = 1
-    player_character.level = 2
-    player_character.actualLife -= 20
-    player_character.actualExp += 10
-    player_character.actualLife -=20
     
-    display_hero_chart(player_character) #### tmp
+
+
+    '''
 
     ###### zabawa z generowaniem przedmiotów (import do main - według nazwy lub filtrów - tak jak z wrogami :) )
-    '''imported_item = items_settings(name = "hełm", loc = None, lvl = None, gen = None, player_character = None)
-    print(imported_item.name,imported_item.body_list,imported_item.price)
-    imported_item = items_settings(name = None, loc = None, lvl = 3, gen = None, player_character = None)
-    print(imported_item.name,imported_item.body_list,imported_item.price)
-    imported_item = items_settings(name = None, loc = None, lvl = 1, gen = "quest", player_character = None)
-    print(imported_item.name,imported_item.body_list,imported_item.price)
+    imported_item = items_settings(name = None, loc = hero.location, lvl = None, gen = None, hero = None)
+
+    
+    pausa = input("\n\nwpisz cokolwiek, by kontynuować, będziemy generować skarb :D")
+    treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, hero = hero) # mamy mało itemów, więc filtry wyłączyłem
+
+
+
+
+    pausa = input("\n\n\nwpisz cokolwiek, by kontynuować, zaczniemy walkę :D\n\n\n")
+
     '''
-    pausa = input("wpisz cokolwiek, by kontynuować, będziemy generować skarb :D")
-    treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, player_character = player_character) # mamy mało itemów, więc filtry wyłączyłem
 
 
-    display_hero_chart(player_character)
+    clear_screen()
+
+    display_hero_chart(hero = hero)
+    display_varied_info()
+    
+    # załóżmy, że wylosowany został event z przeciwnikiem:
+
+    # losowany przeciwnik:
+    enemy = enemy_settings(name = 'ogr', loc = 1, lvl = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    mod_enemy.combat_attribute_default(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    # update cechy bohatera:
+    mod_hero.combat_attribute_default(hero = hero)
+    print("Zaraz, zaraz... Coś się dzieje..."), time.sleep(1)
+    print("Twój przeciwnik to", (enemy.name+'!'),'\n')
+    pausa = input("\n\njesteś gotów, Łukaszu? wpisz cokolwiek żeby kontynuować.. ;) ")
+    # pętla walki:
+    combat_end = 0
+    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
+        # initiative test:
+        attacker = priority_test(enemy = enemy, hero = hero)
+        time.sleep(1)
+        # define attacker and defender:
+        if attacker == hero: defender = enemy
+        elif attacker == enemy: defender = hero  
+        attacker_change = 0 # if 1 = loop is break and we repeat initiative test
+        while True:
+            #clear_screen()
+            display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
+            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
+            time.sleep(1)
+            pauza = input(str("\n\njesteś gotów? naciśnij ENTER, żeby kontynuować.., żeby uciec, wpisz: 'run'"))
+            if pauza == "run":
+                exit()
+            elif hero.actualLife < 1:
+                rip(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif enemy.actualLife < 1:
+                win_fight(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif attacker_change == 1:
+                break
+            time.sleep(1)
 
 
+ 
+    
+    
+    '''
     # ----- tu będzie funkcja do wyświetlania mapy
     '''
+
+
+    '''
 ####################### MAIN LOOP:
-    while player_character.attrib_additional_dict["życie"] > 0:
+    while hero.attrib_additional_dict["życie"] > 0:
         clear_screen()
-        display_hero_chart(player_character)
+        display_hero_chart(hero = None)
         display_varied_info() # display short random info :)
         map_maker(hero_position_h, hero_position_v)
         hero_coordinates_position_list = map_maker(hero_position_h, hero_position_v)

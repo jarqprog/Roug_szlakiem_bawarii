@@ -7,34 +7,46 @@ import random
 
 ################################ Hero's enemies class:
 class Items:
-   def __init__(self, name, level, genre, price, location, special, dmg_list, attrib_dict, body_list, info_list):
+   def __init__(self, name, level, genre, price, location, info_list):
         # item name:
         self.name = name
-        # item level - stronger item = higher level (ex. level 4 = unique, powerful item):
-        self.level = level
-        # item genre is for ex. armour/weapon/other/special(quest)
-        self.genre = genre
-        # price in buy/sell (concerns shops)
-        self.price = price
-        # "location" = list of maps levels, where it could be random generated (list element = lvl mapy, ex. [1,2])
-        self.location = location
-        # special = special feature of item, default = None - ex. life + 10 (regenerates hero's life point)
-        self.special = special
-        # damage is a list (default - empty: []) of min. and max. damage - that are added to hero's min. and max. damage
-        self.dmg_list = dmg_list
-        # values of attributes are added to values of hero attributes:
-        self.attrib_dict = attrib_dict
-        # body_list: default body_list is empty = []
-        # determines where hero can wear an item. If body_list is empty, hero can't wear item (still can put it into bag)..
-        # else: (for ex. body_list = ["głowa"] - program checks if key "głowa" in player_character.onbody_dict == ""
-        # (that means = "głowa" is empty and we can put "kaptur"), other wise program display info "głowa" is not empty (;))
-        self.body_list = body_list
-        # contains short info about item:
-        self.info_list = info_list
+        self.level = level # item level - stronger item = higher level (ex. level 4 = unique, powerful item)   
+        self.genre = genre # item genre is for ex. armour/weapon/other/special(quest)
+        self.price = price # price in buy/sell (concerns shops)
+        self.location = location # list of maps levels, where it could be random generated (list element = lvl mapy, ex. [1,2])   
+        self.info_list = info_list # contains short info about item
+
+        # buffs parametres = bonuses for hero's attributes, f. ex.:
+        # buff_str = 2 means: hero's "siła" += 2, etc.
+        # if buff has negativ value, it decrases value of attrib
+        # default value of buff is 0:
+        self.buff_str = 0 # + "siła"
+        self.buff_agg = 0 # + "zwinność"
+        self.buff_per = 0 # + "percepcja"
+        self.buff_int = 0 # + "inteligencja"
+        self.buff_wil = 0 # + "siła woli"
+        self.buff_arm = 0 # + "pancerz (act_armour)"
+        self.buff_min_dmg = 0 # + "min dmg"
+        self.buff_max_dmg = 0 # + "max dmg"
+        # we may add life and other bonuses from items to hero
+
+        # body: default empty = ""
+        # determines where hero can wear an item. If body is empty, hero can't wear item (still can put it into bag)..
+        # else: (for ex. body = ["głowa"] - program checks if key "głowa" in hero.onbody_dict == ""
+        # (that means = "głowa" is empty and we can put "kaptur"), other wise program display info "głowa" is not empty (;)):
+        self.body = ""
+
+
+        # combat_attribute:
+        # determines what hero attribute is used in combat tests, for example, if hero is using dagger,
+        # main concidered attribute is aggility ("zwinność") or in case of heavy axe we use strenght ("siła")
+        # empty by default
+        self.combat_attribute = ""
 
 
 
-def items_settings(name = None, loc = None, lvl = None, gen = None, player_character = None):
+
+def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None, all = None):
     
     '''
     Stores items data base. 
@@ -47,66 +59,96 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
         genre (gen, ex. gen = "weapon": it will choose between weapon with genre = "weapon")
         then export to main 
     '''
-    dmg_list = []
-    attrib_dict = {}  
-    body_list = []
+
+
     info_list = []
+
  
     #name, level, genre, price, location, damage, special, attrib_dict, body_dict, info_list
 
 ##### WEAPON ITEMS:
 
-    # nóż
-    knife = Items("nóż", 1, "weapon", 20, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
-    knife.dmg_list = [1,1] # means that it increase min. and max. damage by 1
-    knife.body_list = ["prawa ręka"] # will check if hero has something in "prawa ręka" key in hero's onbody_dict
-    
-    # miecz
-    sword = Items("miecz", 2, "weapon", 100, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
-    sword.dmg_list = [1,3] # means that it increase min. and max. damage by 1
-    sword.body_list = ["prawa ręka"] # will check if hero has something in "prawa ręka" key in hero's onbody_dict
+    # nóż (self, name, level, genre, price, location, info_list)
+    knife = Items("nóż", 1, "weapon", 20, [1,2,3,4], info_list)
+    knife.buff_min_dmg = 0 # + "min dmg"
+    knife.buff_max_dmg = 1 # + "max dmg"
+    knife.combat_attribute = "zwinność"
+
+
+    club = Items("maczuga", 1, "weapon", 20, [1,2,3,4], info_list)
+    club.buff_min_dmg = 1 # + "min dmg"
+    club.buff_max_dmg = 1 # + "max dmg"
+    club.combat_attribute = "siła"
+
+
+    '''
+    self.buff_str = 0 # + "siła"
+    self.buff_agg = 0 # + "zwinność"
+    self.buff_per = 0 # + "percepcja"
+    self.buff_int = 0 # + "inteligencja"
+    self.buff_wil = 0 # + "siła woli"
+    self.buff_arm = 0 # + "pancerz (act_armour)"
+    self.buff_min_dmg = 0 # + "min dmg"
+    self.buff_max_dmg = 0 # + "max dmg"
+    self.body = ""
+    self.combat_attribute = ""
+    '''
+
+    # miecz (self, name, level, genre, price, location, info_list)
+    sword = Items("miecz", 2, "weapon", 100, [1,2,3,4], info_list)
+    sword.buff_min_dmg = 1 # + "min dmg"
+    sword.buff_max_dmg = 2 # + "max dmg"
+    sword.combat_attribute = "siła"
+    sword.body = "prawa ręka"
+
 
 ##### ARMOUR ITEMS:
 
-    # hełm
-    helmet = Items("hełm", 1, "armour", 200, [1,2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
-    helmet.attrib_dict = {"obrona":1} # icreases "obrona" in hero's attribute dict by 1 (dict update)
-    helmet.body_list = ["głowa"]
+    # hełm (self, name, level, genre, price, location, info_list)
+    helmet = Items("hełm", 1, "armour", 200, [1,2,3,4], info_list)
+    helmet.buff_arm = 1 # + "pancerz (act_armour)"
+    helmet.body = "głowa"
 
-    # hełm garnczkowy +1 obrony
-    helmet1 = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
-    helmet1.attrib_dict = {"obrona":2} # icreases "obrona" in hero's attribute dict by 1 (dict update)
-    helmet1.body_list = ["głowa"]
+    # hełm garnczkowy +1 obrony (self, name, level, genre, price, location, info_list)
+    helmet_pot = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4], info_list)
+    helmet_pot.buff_arm = 2 # + "pancerz (act_armour)"
+    helmet_pot.body = "głowa"
+
+    # zbroja skórzana (self, name, level, genre, price, location, info_list)
+    armour_lether = Items("zbroja skórzana", 1, "armour", 200, [1,2,3,4], info_list)
+    info_list = ["lekki i niedrogi typ pancerza, zapewnia dość dobrą osłonę ciała"]
+    armour_lether.buff_arm = 1
+    armour_lether.body = "tors"
 
 
-##### JEWELS:
+##### JEWELS: (self, name, level, genre, price, location, info_list)
 
-    diament = Items("diament", 4, "jewels", 500, [3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    diament = Items("diament", 4, "jewels", 500, [3,4], info_list)
     diament.info_list = ["diament! To bogactwo!!!"]
-    ruby = Items("rubin", 3, "jewels", 200, [2,3,4], None, dmg_list, attrib_dict, body_list, info_list)
+    ruby = Items("rubin", 3, "jewels", 200, [2,3,4], info_list)
     ruby.info_list = ["to bogactwo!!!"]
 
+##### OTHER ITEMS: (self, name, level, genre, price, location, info_list)
+    tunic = Items("tunika", 1, "other", 20, [1,2], info_list)
+    info_list = ["tanie i przewiewne okrycie ciała, pochodzi z krain południowych"]
+    tunic.body = "tors"
 
 
 ##### QUEST ITEMS:    
 
-    placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2], None, dmg_list, attrib_dict, body_list, info_list)
+    placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2], info_list)
     placek_sliwkowy.info_list = ["pyszności!"]
-    wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 0, [1], None, dmg_list, attrib_dict, body_list, info_list)
+    wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 0, [1], info_list)
     placek_sliwkowy.info_list = ["pyszności!"]
 
-##### JEWELS: 
 
-
-    # data in (...) items:
-    # name, level, genre, price, location, body, attrib_dict, info_list
 
 
 ############## list of all items - we use this in functions below:
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet,
-    helmet1,
+    items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
+    helmet_pot, armour_lether,
     
     
     diament, ruby
@@ -128,8 +170,17 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
 
         return item_exported_to_main
 
+    # whit "all" set on "True" we can export list of multiple items (sorted by filters):
+    elif (all == True and (loc in element.location or loc == None) and (lvl == element.level or lvl == None)
+    and (gen == element.genre or gen == None)):
+        item_export_list = [] # temporary helper list
+        for element in items_all_list:        
+            item_random_list.append(element)
 
-    # if enemy name wasn't specified, it will export random enemy (random using optional filters - level, location, genre):
+        return item_export_list
+
+    # if item name or "all" wasn't specified, it will export random enemy
+    # (random using optional filters - level, location, genre):
     else:
         item_random_list = [] # temporary helper list
         for element in items_all_list:        
@@ -146,8 +197,6 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, player_chara
 
 
     """ dodaj: 
-    diamenty
-    rubiny
     pierścień skurczybyka
     nóż
 
