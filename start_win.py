@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import datetime
 from msvcrt import getch
 
 os.system('cls')
@@ -8,13 +9,15 @@ os.system('cls')
 
 
 def delay_print(s):
+    ''' Spowalnia drukowanie tekstu. '''
     for c in s:
         sys.stdout.write('%s' % c)
         sys.stdout.flush()
-        time.sleep(0.02)
+        time.sleep(0.004)
 
 
 def title_screen():
+    ''' Zwraca ekran tytułowy. '''
     delay_print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ \n")
     delay_print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|\n")
     delay_print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | \n")
@@ -26,6 +29,7 @@ def title_screen():
 
 
 def character_choice_screen():
+    """ Funkcja zwraca atrybuty wybranego bohatera """
     while True:
         os.system('cls')
         print("\n _    _       _                                  _             _ ")
@@ -49,11 +53,12 @@ def character_choice_screen():
                 print(postać)
                 print("WOJOWNIK")
                 print("\nATRYBUTY:")
-                print("SIŁA : 4, ZWINNOŚĆ : 2, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 2")
+                print("SIŁA : 5, ZWINNOŚĆ : 2, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 2")
                 print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == b'Y':
-                    return {"SIŁA": 4, "ZWINNOŚĆ": 2, "PERCEPCJA": 1, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
+                    return {"KLASA": "WOJOWNIK", "SIŁA": 5, "ZWINNOŚĆ": 2,
+                            "PERCEPCJA": 1, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
         if input_char.upper() == b'2':
             os.system('cls')
             with open('2. ŁOWCA.txt', 'r') as myfile:
@@ -65,7 +70,8 @@ def character_choice_screen():
                 print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == b'Y':
-                    return {"SIŁA": 2, "ZWINNOŚĆ": 3, "PERCEPCJA": 3, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
+                    return {"KLASA": "ŁOWCA", "SIŁA": 2, "ZWINNOŚĆ": 3,
+                            "PERCEPCJA": 3, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
         if input_char.upper() == b'3':
             os.system('cls')
             with open('3. NINJA.txt', 'r') as myfile:
@@ -77,7 +83,8 @@ def character_choice_screen():
                 print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == b'Y':
-                    return {"SIŁA": 1, "ZWINNOŚĆ": 3, "PERCEPCJA": 3, "INTELIGENCJA": 3, "SIŁA WOLI": 1}
+                    return {"KLASA": "NINJA", "SIŁA": 1, "ZWINNOŚĆ": 3,
+                            "PERCEPCJA": 3, "INTELIGENCJA": 3, "SIŁA WOLI": 1}
         if input_char.upper() == b'4':
             os.system('cls')
             with open('4. STWORZONA POSTAĆ.txt', 'r') as myfile:
@@ -131,16 +138,18 @@ def character_choice_screen():
                                 continue
                     print("\n\nSIŁA", siła, "ZWINNOŚĆ", zwinność, "PERCEPCJA", percepcja)
                     print("INTELIGENCJA", inteligencja, "SIŁA WOLI", siła_woli)
+                    klasa = input("Klasa postaci w której czujesz się najlepiej to: ")
+                    klasa = klasa.upper()
                     print("Wybrałeś swoje przeznaczenie. Wciśnij cokolwiek, żeby rozpocząc gre.")
                     input_char = getch()
-                    return {"SIŁA": siła, "ZWINNOŚĆ": zwinność, "PERCEPCJA": percepcja, "INTELIGENCJA": inteligencja,
-                            "SIŁA WOLI": siła_woli}
+                    return {"KLASA": klasa, "SIŁA": siła, "ZWINNOŚĆ": zwinność, "PERCEPCJA": percepcja,
+                            "INTELIGENCJA": inteligencja, "SIŁA WOLI": siła_woli}
         else:
             continue
 
 
 def collision(position):
-    """ Returns message depending on what hero touches. """
+    """ Zwraca zdarzenie w zalezności od tego w co wejdzie bohater. """
     if position == "N":
         print("\n" * 9)
         print("Tutaj NPC powie ci co masz robić dalej.")
@@ -164,8 +173,8 @@ def collision(position):
         print("Nie mozesz sie tu ruszyc")
 
 
-def core(start_atrybuty):
-    """ Main loop of the game."""
+def core(atrybuty, start_czasu):
+    """ Główna pętla całej gry. """
     print("\n" * 10)
     with open('mapa_forest.txt', 'r') as myfile:
         mapa = myfile.read()
@@ -248,15 +257,57 @@ def core(start_atrybuty):
             print("N = NPC")
         elif input_char.upper() == b'K':
             os.system('cls')
-            print("\n" * 9)
-            print(start_atrybuty)
+            print("\n" * 4)
+            for k, v in atrybuty.items():
+                print(k, ":", v)
         elif input_char.upper() == b'0':
             os.system('cls')
             print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
             input_char = getch()
             if input_char.upper() == b'0':
                 os.system('cls')
-                break
+                koniec_czasu = datetime.datetime.now()
+                # Pozbywamy się mikrosekund.
+                czas_gry = (str(koniec_czasu - start_czasu)).split(".")[0]
+                # Zsumujmy atrybuty.
+                suma_atrybutów = 0
+                for value in atrybuty.values():
+                    try:
+                        suma_atrybutów += int(value)
+                    except ValueError:
+                        continue
+                imię_użytkownika = input("\nWpisz swoje imię: ")
+                print("\nGratulacje,", imię_użytkownika, ". Twoje osiągnięcia zostaną zapisane.\n")
+                print("ATRYBUTY NA KONIEC: \n")
+                # Dopasujmy długość imienia użytkownika do 20.
+                if len(imię_użytkownika) > 20:
+                    imię_użytkownika = imię_użytkownika[:20]
+                imię_użytkownika += " " * (20 - len(imię_użytkownika))
+                for k, v in atrybuty.items():
+                    print(k, ":", v)
+                print("\nCZAS GRY: ", czas_gry, "\nSUMA ATRYBUTÓW: ", suma_atrybutów)
+                # Dodaj końcowy wynik do pliku HALL_OF_FAME.
+                with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
+                    wynik_gracza = [str(suma_atrybutów), str(imię_użytkownika), str(czas_gry),
+                                    str(atrybuty["KLASA"])]
+                    wynik_gracza = "        ".join(wynik_gracza)
+                    HALL_OF_FAME.write(str(wynik_gracza) + "\n")
+                    print("\n\nNacisnij cokolwiek")
+                    input_char = getch()
+                with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
+                    os.system('cls')
+                    print("\nHALL_OF_FAME:\n")
+                    # Odzielamy co 3 żeby było równo.
+                    print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
+                    HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
+                    miejsce_na_liście = 1
+                    for i in HALL_OF_FAME:
+                        print(miejsce_na_liście, ".", "".join(i))
+                        miejsce_na_liście += 1
+                    print("\n\n\nNacisnij cokolwiek")
+                    input_char = getch()
+                    os.system('cls')
+                    break
             else:
                 os.system('cls')
                 print("\n" * 10)
@@ -271,7 +322,8 @@ def main():
     title_screen()
     początkowe_atrybuty = character_choice_screen()
     os.system('cls')
-    core(początkowe_atrybuty)
+    start_czasu = datetime.datetime.now()
+    core(początkowe_atrybuty, start_czasu)
 
 
 main()
