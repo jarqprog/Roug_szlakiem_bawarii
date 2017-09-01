@@ -127,11 +127,24 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     diament.info_list = ["diament! To bogactwo!!!"]
     ruby = Items("rubin", 3, "jewels", 200, [2,3,4], info_list)
     ruby.info_list = ["to bogactwo!!!"]
+    jantar = Items("jantar", 2, "jewels", 200, [1,2,3,4], info_list)
+    jantar.info_list = ["Jantar Lechitów! To majątek!"]
+
+
 
 ##### OTHER ITEMS: (self, name, level, genre, price, location, info_list)
+    # tunika
     tunic = Items("tunika", 1, "other", 20, [1,2], info_list)
-    info_list = ["tanie i przewiewne okrycie ciała, pochodzi z krain południowych"]
+    tunic.info_list = ["tanie i przewiewne okrycie ciała, pochodzi z krain południowych"]
     tunic.body = "tors"
+
+    wolf_skin = Items("wilcza skóra", 1, "other", 7, [1,2], info_list)
+    wolf_skin.info_list = ["może to sprzedam?"]
+
+    stale_fish = Items(u"popsuta ryba", 1, "other", 0, [0], info_list)
+    stale_fish.info_list = [u"może to sprzedam?"]
+
+
 
 
 ##### QUEST ITEMS:    
@@ -148,10 +161,10 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
     items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
-    helmet_pot, armour_lether,
+    helmet_pot, armour_lether, wolf_skin,
     
     
-    diament, ruby
+    diament, ruby, jantar
     ]
 
 

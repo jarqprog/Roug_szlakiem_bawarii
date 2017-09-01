@@ -67,19 +67,21 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     wolf.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":3, "inteligencja":1, "siła woli":1}
     wolf.speach_list = [u"wrrrr", "auuuuuuuuuuuuu!"]
     wolf.specials_list = [u"szybki skubaniec!"]
+    wolf.treasure_dict = {u"wilcza skóra":1}
     wolf.maxdrop = 0
 
     # Goblin
     goblin = Enemy(u"goblin",10, 1, 1, "beast", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
     goblin.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     goblin.speach_list = [u"Ja ubić ludzia!", "Ty trup!"]
+    goblin.treasure_dict = {u"popsuta ryba":1}
     goblin.maxdrop = 2
 
      # Skurczybyk
     skurczybyk = Enemy(u"skurczybyk",13, 2, 1, "human", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
     skurczybyk.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     skurczybyk.speach_list = [u"Ah, co tam masz w sakiewce?", "Złoto albo śmierć!"]
-    skurczybyk.treasure_dict = {u"złoto":random.randint(1,30), "pierścień skurczybyka":1, "nóż":1} # ring for optional quest
+    skurczybyk.treasure_dict = {u"jantar":random.randint(1,3), "pierścień skurczybyka":1, "nóż":1} # ring for optional quest
     skurczybyk.speach_list = [u"Co tam masz w sakiewce?", "Złoto albo śmierć!", "Kto zadziera ze skurczybykiem, ten frajer!"]
     skurczybyk.specials_list = [u"Straszna menda"]
     skurczybyk.maxdrop = 2
@@ -88,7 +90,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
     #   Miś
     bear = Enemy(u"niedźwiedź",30, 2, 1, "animal", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
-    bear.attrib_dict = {u"siła":4, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
+    bear.attrib_dict = {u"siła":3, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
     bear.speach_list = [u"Mrrrrr!", "Wrrrrrr!", "Rgh!"]
 
 

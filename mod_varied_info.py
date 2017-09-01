@@ -1,6 +1,16 @@
 ﻿# mod_varied_info - custom mod, contains list of short messages to random display in main:
 
-import random
+import random, time
+
+
+def dot_loop():
+    '''
+    display animated dot ('.'): . -> .. -> ... 
+    '''
+
+    for i in ('...'):        
+        print(i, end='', flush=True)
+        time.sleep(.2)
 
 
 def display_varied_info():
@@ -21,5 +31,5 @@ def display_varied_info():
 
     info_to_display = info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
 
-    return print(info_to_display,"\n")
+    return print(info_to_display, end=''), dot_loop()
 

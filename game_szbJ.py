@@ -1,5 +1,5 @@
 # Szlakiem Bawarii - plik roboczy Jarka
-#!/usr/bin/python
+#!/usr/bin/python3
 import os, time, random, math
 #from msvcrt import getch
 
@@ -73,6 +73,24 @@ def hof_display(): #ładuje z pliku tekstowego hof.txt
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def dot_loop():
+    '''
+    display animated dot ('.'): . -> .. -> ... 
+    '''
+
+    for i in ('...'):        
+        print(i, end='', flush=True)
+        time.sleep(.2)
+
+
+def pause():
+    '''
+    stop game action (for ex. in the middle of fight)
+    '''
+    pause = input("\n\nWciśnij <enter>, żeby kontynuować...\n\n") # temporary - we need here glitch
+    if pause == str("q") and ("Q"): exit()
+
+
 def items_list_to_dict(items_to_add):
     '''
     transform list of items to dictionary (used to update hero's inventory dict)
@@ -138,8 +156,9 @@ def display_looted_items(add_remove_items_dict):
     total_number_of_items = 0
     print("\nDodano do torby:\n")
     for item in add_remove_items_dict:
-        print(item,":", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
+        print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
+    pause()
 
 
     ########################## Battle functions:
@@ -216,28 +235,31 @@ def priority_test(enemy = None, hero = None):
     '''
     who's attacker, who's defender
     '''
+    display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = None)
     # zwinność, percepcja i inteligencja have influence on this test:
     hero_test_stats = (int(hero.attrib_dict["zwinność"])+int(hero.attrib_dict["percepcja"])+
     int(hero.attrib_dict["inteligencja"]))
     enem_test_stats = (int(enemy.attrib_dict["zwinność"])+int(enemy.attrib_dict["percepcja"])+int(enemy.attrib_dict["inteligencja"]))
-    print("Kto uzyskał inicjatywę? (test inicjatywy)")
-    time.sleep(1)
+    print("Kto uzyskał inicjatywę? (test inicjatywy)\n")
     while True:
         test_var1 = hero_test_stats + enem_test_stats
         test_var2 = random.randint(1,test_var1)      
         print('\r\r'+hero.name+":", hero_test_stats)
         print('\r\r'+enemy.name+":", test_var2)
         if hero_test_stats > test_var2:
-            print("atakuje",hero.name+'!')
+            print("\nRezultat:", end=''), dot_loop()
+            print("\n\natakuje",hero.name+'!')
             attacker = hero
             break
           
         elif hero_test_stats < test_var2:
+            print("\nRezultat:", end=''), dot_loop()
             print("\n\natakuje",enemy.name+'!')
             attacker = enemy
             break
 
-    time.sleep(1)
+    pause()
+
     return attacker
 
 
@@ -247,34 +269,46 @@ def game_over(hero = None): # todo!!!!!!!!!!!!!!!!!!
 
 def rip(enemy = None, hero = None):
     print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
-
+    display_hero_chart(hero = hero)
+    pause()
     game_over(hero = hero) 
 
 def win_fight(enemy = None, hero = None):
     print(hero.name,"Zwycięstwo!")
-    pauza = input("\nnaciśnij ENTER, żeby kontynuować.")    
+    if len(enemy.treasure_dict) > 0: # check if there are some treasures in enemy inventory
+        add_remove_items_dict = enemy.treasure_dict
+        display_looted_items(add_remove_items_dict) # display treasures from enemy inventory
+        inventory_update(hero, add_remove_items_dict)
+    pause()
+    print("Może coś jeszcze?", end=''), dot_loop()
+
+    # and some random generated items:
     treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
+    display_hero_chart(hero=hero)
+    pause()
 
 def counterattack(enemy = None, hero = None, attacker = None, attack = None):
     '''
     part of the fight mechanic (part of fight function) 
     '''
+    display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
     #attacker = priority_test(enemy = enemy, hero = hero) 
     # define attacker and defender:
     if attacker == hero: defender = enemy
     elif attacker == enemy: defender = hero
 
-    print("kontratak!")
+    print("\nkontratak!", end='')
+    dot_loop()
     counterattack_result = 0
     print('\n'+defender.name, " kontratakuje: rzuca",str(defender.attrib_dict[str(defender.combat_attribute)]),"razy kością K4:")
     damage = random.randint(defender.dmg_list[0], defender.dmg_list[1])
     for i in range(int(defender.attrib_dict[str(defender.combat_attribute)])):
         counterattack_var = random.randint(1,4)
-        print((str(counterattack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        print((str(counterattack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
         counterattack_result += counterattack_var
-    print("\n\nRezultat:")
-    print(defender.name+':',counterattack_result,'+',defender.attack,"(atak):", counterattack_result+defender.attack)
-    print(attacker.name+':', attack), time.sleep(0.5)
+    print("\n\nRezultat:", end=''), dot_loop()
+    print('\n\n'+defender.name+':',counterattack_result,'+',defender.attack,"(atak):", counterattack_result+defender.attack)
+    print(attacker.name+':', attack), time.sleep(0.3)
     if attack < counterattack_result+defender.attack:
         attacker.actualLife -= damage
         print(defender.name, "zadał obrażenia:", attacker.name, "stracił", damage, "pkt. życia")
@@ -282,6 +316,7 @@ def counterattack(enemy = None, hero = None, attacker = None, attack = None):
         if defender == hero:
             hero.actualExp += damage
             print(hero.name+", zdobyto doświadczenie:", damage)
+            
             return hero.actualExp
 
 
@@ -292,8 +327,7 @@ def counterattack(enemy = None, hero = None, attacker = None, attack = None):
 
 
     else:
-        print(attacker.name, "obronił się!")
-        time.sleep(1.5)
+        print('\n'+attacker.name, "obronił się!")
         attacker_change = 1
         return attacker_change
             
@@ -315,20 +349,21 @@ def fight(enemy = None, hero = None, attacker = None):
     print(attacker.name, "atakuje: rzuca",attacker.attrib_dict[str(attacker.combat_attribute)],"razy kością K4:")
     for i in range(int(attacker.attrib_dict[str(attacker.combat_attribute)])):
         attack_var = random.randint(1,4)
-        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
         attack_result += attack_var
+    time.sleep(0.3)
     print('\n'+defender.name, "broni się: rzuca",str(defender.attrib_dict["zwinność"]),"razy kością K4:")
     for i in range(int(defender.attrib_dict["zwinność"])):
         defend_var = random.randint(1,4)
-        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.2)
+        print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
         defend_result += defend_var
         
-    print("\n\nRezultat:")
-    print(attacker.name+':',attack_result,'+',attacker.attack,"(atak):", attack_result+attacker.attack)
+    print("\n\nRezultat:", end=''), dot_loop()
+    print('\n\n'+attacker.name+':',attack_result,'+',attacker.attack,"(atak):", attack_result+attacker.attack)
     print(defender.name+':',defend_result,'+',defender.defend,"(obrona):", defend_result+defender.defend)
     if attack_result+attacker.attack <= defend_result+defender.defend:
-        print(defender.name, "obronił się!")
-        time.sleep(0.3)
+        print('\n'+defender.name, "obronił się!")
+        pause()
         attacker_change = 1
         #attacker = priority_test(enemy = enemy, hero = hero)
         #if float(defend_result+defender.defend) > (float(attack_result+attacker.attack)*1.2):
@@ -338,7 +373,7 @@ def fight(enemy = None, hero = None, attacker = None):
 
     else:
         damage = random.randint(attacker.dmg_list[0], attacker.dmg_list[1])
-        print(attacker.name, "zadał obrażenia:", defender.name, "stracił", damage, "pkt. życia")
+        print('\n'+attacker.name, "zadał obrażenia:", defender.name, "stracił", damage, "pkt. życia")
         time.sleep(0.3)
         defender.actualLife -= damage
         if attacker == hero:
@@ -521,6 +556,69 @@ def map_maker(hero_position_h, hero_position_v): # usunąłem pętlę - będzie 
 
     return hero_coordinates_position_list
 
+def event_fight(enemy = None, hero = None):
+    '''
+    event == fight with random enemy
+    '''
+    # random generate enemy (using filters):
+    enemy = enemy_settings(name = None, loc = hero.location, lvl = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    mod_enemy.combat_attribute_default(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    # update hero attrinute:
+    mod_hero.combat_attribute_default(hero = hero)
+    print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(2)
+    print("Twój przeciwnik to", end=''), dot_loop()
+    
+    print(' ',enemy.name.upper()+'!','\n')
+    pause()
+    # pętla walki:
+    combat_end = 0
+    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
+        # initiative test:
+        attacker = priority_test(enemy = enemy, hero = hero)
+        # define attacker and defender:
+        if attacker == hero: defender = enemy
+        elif attacker == enemy: defender = hero  
+        attacker_change = 0 # if 1 = loop is break and we repeat initiative test
+        while True:
+            #clear_screen()
+            display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
+            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
+            pause()
+            if hero.actualLife < 1:
+                rip(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif enemy.actualLife < 1:
+                win_fight(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif attacker_change == 1:
+                break
+
+
+def event_choose(hero = None, location = None):
+    '''
+    Depends on the event refers to specific event function
+    '''
+    ### tymczasowo mamy tylko walkę i zabawę z przedmiotami ;)
+    while True:
+        display_hero_chart(hero = hero)
+        event = input("Jeśli chcesz walki, napisz: walka ")
+        if event == "walka":
+            display_varied_info()    
+            # załóżmy, że wylosowany został event z przeciwnikiem:
+            event_fight(enemy = None, hero = hero)
+            
+        else:
+            print("No to pogenerujemy przemioty dla zabawy...")
+            # mamy mało itemów, więc filtry wyłączyłem
+            treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, hero = hero)
+
+
+
 
 def main():
     clear_screen()
@@ -572,74 +670,12 @@ def main():
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero_position_h, hero_position_v = 13, 1 # sets character_player start position (horisontal/vertical)
 
-
+    # zabawmy się ;) Pętla, żeby wyjść wpisz 'q', jak Cię zapyta o wpisanie enter
     
-
-
-    '''
-
-    ###### zabawa z generowaniem przedmiotów (import do main - według nazwy lub filtrów - tak jak z wrogami :) )
-    imported_item = items_settings(name = None, loc = hero.location, lvl = None, gen = None, hero = None)
-
-    
-    pausa = input("\n\nwpisz cokolwiek, by kontynuować, będziemy generować skarb :D")
-    treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, hero = hero) # mamy mało itemów, więc filtry wyłączyłem
+    event_choose(hero = hero, location = hero.location)
 
 
 
-
-    pausa = input("\n\n\nwpisz cokolwiek, by kontynuować, zaczniemy walkę :D\n\n\n")
-
-    '''
-
-
-    clear_screen()
-
-    display_hero_chart(hero = hero)
-    display_varied_info()
-    
-    # załóżmy, że wylosowany został event z przeciwnikiem:
-
-    # losowany przeciwnik:
-    enemy = enemy_settings(name = 'ogr', loc = 1, lvl = None, gen = None)
-    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
-    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
-    mod_enemy.combat_attribute_default(enemy = enemy)
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
-    # update cechy bohatera:
-    mod_hero.combat_attribute_default(hero = hero)
-    print("Zaraz, zaraz... Coś się dzieje..."), time.sleep(1)
-    print("Twój przeciwnik to", (enemy.name+'!'),'\n')
-    pausa = input("\n\njesteś gotów, Łukaszu? wpisz cokolwiek żeby kontynuować.. ;) ")
-    # pętla walki:
-    combat_end = 0
-    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
-        # initiative test:
-        attacker = priority_test(enemy = enemy, hero = hero)
-        time.sleep(1)
-        # define attacker and defender:
-        if attacker == hero: defender = enemy
-        elif attacker == enemy: defender = hero  
-        attacker_change = 0 # if 1 = loop is break and we repeat initiative test
-        while True:
-            #clear_screen()
-            display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
-            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
-            time.sleep(1)
-            pauza = input(str("\n\njesteś gotów? naciśnij ENTER, żeby kontynuować.., żeby uciec, wpisz: 'run'"))
-            if pauza == "run":
-                exit()
-            elif hero.actualLife < 1:
-                rip(enemy = enemy, hero = hero)
-                combat_end = 1
-                break
-            elif enemy.actualLife < 1:
-                win_fight(enemy = enemy, hero = hero)
-                combat_end = 1
-                break
-            elif attacker_change == 1:
-                break
-            time.sleep(1)
 
 
  
@@ -661,7 +697,19 @@ def main():
         hero_position_h, hero_position_v = hero_coordinates_position_list[0] , hero_coordinates_position_list[1] # update hero's position
     '''
         
+    '''
 
+    ###### zabawa z generowaniem przedmiotów (import do main - według nazwy lub filtrów - tak jak z wrogami :) )
+    imported_item = items_settings(name = None, loc = hero.location, lvl = None, gen = None, hero = None)
+
+    
+
+    treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, hero = hero) # mamy mało itemów, więc filtry wyłączyłem
+
+
+
+
+    '''
 
 
 
