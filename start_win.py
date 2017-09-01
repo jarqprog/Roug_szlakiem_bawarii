@@ -2,6 +2,8 @@ import os
 import sys
 import time
 import datetime
+import random
+import string
 from msvcrt import getch
 
 os.system('cls')
@@ -148,6 +150,76 @@ def character_choice_screen():
             continue
 
 
+def hot_warm_cold():
+    os.system('cls')
+    sekwencja_do_gry = []
+    for i in range(3):
+        string.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        losowa_liczba = random.choice(range(9))
+        losowa_litera1 = random.choice(string.letters)
+        losowa_litera2 = random.choice(string.letters)
+        losowa_litera3 = random.choice(string.letters)
+        wybór_do_gry = [str(losowa_liczba), losowa_litera1, losowa_litera2, losowa_litera3]
+    for i in range(3):
+        sekwencja_do_gry.append(random.choice(wybór_do_gry))
+    while True:
+        wybór_trudności = input("\nWybierz poziom trudnośći. 1, 2 lub 3 dla: łatwy, trudny lub życzenie śmierci:")
+        if wybór_trudności == "1":
+            print("\nMasz 15 prób. Jak zgadniejsz, dostaniesz punkt PERCEPCJI.")
+            wybór_trudności = 15
+            break
+        if wybór_trudności == "2":
+            print("\nMasz 10 prób. Jak zgadniejsz, dostaniesz 2 punkty PERCEPCJI.")
+            wybór_trudności = 10
+            break
+        if wybór_trudności == "3":
+            print("\nMasz 5 prób. Jak zgadniejsz, dostaniesz 3 punkty PERCEPCJI.")
+            wybór_trudności = 5
+            break
+        else:
+            print("\nPOWIEDZIAŁEM 1, 2 lub 3 !!!")
+    print("\nPomyślałem o 3 elementowym miksie cyfr i liter. Zgadnij!")
+    print("Pamietaj:")
+    print("Jak mówie", " " * 5, "to znaczy, że:\n")
+    print("Zimno", " " * 9, "nie zgadłeś")
+    print("Ciepło", " " * 8, "zgadłeś ale w złych pozycjach")
+    print("Gorąco", " " * 8, "co najmniej jeden element jest dobrze i w dobrej pozycji.")
+    for i in range(wybór_trudności):
+        próba = input("--->")
+        próba = list(próba.upper())
+        if próba == sekwencja_do_gry:
+            print("\nBrawo!!! Dostajesz punkty do PERCEPCJI.\nWciśnij cokolwiek, żeby kontynuować.")
+            input_char = getch()
+            return wybór_trudności
+        else:
+            if len(próba) > 3:
+                print("Chyba zapomniałeś, że zgadujesz tylko 3 elementy.....")
+                continue
+            i = 0
+            podpowiedzi = []
+            for i in range(len(próba)):
+                if próba[i] in sekwencja_do_gry:
+                    if próba[i] == sekwencja_do_gry[i]:
+                        podpowiedzi.append("Gorąco")
+                    else:
+                        podpowiedzi.append("Ciepło")
+                else:
+                    podpowiedzi.append("Zimno")
+                i += 1
+            lista_podpowiedzi = []
+            for i in range(podpowiedzi.count("Gorąco")):
+                lista_podpowiedzi.append("Gorąco")
+            for i in range(podpowiedzi.count("Ciepło")):
+                lista_podpowiedzi.append("Ciepło")
+            for i in range(podpowiedzi.count("Zimno")):
+                lista_podpowiedzi.append("Zimno")
+            print(" ".join(lista_podpowiedzi))
+            continue
+    print("\nNie zgadłeś! Odpowiedz to:", " ".join(sekwencja_do_gry), " .Wciśnij cokolwiek.")
+    input_char = getch()
+    return 0
+
+
 def collision(position):
     """ Zwraca zdarzenie w zalezności od tego w co wejdzie bohater. """
     if position == "N":
@@ -156,6 +228,16 @@ def collision(position):
     elif position == "W":
         print("\n" * 9)
         print("Trafiłeś do wioski Szwarzwald")
+    elif position == "C":
+        print("\n" * 6)
+        delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
+        delay_print("Czas na gre hot and cold. ")
+        delay_print("Nacisnij cokolwiek, żeby zacząć.")
+        input_char = getch()
+        wybór_trudności = hot_warm_cold()
+        os.system('cls')
+        print("\n" * 10)
+        return wybór_trudności
     elif position == "G":
         print("\n" * 9)
         print("Trafiłeś do gaju Łotrzyków.")
@@ -175,6 +257,9 @@ def collision(position):
 
 def core(atrybuty, start_czasu):
     """ Główna pętla całej gry. """
+    # Inicjujemy 2 zmienne potrzebne do ruchów i wyników zdarzeń, input char musi byc string dla funkcji upper().
+    wyniki_zdarzeń = None
+    input_char = "0"
     print("\n" * 10)
     with open('mapa_forest.txt', 'r') as myfile:
         mapa = myfile.read()
@@ -185,6 +270,19 @@ def core(atrybuty, start_czasu):
     map_copy = mapa[:]
     map_copy[position_horizontal + position_vertical * 81] = "@"
     while True:
+        if input_char.upper() in [b'W', b'S', b'D', b'A']:
+            # Wyniki_zdarzeń otrzymujemy tylko po każdym ruchu.
+            # 1. Wyniki zdarzeń hot_and_cold.
+            if wyniki_zdarzeń == 0:
+                atrybuty["PERCEPCJA"] -= 1
+            elif wyniki_zdarzeń == 5:
+                atrybuty["PERCEPCJA"] += 3
+            elif wyniki_zdarzeń == 10:
+                atrybuty["PERCEPCJA"] += 2
+            elif wyniki_zdarzeń == 15:
+                atrybuty["PERCEPCJA"] += 1
+        # Reset wyników_zdarzeń.
+        wyniki_zdarzeń = None
         print("".join(map_copy))
         print("\nWciśnij W, S, A, D - poruszanie się, 'e' - ekwipunek, 'z' - dziennik, 'p' - pomoc, ")
         print("'g' - zapis gry, 'l' - legenda, 'k' - atrybuty lub '0' - wyjście z gry.")
@@ -196,7 +294,7 @@ def core(atrybuty, start_czasu):
         if input_char.upper() == b'W':
             os.system('cls')
             if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
-                collision(map_copy[position_horizontal + (position_vertical - 1) * 81])
+                wyniki_zdarzeń = collision(map_copy[position_horizontal + (position_vertical - 1) * 81])
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -205,7 +303,7 @@ def core(atrybuty, start_czasu):
         elif input_char.upper() == b'S':
             os.system('cls')
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
-                collision(map_copy[position_horizontal + (position_vertical + 1) * 81])
+                wyniki_zdarzeń = collision(map_copy[position_horizontal + (position_vertical + 1) * 81])
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -214,7 +312,7 @@ def core(atrybuty, start_czasu):
         elif input_char.upper() == b'D':
             os.system('cls')
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
-                collision(map_copy[(position_horizontal + 1) + position_vertical * 81])
+                wyniki_zdarzeń = collision(map_copy[(position_horizontal + 1) + position_vertical * 81])
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -223,12 +321,13 @@ def core(atrybuty, start_czasu):
         elif input_char.upper() == b'A':
             os.system('cls')
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
-                collision(map_copy[(position_horizontal - 1) + position_vertical * 81])
+                wyniki_zdarzeń = collision(map_copy[(position_horizontal - 1) + position_vertical * 81])
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
                 map_copy[position_horizontal + position_vertical * 81] = "@"
+        # Akcje bohatera inne niż ruch WSAD.
         elif input_char.upper() == b'E':
             os.system('cls')
             print("\n" * 9)
@@ -247,7 +346,7 @@ def core(atrybuty, start_czasu):
             print("Tu powinien być zapis gry")
         elif input_char.upper() == b'L':
             os.system('cls')
-            print("\n" * 2)
+            print("\n")
             print("Legenda:\n")
             print("W = Wioska Szwarzwald")
             print("? = Niespodzianka")
@@ -255,12 +354,14 @@ def core(atrybuty, start_czasu):
             print("+ = Zródło życia")
             print("G = Gaj Łotrzyków")
             print("N = NPC")
+            print("C = Zimno/ ciepła niespodzianka Mariana.")
         elif input_char.upper() == b'K':
             os.system('cls')
             print("\n" * 4)
             for k, v in atrybuty.items():
                 print(k, ":", v)
         elif input_char.upper() == b'0':
+            # Kończenie gry i wpisywanie na hall of fame.
             os.system('cls')
             print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
             input_char = getch()
