@@ -4,3 +4,4 @@
 11        0d                          0:06:20        ŁOWCA
 43        jo                          0:02:07        ŁOWCA
 18        ddd                         0:17:06        ŁOWCA
+11        ddd                         0:00:01        ŁOWCA
