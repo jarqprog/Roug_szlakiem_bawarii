@@ -409,11 +409,10 @@ def core(atributes, start_time):
                     except ValueError:
                         continue
                 user_name = input("\nWpisz swoje imię: ")
-                print("\nGratulacje,", user_name, ". Twoje osiągnięcia zostaną zapisane.\n")
+                print("\nGratulacje,", user_name, ".Twoje osiągnięcia zostaną zapisane.\n")
                 print("ATRYBUTY NA KONIEC: \n")
-                # User_name length must fit max 20.
-                if len(user_name) > 20:
-                    user_name = user_name[:20]
+                # User_name length must = 20.
+                user_name = '{:.20}'.format(user_name)
                 user_name += " " * (20 - len(user_name))
                 for k, v in atributes.items():
                     print(k, ":", v)
