@@ -1,103 +1,76 @@
 # Szlakiem Bawarii - plik roboczy Jarka
+#!/usr/bin/python3
+import os, time, random, math
+#from msvcrt import getch
 
-
-class Hero:
-    def __init__(self, name, proffession, attack, agility, defence, life_point, life_point_max, xp_point, xp_lvl): #add "Siła Woli", "Inteligencja"
-        self.name = name
-        self.proffession = proffession
-        self.attack = attack
-        self.agility = agility
-        self.defence = defence
-        self.life_point = life_point
-        self.life_point_max = life_point_max
-        self.xp_point = xp_point
-        self.xp_lvl = xp_lvl
-
-
-player_character = Hero("Rabarbar","Zbójcerz",1,1,1,2,20,0,1)
-
-hero_list = []
-def __init__(self, Hero):
-    hero_list.append(self)
-    print(hero_list)
+# custom modules:
+import mod_display, mod_event
+from mod_display import clear_screen, dot_loop, pause
+import mod_enemy
+import mod_hero 
+import mod_items
+import mod_save_load
 
 
 
-class Enemy:
-    def __init__(self, name, attack, agility, defence, life_point, genre, xp4hero, treasure, specials, speach):
-        self.name = name
-        self.attack = attack
-        self.agility = agility
-        self.defence = defence
-        self.life_point = life_point
-        self.genre = genre
-        self.xp4hero = xp4hero
-        self.treasure = treasure
-        self.specials = specials
-        self.speach = speach
-
-wolf = Enemy("wilk", 1, 3, 1, 10, "animal", 5, 1, None, "Wrrrrr!")
-bear = Enemy("niedźwiedź", 2, 1, 3, 30, "animal", 15, 2, None, "Mrrrrrruummm!")
-troll = Enemy("troll", 2, 1, 3, 30, "beast", 15, 2, "Kamienna skóra - trolla ciężko ubić", "Co Ty chcieć?!")
-
-def prints_hero_attributes(Hero):
-    print(player_character.name)
-
-def prints_enemy_attributes(enemy=None):
-    '''
-    just4fun&test
-    '''
-    if enemy.genre == "animal":
-        print("Jestem zwierzakiem, nie zabijajcie mnie! Jestem", enemy.name, "!")
-    else:
-        print("Zginiesz, głupcze!")
-
-    if enemy.life_point < 20:
-        print("Mam niską wytrzymałość!")
-    else:
-        print("Nie jestem taki słaby!")
-    enemy = troll
-    print(enemy.speach, enemy.specials)
-
-
-def display_hero(Hero):
-    '''
-    prints player character simple Chart
-    '''
-#def __init__(self, name, proffession, attack, agility, defence, life_point, life_point_max, xp_point, xp_lvl
-    print("\nCechy Postaci:\n")
-    print("Imię:", player_character.name) #imię
-    print("Klasa:", player_character.proffession) #klasa
-    print("Atak:", player_character.attack)
-    print("Zwinność:", player_character.agility)
-    print("Obrona:", player_character.defence)
-    print("Życie:", player_character.life_point, "/", player_character.life_point_max)
-    print("Doświadczenie:", player_character.xp_point, "/ Poziom:", player_character.xp_lvl)
-'''
-    for i in player_character():
-        print(i)
-'''
-'''
- count = 0
-    total_number_of_items = 0
-    for item in inventory:
-        total_number_of_items += int(inventory[item])
-# checks lenght of the string:
-        if len(item) > count:
-            count = len(item)
-            longest_arg = item
-    lenght_in_printing = int(len(longest_arg)) # variable used below, helps correctly print table:
-    print("\nInventory: \n\n", "count".rjust(6)
-prints_hero_attributes(Hero)
-prints_enemy_attributes(troll)
-player_character = Hero("Rabarbar","Zbójcerz",1,1,1,2,20,0,1)
-'''
 
 def main():
-    player_character = Hero("Rabarbar","Zbójcerz",1,1,1,2,20,0,1)
-    prints_enemy_attributes(troll)
-    display_hero(Hero)
-    __init__(player_character)
+    clear_screen()
+    # set basic variables:
+    game_lvl = 1
+    add_remove_items_dict = {}
+
+    ######################## HERO CLASS IMPORT TO MAIN: 
+    hero = mod_hero.hero_settings()
+    hero.attack = mod_hero.attack_points_calc(hero = hero)
+    hero.defend = mod_hero.defend_points_calc(hero = hero)
+    mod_hero.combat_attribute_default(hero = hero)
+
+
+    hero.max_armour = mod_hero.amour_max_calc(hero = hero)
+    hero.positionX = 0 # hero map coordinate X
+    hero.positionY = 0 # hero map coordinate Y
+    #hero.combat_attribute = mod_hero.combat_attribute_default(hero = hero)
+
+    ### here we can add next hero methods...
+
+    ######################## ENEMY CLASS IMPORT TO MAIN:
+    enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    ### here we can add next enemy methods...
+
+
+
+
+
+
+
+################ TU URUCHAMIAMY FUNKCJE:
+    #intro() # tytuł, powitanie, wybór:
+
+    ####### ładowanie gry LUB tworzenie bohatera LUB galeria sław LUB info o nas
+    ####### po każdej z tych funkcji odpalamy główną pętlę:
+
+    # ----- tu będzie funkcja do wyświetlania mapy
+
+####################### MAIN LOOP:
+    while True:
+        mod_display.credits_display()
+        mod_display.display_hero_chart(hero = hero)
+        mod_display.display_varied_info() # display short random info :)        
+        mod_event.event_choose(hero = hero, location = hero.location)
+
+
+
+
 
 
 main()
+
+
+
+# na koniec głóœnej pętli:
+# hero.life_recovery hero.actualLife - odzyskanie życia!
+# hero.turn_counter = +1
