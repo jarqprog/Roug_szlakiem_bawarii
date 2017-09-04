@@ -127,7 +127,11 @@ def character_choice_screen():
                     willpower = 1
                     points = 6
                     while True:
+<<<<<<< HEAD
                         if points == 0:
+=======
+                        if punkty == 0:
+>>>>>>> 7d8ec0600899f6adb932d9168a34abb80ff2f817
                             break
                         else:
                             print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
