@@ -2,7 +2,6 @@
 # mod_hero - custom mod, contains hero data
 
 import mod_items
-from mod_items import items_settings
 
 
 ################################ Hero class:
@@ -26,6 +25,9 @@ class Hero:
         self.actualExp = 1 # actual number of exp points
         self.gold = 2 # initial wealt in pouch
         self.location = 1 # actual map level
+        self.map_position = 0 # hero map position
+        self.position_horizontal = 1 # hero map coordinate X
+        self.position_vertical = 18 # hero map coordinate Y
         self.dmg_list = [1,4] # initial min and max damage
         self.attack = 0 # initial attack points
         self.defend = 0 # initial defend points
@@ -34,6 +36,11 @@ class Hero:
         self.defend_attribute = None
         self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
+        self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
+        self.life_recovery = 3 # define replenish life level after each turn
+        self.turn_counter = 1 # define actual game turn (number of main loop executed)
+
+
         
         # combat_attribute:
         # determines what hero attribute is used in combat tests, it comes from item in hero onbody_dict["prawa ręka"]
@@ -184,9 +191,9 @@ def combat_attribute_default(hero = None):
             return hero.combat_attribute            
             
     else:
-        items_settings(name = (hero.onbody_dict["prawa ręka"]), loc = None, lvl = None, gen = None, hero = None, all = None)
+        mod_items.items_settings(name = (hero.onbody_dict["prawa ręka"]), loc = None, lvl = None, gen = None, hero = None, all = None)
 
-        impored_item = items_settings(name = hero.onbody_dict["prawa ręka"], loc = None, lvl = None, gen = None, hero = hero, all = None)
+        impored_item = mod_items.items_settings(name = hero.onbody_dict["prawa ręka"], loc = None, lvl = None, gen = None, hero = hero, all = None)
 
         hero.combat_attribute = impored_item.combat_attribute
 
@@ -195,7 +202,61 @@ def combat_attribute_default(hero = None):
         '''
         hero.combat_attribute = ("pobieram z przedmiotu", hero.onbody_dict["prawa ręka"])
         '''
+
+
+def items_list_to_dict(items_to_add):
+    '''
+    transform list of items to dictionary (used to update hero's inventory dict)
+    '''
+    items_dict = {}
+    for item in items_to_add:
+        if item in items_dict:
+            items_dict[item] += 1
+        else:
+            items_dict[item] = 1
         
+    return items_dict
+
+
+def inventory_update(hero, add_remove_items_dict):
+    '''
+    add or remove items from hero's inventory
+    '''
+    # make copy of both dicts:
+    hero_items = hero.inventory_dict
+    add_items = add_remove_items_dict
+
+    for item in add_items.keys():
+        if item not in hero_items: # if it's new item = copy item to inventory
+            hero_items[item] = add_items[item]
+        elif item in hero_items: # if it's not new item = add item value to inventory
+            hero_items[item] += add_items[item]
+        if int(hero_items[item]) < 1: # if value inventory item is negativ number = remove item from inventory*
+            del hero_items[item]
+
+    # * we can use it in shops, when selling items..
+
+    hero.inventory_dict = hero_items
+
+    return hero
+    
+
+
+
+def hero_on_map(hero = None):
+    '''
+    change hero coordinates while moving on the map
+    '''
+    pass
+
+
+def hero_creation():
+    clear_screen()
+    print("tworzenie bohatera - do zrobienia") # to ja bym zrobił
+
+
+
+# zrób hero_coordinates(hero = None)
         
 
 
