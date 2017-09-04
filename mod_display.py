@@ -1,6 +1,6 @@
 ﻿# mod_varied_info - custom mod, contains list of short messages to random display in main:
 
-import os
+import os, math
 import random, time
 import mod_hero 
 import mod_enemy
@@ -275,6 +275,30 @@ def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
     for i in range(len(head_to_display_list2)): print(str(enem_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
     print("\n\n")
 
+def calendar(hero = None):
+    '''
+    display short info about day, day time using turn counter
+    '''
+    turn_counter = mod_hero.calendar(hero = hero)
+
+    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+    day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
+    day = math.floor(turn_counter/4)
+    
+    #4 # for four day times (morning, noon...)
+    if turn_counter % 4 == 0:
+        day_time = day_time_list[3]
+    elif turn_counter % 3 == 0:
+        day_time = day_time_list[2]
+    elif turn_counter % 2 == 0:
+        day_time = day_time_list[1]
+    else:
+        day_time = day_time_list[0]
+    
+    return print("Dzień", str(day)+",", day_time+", jesteś w krainie:", mod_hero.display_location(hero = hero)+".")
+
+    
+
 
 
 def credits_display():
@@ -300,16 +324,13 @@ def hof_display(): #ładuje z pliku tekstowego hof.txt
     clear_screen()
     print("Galeria sław (HOF) - do zrobienia")
 
-def rip(enemy = None, hero = None):
-    print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
-    mod_display.display_hero_chart(hero = hero)
-    pause()
-    mod_display.game_over(hero = hero)
+
 
 
 def game_over(hero = None): # todo!!!!!!!!!!!!!!!!!!
     
     print("game over")
+    pause()
 
 
 

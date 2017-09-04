@@ -1,7 +1,7 @@
 
 # mod_hero - custom mod, contains hero data
 
-import mod_items
+import mod_items, math
 
 
 ################################ Hero class:
@@ -38,7 +38,9 @@ class Hero:
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
         self.life_recovery = 3 # define replenish life level after each turn
-        self.turn_counter = 1 # define actual game turn (number of main loop executed)
+        self.turn_counter = 0 # define actual game turn (number of main loop executed)
+
+        #self.time_of_day
 
 
         
@@ -75,14 +77,14 @@ def hero_settings():
 
 def attack_points_calc(hero = None):
     ''' calculates hero attack ability '''
-    hero.attack = hero.attrib_dict["siła"]+hero.attrib_dict["zwinność"]+hero.attrib_dict["inteligencja"]
+    hero.attack = 2*hero.attrib_dict["siła"]+2*hero.attrib_dict["zwinność"]+hero.attrib_dict["inteligencja"]
     
     return hero.attack
 
 
 def defend_points_calc(hero = None):
     ''' calculates hero defend ability '''
-    hero.defend = 2*hero.attrib_dict["zwinność"]+hero.attrib_dict["inteligencja"]+hero.act_armour
+    hero.defend = 3*hero.attrib_dict["zwinność"]+hero.attrib_dict["siła"]+hero.attrib_dict["inteligencja"]+hero.act_armour
     
     return hero.defend
 
@@ -193,9 +195,9 @@ def combat_attribute_default(hero = None):
     else:
         mod_items.items_settings(name = (hero.onbody_dict["prawa ręka"]), loc = None, lvl = None, gen = None, hero = None, all = None)
 
-        impored_item = mod_items.items_settings(name = hero.onbody_dict["prawa ręka"], loc = None, lvl = None, gen = None, hero = hero, all = None)
+        imported_item = mod_items.items_settings(name = hero.onbody_dict["prawa ręka"], loc = None, lvl = None, gen = None, hero = hero, all = None)
 
-        hero.combat_attribute = impored_item.combat_attribute
+        hero.combat_attribute = imported_item.combat_attribute
 
         return hero.combat_attribute
         
@@ -239,6 +241,29 @@ def inventory_update(hero, add_remove_items_dict):
     hero.inventory_dict = hero_items
 
     return hero
+
+def calendar():
+    pass
+    '''
+    calculate variable for display info about day, day time
+    '''
+    #hero.turn_counter = 0 #+ turn_counter
+    '''
+    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+    day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
+    day = math.floor(turn_counter/4)
+    
+    #4 # for four day times (morning, noon...)
+    if turn_counter % 4 == 0:
+        day_time = day_time_list[3]
+    elif turn_counter % 3 == 0:
+        day_time = day_time_list[2]
+    elif turn_counter % 2 == 0:
+        day_time = day_time_list[1]
+    else:
+        day_time = day_time_list[0]
+    '''
+    return hero.turn_counter
     
 
 

@@ -3,7 +3,7 @@
 
 import time, random, os, math
 import mod_hero, mod_enemy, mod_items, mod_display
-from mod_display import dot_loop, pause
+from mod_display import dot_loop, pause, clear_screen
 
 
 
@@ -11,6 +11,7 @@ def priority_test(enemy = None, hero = None):
     '''
     who's attacker, who's defender
     '''
+    clear_screen()
     mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = None)
     # zwinność, percepcja i inteligencja have influence on this test:
     hero_test_stats = (int(hero.attrib_dict["zwinność"])+int(hero.attrib_dict["percepcja"])+
@@ -35,6 +36,7 @@ def priority_test(enemy = None, hero = None):
             break
 
     pause()
+    clear_screen()
 
     return attacker
 
@@ -42,18 +44,28 @@ def priority_test(enemy = None, hero = None):
 def win_fight(enemy = None, hero = None):
     print("Zwycięstwo,", enemy.name, "został pokonany! Sława i doświadczenie są Twoje, ...a może jeszcze jakiś łup bitewny?")
     if len(enemy.treasure_dict) > 0: # check if there are some treasures in enemy inventory
+        mod_display.dot_loop()
+        time.sleep(1)
         print("\nTak!\n")
         add_remove_items_dict = enemy.treasure_dict
         mod_display.display_looted_items(add_remove_items_dict) # display treasures from enemy inventory
         mod_hero.inventory_update(hero, add_remove_items_dict)
-    pause()
-    print("Może coś jeszcze?", end=''), dot_loop()
 
+    clear_screen()
+    print("Może coś jeszcze?", end=''), dot_loop()
+    pause()
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
     mod_display.display_hero_chart(hero=hero)
     pause()
     return hero
+
+def rip(enemy = None, hero = None):
+    print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
+    mod_display.display_hero_chart(hero = hero)
+    pause()
+    clear_screen()
+    mod_display.game_over(hero = hero)
 
 def counterattack(enemy = None, hero = None, attacker = None, attack = None):
     '''
@@ -153,6 +165,50 @@ def fight(enemy = None, hero = None, attacker = None):
             time.sleep(0.3)
             return combat_end
 
+def event_fight_spec_enemy(enemy = None, hero = None):
+    '''
+    event == fight with random enemy
+    '''
+    # random generate enemy (using filters):
+    enemy = mod_enemy.enemy_settings(name = enemy, loc = None, lvl = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    mod_enemy.combat_attribute_default(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    # update hero attrinute:
+    mod_hero.combat_attribute_default(hero = hero)
+    print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
+    print("Twój przeciwnik to", end=''), dot_loop()
+    
+    print(' ',enemy.name.upper()+'!','\n')
+    pause()
+    clear_screen()
+    # pętla walki:
+    combat_end = 0
+    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
+        # initiative test:
+        attacker = priority_test(enemy = enemy, hero = hero)
+        # define attacker and defender:
+        if attacker == hero: defender = enemy
+        elif attacker == enemy: defender = hero  
+        attacker_change = 0 # if 1 = loop is break and we repeat initiative test
+        while True:
+            mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
+            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
+            pause()
+            clear_screen()
+            if hero.actualLife < 1:
+                rip(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif enemy.actualLife < 1:
+                win_fight(enemy = enemy, hero = hero)
+                combat_end = 1
+                break
+            elif attacker_change == 1:
+                break
+
+
 
 def event_fight(enemy = None, hero = None):
     '''
@@ -166,11 +222,12 @@ def event_fight(enemy = None, hero = None):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
     # update hero attrinute:
     mod_hero.combat_attribute_default(hero = hero)
-    print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(2)
+    print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
     print("Twój przeciwnik to", end=''), dot_loop()
     
     print(' ',enemy.name.upper()+'!','\n')
     pause()
+    clear_screen()
     # pętla walki:
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
@@ -181,12 +238,12 @@ def event_fight(enemy = None, hero = None):
         elif attacker == enemy: defender = hero  
         attacker_change = 0 # if 1 = loop is break and we repeat initiative test
         while True:
-            #clear_screen()
             mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
             attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
             pause()
+            clear_screen()
             if hero.actualLife < 1:
-                mod_display.rip(enemy = enemy, hero = hero)
+                rip(enemy = enemy, hero = hero)
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:

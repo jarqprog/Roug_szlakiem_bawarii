@@ -75,12 +75,21 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     knife.buff_min_dmg = 0 # + "min dmg"
     knife.buff_max_dmg = 1 # + "max dmg"
     knife.combat_attribute = "zwinność"
+    knife.body = "prawa ręka"
+
+    # nóż (self, name, level, genre, price, location, info_list)
+    dagger = Items("sztylet", 2, "weapon", 120, [1,2,3,4], info_list)
+    dagger.buff_min_dmg = 1 # + "min dmg"
+    dagger.buff_max_dmg = 2 # + "max dmg"
+    dagger.combat_attribute = "zwinność"
+    dagger.body = "prawa ręka"
 
 
     club = Items("maczuga", 1, "weapon", 20, [1,2,3,4], info_list)
     club.buff_min_dmg = 1 # + "min dmg"
     club.buff_max_dmg = 1 # + "max dmg"
     club.combat_attribute = "siła"
+    club.body = "prawa ręka"
 
 
     '''
@@ -122,9 +131,20 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     armour_lether.buff_arm = 1
     armour_lether.body = "tors"
 
+##### RINGS:
+
+    # ring (self, name, level, genre, price, location, info_list)
+    ring_of_strenght = Items("pierścień siły", 5, "ring", 1200, [3,4], info_list)
+    info_list = ["o tym pierścieniu krążą legendy, kto go założy - ten siłacz!", "wspaniała rzecz"]
+    ring_of_strenght.buff_str = 1
+    ring_of_strenght.body = "palec"
+
 
 ##### JEWELS: (self, name, level, genre, price, location, info_list)
 
+    
+    heart_of_mountain = Items("serce góry", 6, "jewels", 1500, [3,4], info_list) 
+    heart_of_mountain.info_list = ["nie do wiary, kupię za to dwie wioski! To bogactwo!!!"]
     diament = Items("diament", 4, "jewels", 500, [3,4], info_list)
     diament.info_list = ["diament! To bogactwo!!!"]
     ruby = Items("rubin", 3, "jewels", 200, [2,3,4], info_list)
@@ -163,10 +183,13 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
     items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
+    dagger,
     helmet_pot, armour_lether, wolf_skin,
+
+    ring_of_strenght,
     
     
-    diament, ruby, jantar
+    diament, ruby, jantar, heart_of_mountain
     ]
 
 
@@ -232,6 +255,7 @@ def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, her
         mod_hero.inventory_update(hero, add_remove_items_dict)
         mod_display.display_hero_chart(hero = hero)
         mod_display.display_looted_items(add_remove_items_dict)
+        mod_display.pause()
         return hero
 
 

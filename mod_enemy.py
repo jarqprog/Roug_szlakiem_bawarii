@@ -89,14 +89,14 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Miś
-    bear = Enemy(u"niedźwiedź",30, 2, 1, "animal", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
-    bear.attrib_dict = {u"siła":3, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
+    bear = Enemy(u"niedźwiedź",30, 2, 2, "animal", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
+    bear.attrib_dict = {u"siła":4, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
     bear.speach_list = [u"Mrrrrr!", "Wrrrrrr!", "Rgh!"]
 
 
     #   Ogr (strong opponent)
     ogr = Enemy(u"ogr", 65, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [5,10])
-    ogr.attrib_dict = {u"siła":3,"zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
+    ogr.attrib_dict = {u"siła":4,"zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
     ogr.treasure_dict = {u"złoto":random.randint(1,20)} # placki???
     ogr.speach_list = [u"Czo to...", "yyyy...", "ja stracha ty..", "Wont mi stomd!", "<czka>"]
     ogr.specials_list = [u"Okrótna siła", "Głupi jak but", "Niezdara", "Zgniata czaszki"]
@@ -104,15 +104,15 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
     #   Troll (strong opponent)
     troll = Enemy(u"troll", 75, 3, 4, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
-    troll.attrib_dict = {u"siła":3, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
+    troll.attrib_dict = {u"siła":5, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
     troll.treasure_dict = {u"złoto":random.randint(1,100), "rubiny":random.randint(0,12)}
-    troll.speach_list = [u"U mnie głód! Ty smakowite!", "Ty grube!", "Ty ładne i smaczne!", "Argh!"]
+    troll.speach_list = [u"U mnie głód! Ty smakowite!", "Ty grube!", "Ty ładne i smaczne!", "Argh!", "(warczy)"]
     troll.specials_list = [u"Kamienna skóra", "Niezdara", "Okrótna siła"]
     troll.maxdrop = 4
 
     #   Olbrzym górski
-    mountain_giant = Enemy(u"olbrzym górski", 99, 4, 3, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
-    mountain_giant.attrib_dict = {u"siła":8, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
+    mountain_giant = Enemy(u"olbrzym górski", 99, 4, 5, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
+    mountain_giant.attrib_dict = {u"siła":6, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
     mountain_giant.treasure_dict = {u"złoto":random.randint(1,100), "diamenty":random.randint(1,3), "olbrzymia maczuga": 1}
     mountain_giant.speach_list = [u"Ty chcieć mi odebrać błyszczące?!", "Twój czerep nada się na ząb!", "(straszny ryk)", "Gnieść, łupić!"]
     mountain_giant.specials_list = [u"Olbrzymia wytrzymałość", "Okrótna siła"]
@@ -170,14 +170,14 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 def attack_points_calc(enemy = None):
     ''' calculates enemy attack ability '''
-    enemy.attack = enemy.attrib_dict["siła"]+enemy.attrib_dict["zwinność"]+enemy.attrib_dict["inteligencja"]
+    enemy.attack = 2*enemy.attrib_dict["siła"]+2*enemy.attrib_dict["zwinność"]+enemy.attrib_dict["inteligencja"]
     
     return enemy.attack
 
 
 def defend_points_calc(enemy = None):
     ''' calculates enemy defend ability '''
-    enemy.defend = 2*enemy.attrib_dict["zwinność"]+enemy.attrib_dict["inteligencja"]+enemy.act_armour
+    enemy.defend = 3*enemy.attrib_dict["zwinność"]+enemy.attrib_dict["siła"]+enemy.attrib_dict["inteligencja"]+enemy.act_armour
     
     return enemy.defend
 
