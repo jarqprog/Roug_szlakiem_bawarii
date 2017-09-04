@@ -11,6 +11,7 @@ import mod_display
 import mod_items
 import mod_enemy
 import mod_event
+import mod_items
 
 os.system('clear')
 
@@ -54,7 +55,7 @@ def plot():
     os.system('cls')
 
 
-def character_choice_screen(hero)
+def character_choice_screen(hero):
     """ Returns hero's starting atributes. """
     while True:
         os.system('clear')
@@ -275,11 +276,18 @@ def hot_warm_cold():
     return 0
 
 
-def collision(position):
+def game_events(position, hero):
     """ Returns event. """
+    # ENEMY CLASS IMPORT TO MAIN:
+    enemy = mod_enemy.enemy_settings(name=None, loc=None, lvl=None, gen=None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
     if position == "N":
-        print("\n" * 9)
-        print("Tutaj NPC powie ci co masz robić dalej.")
+        print("\n" * 7)
+        print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
+        print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
+        print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
     elif position == "W":
         print("\n" * 9)
         print("Trafiłeś do wioski Szwarzwald")
@@ -303,15 +311,17 @@ def collision(position):
         print("\n" * 9)
         print("żródło życia")
     elif position == "?":
-        print("\n" * 9)
-        print("Niespodzianka - wpadasz do rowu z kolcami zostawionego przez łotrzyków i giniesz.")
+        mod_event.event_fight(enemy=mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None),
+                              hero=hero)
+        os.system('clear')
+        print("\n" * 10)
     else:
         print("\n" * 9)
         print("Nie mozesz sie tu ruszyc")
 
 
 def core(hero, start_time):
-    """ Major loop. """
+    """ Major loop of the whole game. """
     # General comment - lines above the map always = 10.
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
@@ -340,7 +350,7 @@ def core(hero, start_time):
         # Event_results value reset.
         event_result = None
         print("".join(map_copy))
-        print("\nWciśnij W, S, A, D - poruszanie się, 'e' - ekwipunek, 'z' - dziennik, 'p' - pomoc, ")
+        print("\nWciśnij W, S, A, D - poruszanie się, 'e' - karta bohatera, 'z' - dziennik, 'p' - pomoc, ")
         print("'g' - zapis gry, 'l' - legenda, 'k' - atrybuty lub '0' - wyjście z gry.")
         print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
         print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
@@ -350,7 +360,7 @@ def core(hero, start_time):
         if input_char.upper() == 'W':
             os.system('clear')
             if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
-                event_result = collision(map_copy[position_horizontal + (position_vertical - 1) * 81])
+                event_result = game_events(map_copy[position_horizontal + (position_vertical - 1) * 81], hero)
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -359,7 +369,7 @@ def core(hero, start_time):
         elif input_char.upper() == 'S':
             os.system('clear')
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
-                event_result = collision(map_copy[position_horizontal + (position_vertical + 1) * 81])
+                event_result = game_events(map_copy[position_horizontal + (position_vertical + 1) * 81], hero)
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -368,7 +378,7 @@ def core(hero, start_time):
         elif input_char.upper() == 'D':
             os.system('clear')
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
-                event_result = collision(map_copy[(position_horizontal + 1) + position_vertical * 81])
+                event_result = game_events(map_copy[(position_horizontal + 1) + position_vertical * 81], hero)
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
@@ -377,17 +387,18 @@ def core(hero, start_time):
         elif input_char.upper() == 'A':
             os.system('clear')
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
-                event_result = collision(map_copy[(position_horizontal - 1) + position_vertical * 81])
+                event_result = game_events(map_copy[(position_horizontal - 1) + position_vertical * 81], hero)
             else:
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
                 map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         # Hero's actions different than WSAD movement.
-        elif input_char.upper() == 'E':
+        elif input_char.upper() == b'E':
+            mod_display.display_hero_chart(hero=hero)
+            print("\n\n\n\nWcisnij cokolwiek żeby wyjść.")
+            input_char = getch()
             os.system('clear')
-            print("\n" * 9)
-            print("Tu powinien być ekwipunek")
         elif input_char.upper() == 'Z':
             os.system('clear')
             print("\n" * 9)
@@ -479,15 +490,22 @@ def core(hero, start_time):
 
 
 def main():
+    # Hero class import to main:
     hero = mod_hero.hero_settings()
-    enemy = mod_enemy.enemy_settings()
+    hero.attack = mod_hero.attack_points_calc(hero=hero)
+    hero.defend = mod_hero.defend_points_calc(hero=hero)
+    mod_hero.combat_attribute_default(hero=hero)
+    hero.max_armour = mod_hero.amour_max_calc(hero=hero)
+    # After import:
     developers()
     title_screen()
     plot()
     starting_atributes = character_choice_screen(hero)
     controls()
     start_time = datetime.datetime.now()
+    hero.name = input("\n\n\nJak Cię zwą?: ")
+    os.system('clear')
     core(starting_atributes, start_time)
 
-
 main()
+
