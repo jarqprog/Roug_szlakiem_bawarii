@@ -5,6 +5,8 @@
 
 import random
 
+import mod_hero, mod_display
+
 ################################ Hero's enemies class:
 class Items:
    def __init__(self, name, level, genre, price, location, info_list):
@@ -206,6 +208,31 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
         
         return item_rnd_exported_to_main
         # loc = None, lvl = None, gen = None
+
+def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, hero = None):
+    '''
+    generates list with random items, maxloops - max number of generated items,
+    maxitem_lvl = max item level (from "items Class") that is allowed (if None - filter is off)
+    item_gen = allowed item genre from "items Class" (ex. "weapon", if None - filter is off)
+    '''
+    if maxloops != 0:
+    
+        treasure_list = []
+        if maxitem_lvl == None: maxitem_lvl = 1
+        if maxloops == None: maxloops = 1
+        if maxloops > 0:        
+            for i in range(random.randint(1, maxloops)):
+                random_level = random.randint(1, maxitem_lvl) # randomly generates item level for each loop
+                generated_item = items_settings(name = None, loc = None, lvl = random_level, gen = item_gen, hero = None)
+                treasure_list.append(generated_item.name)
+        
+        # transform treasure list to dict:
+        # then update hero's inventory:
+        add_remove_items_dict = mod_hero.items_list_to_dict(treasure_list)
+        mod_hero.inventory_update(hero, add_remove_items_dict)
+        mod_display.display_hero_chart(hero = hero)
+        mod_display.display_looted_items(add_remove_items_dict)
+        return hero
 
 
 
