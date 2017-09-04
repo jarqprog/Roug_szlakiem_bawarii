@@ -70,6 +70,13 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     wolf.treasure_dict = {u"wilcza skóra":1}
     wolf.maxdrop = 0
 
+    #   Szczurołak
+    ratman = Enemy(u"szczurołak",3, 1, 0, "animal", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [1,2])
+    ratman.attrib_dict = {u"siła":1, "zwinność":4, "percepcja":1, "inteligencja":1, "siła woli":1}
+    ratman.speach_list = [u"wrrrr", "(sapie)"]
+    ratman.specials_list = [u"szybki jest!"]
+    ratman.maxdrop = 0
+
     # Goblin
     goblin = Enemy(u"goblin",10, 1, 1, "beast", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
     goblin.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
@@ -133,7 +140,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 ############## list with all enemies - we use this in functions below:
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
     # mogę po każdym przeciwniku robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    enemies_all_list = [wolf, goblin, skurczybyk, bear, bear_special_quest, ogr, troll, mountain_giant]
+    enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, bear_special_quest, ogr, troll, mountain_giant]
 
 
     # if enemy name was specified, it will export enemy by given name:

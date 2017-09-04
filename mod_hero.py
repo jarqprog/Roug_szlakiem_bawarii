@@ -69,7 +69,7 @@ def hero_settings():
     onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
     
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
-    hero = Hero("", "jk", 1, attrib_dict, inventory_dict, onbody_dict)
+    hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
 
 
     
