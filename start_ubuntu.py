@@ -1,11 +1,18 @@
+# Imports from Standard Library
 import os
 import sys
 import time
 import datetime
 import random
 import string
+# Imports from user-defined modules.
+import mod_hero
+import mod_display
+import mod_items
+import mod_enemy
+import mod_event
+
 os.system('clear')
-# General comment - lines above the map always = 10.
 
 
 def delay_print(s):
@@ -47,7 +54,7 @@ def plot():
     os.system('cls')
 
 
-def character_choice_screen():
+def character_choice_screen(hero)
     """ Returns hero's starting atributes. """
     while True:
         os.system('clear')
@@ -77,8 +84,10 @@ def character_choice_screen():
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    return {"KLASA": "WOJOWNIK", "SIŁA": 5, "ZWINNOŚĆ": 2,
-                            "PERCEPCJA": 1, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
+                    warrior_attr_dict = {"siła": 5, "zwinność": 2, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
+                    hero.attrib_dict.update(warrior_attr_dict)
+                    hero.proffession = "Wojownik"
+                    return hero
         if input_char.upper() == '2':
             os.system('clear')
             with open('2. ŁOWCA.txt', 'r') as myfile:
@@ -91,8 +100,10 @@ def character_choice_screen():
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    return {"KLASA": "ŁOWCA", "SIŁA": 2, "ZWINNOŚĆ": 3,
-                            "PERCEPCJA": 3, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
+                    hunter_attr_dict = {"siła": 2, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 2}
+                    hero.attrib_dict.update(hunter_attr_dict)
+                    hero.proffession = "Łowca"
+                    return hero
         if input_char.upper() == '3':
             os.system('clear')
             with open('3. NINJA.txt', 'r') as myfile:
@@ -105,8 +116,10 @@ def character_choice_screen():
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    return {"KLASA": "NINJA", "SIŁA": 1, "ZWINNOŚĆ": 3,
-                            "PERCEPCJA": 3, "INTELIGENCJA": 3, "SIŁA WOLI": 1}
+                    ninja_attr_dict = {"siła": 1, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 1}
+                    hero.attrib_dict.update(ninja_attr_dict)
+                    hero.proffession = "Ninja"
+                    return hero
         if input_char.upper() == '4':
             os.system('clear')
             with open('4. STWORZONA POSTAĆ.txt', 'r') as myfile:
@@ -166,8 +179,11 @@ def character_choice_screen():
                     print("Wybrałeś swoje przeznaczenie. Wciśnij cokolwiek, żeby rozpocząc gre.")
                     input_char = getch()
                     os.system('clear')
-                    return {"KLASA": klasa, "SIŁA": strenght, "ZWINNOŚĆ": agility, "PERCEPCJA": cognition,
-                            "INTELIGENCJA": brainpower, "SIŁA WOLI": willpower}
+                    created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
+                                         "inteligencja": brainpower, "siła woli": willpower}
+                    hero.attrib_dict.update(created_attr_dict)
+                    hero.proffession = "Cień"
+                    return hero
         else:
             continue
 
@@ -253,7 +269,7 @@ def hot_warm_cold():
             if not suggestions:
                 suggestions.append("COLD!")
         print(suggestions)
-    print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer), 
+    print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer),
           " .Ale dostaniesz 1 percepcji za dobre chęci. Wciśnij cokolwiek.")
     input_char = getch()
     return 0
@@ -294,8 +310,9 @@ def collision(position):
         print("Nie mozesz sie tu ruszyc")
 
 
-def core(atributes, start_time):
+def core(hero, start_time):
     """ Major loop. """
+    # General comment - lines above the map always = 10.
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
@@ -313,13 +330,13 @@ def core(atributes, start_time):
             # Event_results for:
             #           1. Hot_and_cold mini-game.
             if event_result == 0:
-                atributes["PERCEPCJA"] += 1
+                hero.attrib_dict["percepcja"] += 1
             elif event_result == 5:
-                atributes["PERCEPCJA"] += 4
+                hero.attrib_dict["percepcja"] += 4
             elif event_result == 10:
-                atributes["PERCEPCJA"] += 3
+                hero.attrib_dict["percepcja"] += 3
             elif event_result == 15:
-                atributes["PERCEPCJA"] += 2
+                hero.attrib_dict["percepcja"] += 2
         # Event_results value reset.
         event_result = None
         print("".join(map_copy))
@@ -397,12 +414,12 @@ def core(atributes, start_time):
         elif input_char.upper() == 'K':
             os.system('clear')
             print("\n" * 4)
-            print("KLASA: ", atributes["KLASA"])
-            print("SIŁA: ", atributes["SIŁA"])
-            print("ZWINNOŚĆ: ", atributes["ZWINNOŚĆ"])
-            print("PERCEPCJA: ", atributes["PERCEPCJA"])
-            print("INTELIGENCJA: ", atributes["INTELIGENCJA"])
-            print("SIŁA WOLI: ", atributes["SIŁA WOLI"])
+            print("KLASA: ", hero.proffession)
+            print("SIŁA: ", hero.attrib_dict["siła"])
+            print("ZWINNOŚĆ: ", hero.attrib_dict["zwinność"])
+            print("PERCEPCJA: ", hero.attrib_dict["percepcja"])
+            print("INTELIGENCJA: ", hero.attrib_dict["inteligencja"])
+            print("SIŁA WOLI: ", hero.attrib_dict["siła woli"])
         elif input_char.upper() == '0':
             # Game end and hall of fame enlist.
             os.system('clear')
@@ -415,24 +432,24 @@ def core(atributes, start_time):
                 game_time = (str(finish_time - start_time)).split(".")[0]
                 # Sum up atributes.
                 sum_of_atributes = 0
-                for value in atributes.values():
+                for value in hero.attrib_dict.values():
                     try:
                         sum_of_atributes += int(value)
                     except ValueError:
                         continue
-                user_name = input("\nWpisz swoje imię: ")
+                user_name = input("\nWpisz swoje prawdziwe imię: ")
                 print("\nGratulacje,", user_name, ".Twoje osiągnięcia zostaną zapisane.\n")
                 print("ATRYBUTY NA KONIEC: \n")
                 # User_name length must = 20.
                 user_name = '{:.20}'.format(user_name)
                 user_name += " " * (20 - len(user_name))
-                for k, v in atributes.items():
+                for k, v in hero.attrib_dict.items():
                     print(k, ":", v)
                 print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_atributes)
                 # Add final results to Hall of Fame.
                 with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
                     user_score = [str(sum_of_atributes), str(user_name), str(game_time),
-                                  str(atributes["KLASA"])]
+                                  str(hero.profession)]
                     user_score = "        ".join(user_score)
                     HALL_OF_FAME.write(str(user_score) + "\n")
                     print("\n\nNacisnij cokolwiek")
@@ -462,10 +479,12 @@ def core(atributes, start_time):
 
 
 def main():
+    hero = mod_hero.hero_settings()
+    enemy = mod_enemy.enemy_settings()
     developers()
     title_screen()
     plot()
-    starting_atributes = character_choice_screen()
+    starting_atributes = character_choice_screen(hero)
     controls()
     start_time = datetime.datetime.now()
     core(starting_atributes, start_time)

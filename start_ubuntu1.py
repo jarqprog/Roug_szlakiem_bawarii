@@ -1,13 +1,18 @@
+# Imports from Standard Library
 import os
 import sys
 import time
 import datetime
 import random
 import string
-import mod_hero, mod_display, mod_items, mod_enemy, mod_event
+# Imports from user-defined modules.
+import mod_hero
+import mod_display
+import mod_items
+import mod_enemy
+import mod_event
 
 os.system('clear')
-# General comment - lines above the map always = 10.
 
 
 def delay_print(s):
@@ -79,8 +84,10 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    return {"KLASA": "WOJOWNIK", "SIŁA": 5, "ZWINNOŚĆ": 2,
-                            "PERCEPCJA": 1, "INTELIGENCJA": 1, "SIŁA WOLI": 2}
+                    warrior_attr_dict = {"siła": 5, "zwinność": 2, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
+                    hero.attrib_dict.update(warrior_attr_dict)
+                    hero.proffession = "Wojownik"
+                    return hero
         if input_char.upper() == '2':
             os.system('clear')
             with open('2. ŁOWCA.txt', 'r') as myfile:
@@ -94,7 +101,7 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    hunter_attr_dict = {"siła":2, "zwinność":3, "percepcja":3, "inteligencja":3, "siła woli":2}
+                    hunter_attr_dict = {"siła": 2, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 2}
                     hero.attrib_dict.update(hunter_attr_dict)
                     hero.proffession = "Łowca"
                     return hero
@@ -110,8 +117,10 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
-                    return {"KLASA": "NINJA", "SIŁA": 1, "ZWINNOŚĆ": 3,
-                            "PERCEPCJA": 3, "INTELIGENCJA": 3, "SIŁA WOLI": 1}
+                    ninja_attr_dict = {"siła": 1, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 1}
+                    hero.attrib_dict.update(ninja_attr_dict)
+                    hero.proffession = "Ninja"
+                    return hero
         if input_char.upper() == '4':
             os.system('clear')
             with open('4. STWORZONA POSTAĆ.txt', 'r') as myfile:
@@ -171,8 +180,11 @@ def character_choice_screen(hero):
                     print("Wybrałeś swoje przeznaczenie. Wciśnij cokolwiek, żeby rozpocząc gre.")
                     input_char = getch()
                     os.system('clear')
-                    return {"KLASA": klasa, "SIŁA": strenght, "ZWINNOŚĆ": agility, "PERCEPCJA": cognition,
-                            "INTELIGENCJA": brainpower, "SIŁA WOLI": willpower}
+                    created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition, 
+                                       "inteligencja": brainpower, "siła woli": willpower}
+                    hero.attrib_dict.update(created_attr_dict)
+                    hero.proffession = "Cień"
+                    return hero
         else:
             continue
 
@@ -301,6 +313,7 @@ def collision(position):
 
 def core(hero, start_time):
     """ Major loop. """
+    # General comment - lines above the map always = 10.
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
@@ -425,7 +438,7 @@ def core(hero, start_time):
                         sum_of_atributes += int(value)
                     except ValueError:
                         continue
-                user_name = input("\nWpisz swoje imię: ")
+                user_name = input("\nWpisz swoje prawdziwe imię: ")
                 print("\nGratulacje,", user_name, ".Twoje osiągnięcia zostaną zapisane.\n")
                 print("ATRYBUTY NA KONIEC: \n")
                 # User_name length must = 20.
@@ -476,21 +489,18 @@ def main():
     controls()
     start_time = datetime.datetime.now()
     print(hero.proffession)
-    time.sleep(1)
-    hero.profession = input("podaj klasę")
+    input_char = getch()
+    hero.profession = input("Podaj klasę")
     print(hero.profession)
-    time.sleep(2)
-    hero.inventory_dict = {"miecz":1}
-    hero.name = input("podaj imię")
+    input_char = getch()
+    hero.name = input("Jak Cię zwą?: ")
     print(hero.name, hero.profession)
     input_char = getch()
-    mod_display.display_hero_chart(hero = hero)
+    mod_display.display_hero_chart(hero=hero)
     input_char = getch()
-    mod_event.event_fight(enemy = mod_enemy.enemy_settings(name = "wilk", loc = hero.location, lvl = None, gen = None), hero = hero)
+    mod_event.event_fight(enemy=mod_enemy.enemy_settings(name="wilk", loc=hero.location, lvl=None, gen=None), hero=hero)
     input_char = getch()
-    
     core(starting_atributes, start_time)
     
     
-
 main()
