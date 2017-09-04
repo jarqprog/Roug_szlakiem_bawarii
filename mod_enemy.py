@@ -83,7 +83,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     skurczybyk.speach_list = [u"Ah, co tam masz w sakiewce?", "Złoto albo śmierć!"]
     skurczybyk.treasure_dict = {u"jantar":random.randint(1,3), "pierścień skurczybyka":1, "nóż":1} # ring for optional quest
     skurczybyk.speach_list = [u"Co tam masz w sakiewce?", "Złoto albo śmierć!", "Kto zadziera ze skurczybykiem, ten frajer!"]
-    skurczybyk.specials_list = [u"Straszna menda"]
+    skurczybyk.specials_list = [u"Straszna menda", "Lepkie ręce"]
     skurczybyk.maxdrop = 2
 
 

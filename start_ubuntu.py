@@ -71,9 +71,9 @@ def character_choice_screen():
                 picture = myfile.read()
                 print(picture)
                 print("WOJOWNIK")
-                print("\nATRYBUTY:")
+                print("ATRYBUTY:")
                 print("SIŁA : 5, ZWINNOŚĆ : 2, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 2")
-                print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
+                print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
@@ -85,9 +85,9 @@ def character_choice_screen():
                 picture = myfile.read()
                 print(picture)
                 print("ŁOWCA")
-                print("\nATRYBUTY:")
+                print("ATRYBUTY:")
                 print("SIŁA : 2, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 1, SIŁA WOLI : 2")
-                print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
+                print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
@@ -99,9 +99,9 @@ def character_choice_screen():
                 picture = myfile.read()
                 print(picture)
                 print("NINJA")
-                print("\nATRYBUTY:")
+                print("ATRYBUTY:")
                 print("SIŁA : 1, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 3, SIŁA WOLI : 1")
-                print("\nWciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
+                print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == 'Y':
                     os.system('clear')
@@ -127,11 +127,8 @@ def character_choice_screen():
                     willpower = 1
                     points = 6
                     while True:
-<<<<<<< HEAD
+                        os.system('clear')
                         if points == 0:
-=======
-                        if punkty == 0:
->>>>>>> 7d8ec0600899f6adb932d9168a34abb80ff2f817
                             break
                         else:
                             print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
@@ -201,15 +198,17 @@ def controls():
 def hot_warm_cold():
     ''' Hot warm cold mini-game. '''
     os.system('clear')
-    game_sequence = []
+    correct_answer = []
     string.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     random_number = random.choice(range(9))
     random_letter1 = random.choice(string.letters)
     random_letter2 = random.choice(string.letters)
     random_letter3 = random.choice(string.letters)
     choices_for_sequence = [str(random_number), random_letter1, random_letter2, random_letter3]
-    for i in range(3):
-        game_sequence.append(random.choice(choices_for_sequence))
+    for e in range(3):
+        i = random.choice(choices_for_sequence)
+        choices_for_sequence.remove(i)
+        correct_answer.append(i)
     while True:
         difficulty_choice = input("\nWybierz poziom trudnośći. 1, 2 lub 3 dla: łatwy, trudny lub życzenie śmierci:")
         if difficulty_choice == "1":
@@ -235,35 +234,27 @@ def hot_warm_cold():
     for i in range(difficulty_choice):
         user_guess = input("--->")
         user_guess = list(user_guess.upper())
-        if user_guess == game_sequence:
+        if user_guess == correct_answer:
             print("\nBrawo!!! Dostajesz punkty do PERCEPCJI.\nWciśnij cokolwiek, żeby kontynuować.")
             input_char = getch()
             return difficulty_choice
         else:
-            if len(user_guess) > 3:
-                print("Chyba zapomniałeś, że zgadujesz tylko 3 elementy.....")
+            if len(user_guess) != 3:
+                print("Chyba zapomniałeś, że zgadujesz 3 elementy.....")
                 continue
             i = 0
             suggestions = []
-            for i in range(len(user_guess)):
-                if user_guess[i] in game_sequence:
-                    if user_guess[i] == game_sequence[i]:
-                        suggestions.append("Gorąco")
-                    else:
-                        suggestions.append("Ciepło")
-                else:
-                    suggestions.append("Zimno")
+            for element in correct_answer:
+                if element == user_guess[i]:
+                    suggestions.insert(0, "HOT!")
+                elif element in user_guess:
+                    suggestions.append("WARM!")
                 i += 1
-            suggestions_sorted = []
-            for i in range(suggestions.count("Gorąco")):
-                suggestions_sorted.append("Gorąco")
-            for i in range(suggestions.count("Ciepło")):
-                suggestions_sorted.append("Ciepło")
-            for i in range(suggestions.count("Zimno")):
-                suggestions_sorted.append("Zimno")
-            print(" ".join(suggestions_sorted))
-            continue
-    print("\nNie zgadłeś! Odpowiedz to:", " ".join(game_sequence), " .Wciśnij cokolwiek.")
+            if not suggestions:
+                suggestions.append("COLD!")
+        print(suggestions)
+    print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer), 
+          " .Ale dostaniesz 1 percepcji za dobre chęci. Wciśnij cokolwiek.")
     input_char = getch()
     return 0
 
@@ -316,19 +307,19 @@ def core(atributes, start_time):
     position_vertical = 18
     lenght_of_the_map_plus_one = 81
     map_copy = board[:]
-    map_copy[position_horizontal + position_vertical * 81] = "@"
+    map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
     while True:
         if input_char.upper() in [b'W', b'S', b'D', b'A']:
             # Event_results for:
             #           1. Hot_and_cold mini-game.
             if event_result == 0:
-                atributes["PERCEPCJA"] -= 1
-            elif event_result == 5:
-                atributes["PERCEPCJA"] += 3
-            elif event_result == 10:
-                atributes["PERCEPCJA"] += 2
-            elif event_result == 15:
                 atributes["PERCEPCJA"] += 1
+            elif event_result == 5:
+                atributes["PERCEPCJA"] += 4
+            elif event_result == 10:
+                atributes["PERCEPCJA"] += 3
+            elif event_result == 15:
+                atributes["PERCEPCJA"] += 2
         # Event_results value reset.
         event_result = None
         print("".join(map_copy))
@@ -347,7 +338,7 @@ def core(atributes, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         elif input_char.upper() == 'S':
             os.system('clear')
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
@@ -356,7 +347,7 @@ def core(atributes, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         elif input_char.upper() == 'D':
             os.system('clear')
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
@@ -365,7 +356,7 @@ def core(atributes, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         elif input_char.upper() == 'A':
             os.system('clear')
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
@@ -374,7 +365,7 @@ def core(atributes, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         # Hero's actions different than WSAD movement.
         elif input_char.upper() == 'E':
             os.system('clear')
@@ -402,12 +393,16 @@ def core(atributes, start_time):
             print("+ = Zródło życia")
             print("G = Gaj Łotrzyków")
             print("N = NPC")
-            print("C = Zimno/ ciepła niespodzianka Mariana. Wiekszość spotkanie z nim kończy utratą percepcji.")
+            print("C = Zimno/ ciepła niespodzianka Mariana. Spotkania z nim prowadzą do zmian w percepcji.")
         elif input_char.upper() == 'K':
             os.system('clear')
-            print("\n" * 8)
-            for k, v in atributes.items():
-                print(k, ":", v)
+            print("\n" * 4)
+            print("KLASA: ", atributes["KLASA"])
+            print("SIŁA: ", atributes["SIŁA"])
+            print("ZWINNOŚĆ: ", atributes["ZWINNOŚĆ"])
+            print("PERCEPCJA: ", atributes["PERCEPCJA"])
+            print("INTELIGENCJA: ", atributes["INTELIGENCJA"])
+            print("SIŁA WOLI: ", atributes["SIŁA WOLI"])
         elif input_char.upper() == '0':
             # Game end and hall of fame enlist.
             os.system('clear')
