@@ -59,17 +59,17 @@ def hero_settings():
     contains hero data to export to main:
     '''
     # hero dicts:
-    attrib_dict = {"siła":3, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":2}
+    attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {"nóż":1,"placki":10, "resztki mapy":1} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    inventory_dict = {} #placki będzie można sprzedać albo nakarmić głodnego (quest)
 
     ################################ show active items on Hero:
 
     onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
     
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
-    hero = Hero("Rabarbar", "Zbójcerz", 1, attrib_dict, inventory_dict, onbody_dict)
+    hero = Hero("", "jk", 1, attrib_dict, inventory_dict, onbody_dict)
 
 
     
