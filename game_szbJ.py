@@ -4,7 +4,7 @@ import os, time, random, math
 #from msvcrt import getch
 
 # custom modules:
-import mod_display, mod_event
+import mod_display, mod_event, mod_npc
 from mod_display import clear_screen, dot_loop, pause
 import mod_enemy
 import mod_hero 
@@ -28,9 +28,9 @@ def main():
 
 
     hero.max_armour = mod_hero.amour_max_calc(hero = hero)
-    hero.positionX = 0 # hero map coordinate X
-    hero.positionY = 0 # hero map coordinate Y
-    #hero.combat_attribute = mod_hero.combat_attribute_default(hero = hero)
+    hero.calendar_list = [0, "niedziela", "wieczór"] 
+
+
 
     ### here we can add next hero methods...
 
@@ -40,6 +40,13 @@ def main():
     enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
     ### here we can add next enemy methods...
+
+
+    ######################## NPC CLASS IMPORT TO MAIN:
+    npc = mod_npc.npc_settings(name = None, loc = None, gen = None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
 
 
 
@@ -54,13 +61,29 @@ def main():
     ####### po każdej z tych funkcji odpalamy główną pętlę:
 
     # ----- tu będzie funkcja do wyświetlania mapy
+    hero.attrib_dict = {"siła":4, "zwinność":4, "percepcja":2, "inteligencja":2, "siła woli":1}
+    hero.name = "Dobrosław z Legnicy"
+    hero.inventory_dict = {"miecz":1}
+    hero.dmg_list = [18,20]
 
 ####################### MAIN LOOP:
     while True:
-        mod_display.credits_display()
-        mod_display.display_hero_chart(hero = hero)
-        mod_display.display_varied_info() # display short random info :)        
-        mod_event.event_choose(hero = hero, location = hero.location)
+        clear_screen()
+        mod_display.display_calendar_location(hero = hero) # display short random info :)
+        mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        #npc = mod_npc.npc_settings(name = "Czerwony Kapturek", loc = None, gen = None)
+        pause()
+        mod_display.display_hero_chart(hero)
+        pause()
+        mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
+        pause()
+        mod_display.display_calendar_location(hero = hero)
+        mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        pause()
+
+
+
+
 
 
 
@@ -74,3 +97,4 @@ main()
 # na koniec głóœnej pętli:
 # hero.life_recovery hero.actualLife - odzyskanie życia!
 # hero.turn_counter = +1
+# zrób przedmioty zaślepki - żeby nie było bugów przy losowaniu :)

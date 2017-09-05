@@ -38,6 +38,10 @@ class Enemy:
         # combat_attribute_default(enemy = None) int his mod
         self.combat_attribute = None
 
+
+        self.quest_condition = ""
+        self.quest_info = ""
+
  
         # ww. "location" przyjmuje wartość elementów listy (element = lvl mapy)
         # ...w ten sposób decydujemy, czy dany przeciwnik może się pojawić w danyn lvlu
@@ -129,20 +133,39 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
     #################################### quest/special enemies: - special monsters has Capitalic in names (Zły Miś, Głupi Jaś) 
 
-    #   Zły miś (QUEST in lvl 1)
-    bear_special_quest = Enemy("Zły Miś",30, 2, 2, "animal, special" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    #   Złodziejski miś (QUEST in lvl 1)
+    bear_special_quest = Enemy("Złodziejski Miś",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
     bear_special_quest.attrib_dict = {"siła":4, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
     bear_special_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
     bear_special_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał? Figa, niczego Ci nie dam!"]
     bear_special_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
 
+    #   Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
+    wolf_special_quest = Enemy("Zły Wilk",12, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    wolf_special_quest.attrib_dict = {"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":2}
+    wolf_special_quest.treasure_dict = {"wilcza skóra":1}
+    wolf_special_quest.speach_list = [u"Ty chcesz wyciągnąć Babcię? Po moim trupie!"]
+    wolf_special_quest.specials_list = [u"Ten wilk mówi!", "Ma wypchany brzuch (zapewne Babcią!)"]
+    wolf_special_quest.quest_condition = "Babcia uratowana"
+    wolf_special_quest.quest_info = "Babcia wyskoczyła z wilczego brzucha! Wróć do Czerwonego kapturka po nagrodę!"
 
-############## list with all enemies - we use this in functions below:
+
+
+############## list with all enemies - we use this in functions below (to summon enemy by name):
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
     # mogę po każdym przeciwniku robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, bear_special_quest, ogr, troll, mountain_giant]
+    enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
+    
+    
+    bear_special_quest, wolf_special_quest]
+
+############## list with random enemies - we use this in functions below (to random enemy using filters),
+    # quest monsters are excluded:
+    enemies_random_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
 
 
+    ]
+    
     # if enemy name was specified, it will export enemy by given name:
     enemy_exported_to_main = ''
     if name != None:
@@ -159,7 +182,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
         enemy_random_list = []
          # temporary helper list
         tmp_lvl = 0 # helps in loop below:
-        for element in enemies_all_list:
+        for element in enemies_random_list:
             if (loc in element.location or loc == None) and (lvl == element.level or lvl == None) and (gen == element.genre or gen == None):
                 enemy_random_list.append(element)
         

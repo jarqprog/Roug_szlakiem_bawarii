@@ -55,6 +55,8 @@ class Hero:
         # if element od NPC speach list is in value of dict key, key = quest name,
         # NPC tells next element on list
         self.quest_info = {}
+        self.quest_condition_list = []
+        self.quest_blocked_list = []
 
         
 # BOHATER - inicjacja zmiennych ##############################
@@ -75,7 +77,8 @@ def hero_settings():
     
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
-    hero.calendar_list = [1, "niedziela", "wieczór"] 
+    hero.calendar_list = [0, "niedziela", "wieczór"]
+
 
 
     
@@ -293,10 +296,7 @@ def calendar(hero = None):
 def calendar(calendar_list = None):
     week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
-
-      
-
-    
+   
     week_index = week_list.index(calendar_list[1])
     day_index = day_time_list.index(calendar_list[2])
   
@@ -324,16 +324,30 @@ def calendar(calendar_list = None):
   
     return calendar_list
 
+
 def quest(hero = None, npc = None):
-    hero = hero_settings()
-    npc = mod_npc.npc_settings()
-    if npc not in hero.quest_info.keys():
-         hero.quest_info[quest_name] = npc.quest_list[0]
-         del npc.quest_list[0]
-    else:
-        hero.quest_info[quest_name].append(npc.quest_list[0])
     
-    return hero
+    if npc.quest_name not in hero.quest_info.keys():
+        for element in npc.quest_list:
+            if element not in hero.quest_info.values():
+                hero.quest_info = {npc.quest_name:element}
+                break
+        
+    elif npc.quest_name in hero.quest_info.keys():
+        if npc.quest_condition in hero.quest_condition_list:
+            temporary_list = []
+            for element in npc.quest_list:
+                if element not in hero.quest_info[npc.quest_name]:
+                    temporary_list.append(element)
+                    hero.quest_info[npc.quest_name] += temporary_list[0]
+                    del temporary_list[:]
+                    break
+                elif element in hero.quest_info[npc.quest_name]:
+                    hero.quest_blocked_list.append(element)
+                
+    return hero, npc
+
+
 
  
 

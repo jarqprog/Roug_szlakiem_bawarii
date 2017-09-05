@@ -13,8 +13,11 @@ class Npc:
         self.speach_list = []
         ###
         self.map_symbol = ""
-        self.quest = None # if true - it's quest character
         self.shop = None # if true - it's a shop keeper with buy/sell option
+        self.npc_quest_list = []
+        self.xp_reward = 0
+        self.quest_name = ""
+        self.quest_condition = ""
 
      
 
@@ -33,6 +36,11 @@ def npc_settings(name = None, loc = None, gen = None):
 
     treasure_dict = {} # contains items, that can be gift to hero
     speach_list = [] # contains statments, that can be delivered to hero (if they ar not on hero speach_blocked_list)
+
+
+
+
+############################# REGULAR NPC
     # data in (...) are npc:
     # name, life, level, xp4hero, genre, location (list), attrib_dict, treasure_dict, specials_list, speach_list
 
@@ -77,8 +85,27 @@ def npc_settings(name = None, loc = None, gen = None):
 
     ]
 
-    # npc_regular_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [
+############################# QUEST NPC
+
+    # Czerowny Kapturek
+    redhood = Npc("Czerwony Kapturek", [1])
+    redhood.speach_list = ["O, witaj!", "Miło Cię widzieć"]
+    redhood.xp_reward = 100
+    redhood.quest_name = "Ratuj Babcię"
+    redhood.quest_list = [
+        "Możesz mi pomóc? Babcię porwał wilk. Odszukaj go, zwróć Starowinkę, to będę Ci dozgonnie wdzięczna!",
+        "Ojejku, jejku, Babcia uratowana! Dziękuję Ci! (całus) "
+        
+        
+        
+        
+    ]
+    
+    redhood.quest_condition = "Babcia uratowana"
+    redhood.inventory_dict = {"diament":1}
+
+    # npc_quest_list contains list with  QUEST npc to generate and export to main:
+    npc_quest_list = [redhood
 
 
 
@@ -105,7 +132,7 @@ def npc_settings(name = None, loc = None, gen = None):
          # temporary helper list
         tmp_lvl = 0 # helps in loop below:
         for element in npc_all_list:
-            if (loc in element.location_list or loc == None) and (gen == element.quest or gen == None):
+            if (loc in element.location_list or loc == None):
                 npc_random_list.append(element)
         
 

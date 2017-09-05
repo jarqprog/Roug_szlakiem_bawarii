@@ -201,6 +201,8 @@ def event_fight_spec_enemy(enemy = None, hero = None):
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:
+                hero.quest_condition_list.append(enemy.quest_condition)
+                if enemy.quest_info: print(enemy.quest_info)
                 win_fight(enemy = enemy, hero = hero)
                 combat_end = 1
                 break
@@ -253,13 +255,24 @@ def event_fight(enemy = None, hero = None):
                 break
 
 
+def event_quest(npc = None, hero = None):
+    '''
+    event == quest adventure
+    '''
+
+    npc = mod_npc.npc_settings(name = npc, loc = None, gen = None)
+    mod_hero.quest(hero = hero, npc = npc)
+    mod_display.display_event_quest(hero = hero, npc = npc)
+
+    return hero
+
+
 def event_npc(npc = None, hero = None):
     '''
     event == meet specified (by name) NPC
     '''
-    # random generate enemy (using filters):
+    # summon npc by name:
     npc = mod_npc.npc_settingsnpc_settings(name = npc.name, loc = None, gen = None)
-    print(npc.speach_list)
 
 
 
@@ -267,7 +280,7 @@ def event_random_npc(hero = None):
     '''
     event == meet random (from hero location) NPC
     '''
-    # random generate enemy (using filters):
+    # random generate npc (using filters):
     npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
     mod_display.display_NPC_random_speach(npc = npc)
 

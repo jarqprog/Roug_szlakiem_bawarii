@@ -34,7 +34,7 @@ def display_varied_info():
     "Ładny dzień", "Zbiera się na burzę", "Trochę zimno",
     "Mam przeczucie, że coś się wydarzy...",
     "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
-    "Oby nikt tu na mnie nie czyhał", "Trochę wieje",
+    "Oby nikt tu na mnie nie czyhał", "Trochę wieje", "Mam nadzieję, że zaliczę checkpoint..",
 
 
 
@@ -356,7 +356,7 @@ def display_calendar_location(hero = None):
     calendar_list = hero.calendar_list
     location = mod_hero.display_location(hero)
     mod_hero.calendar(calendar_list)
-    print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1], hero.calendar_list[2] +", miejsce:", location)
+    print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1] +", "+ hero.calendar_list[2] +". Miejsce:", location)
     display_varied_info()
     chance_to_random_npc_meet = random.randint(1,100)
     if chance_to_random_npc_meet > 80:
@@ -373,5 +373,43 @@ def display_NPC_random_speach(npc = None):
     speach_index = random.randint(0, len(npc.speach_list)-1)
     speach_to_display = npc.speach_list[speach_index]
     print("Napotkany", npc.name, "do Ciebie:", "\x1b[6;30;44m"+speach_to_display + "..."+ "\x1b[0m" )
+
+
+def display_event_quest(npc = None, hero = None):
+    '''
+    display quest info, dialogs, info about quest result
+    '''
+
+    for element in npc.quest_list:
+
+        if element not in hero.quest_blocked_list:
+            element_to_display = element
+            
+            info_to_display = npc.name +": "+ element_to_display
+            quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."
+            if npc.quest_condition in hero.quest_condition_list:
+                info_to_display += ("Gratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
+                hero.actualExp += npc.xp_reward
+
+
+            break
+    
+    if len(hero.quest_blocked_list) < len(npc.quest_list):
+        print('\n'+info_to_display), dot_loop()
+        print("".join(quest_name_to_display))
+        if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
+            print("\r - wykonane.")
+            add_remove_items_dict = npc.inventory_dict
+            mod_hero.inventory_update(hero, add_remove_items_dict)                     
+            display_looted_items(add_remove_items_dict)
+            index = hero.quest_condition_list.index(npc.quest_condition)
+            del hero.quest_condition_list[index]
+
+
+    return hero
+
+
+
+    
 
  
