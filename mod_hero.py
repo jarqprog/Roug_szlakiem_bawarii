@@ -1,7 +1,7 @@
 
 # mod_hero - custom mod, contains hero data
 
-import mod_items, math, mod_npc
+import mod_items, math, mod_npc, mod_display
 
 
 ################################ Hero class:
@@ -251,31 +251,6 @@ def inventory_update(hero, add_remove_items_dict):
 
     return hero
 
-def calendar():
-    pass
-    '''
-    calculate variable for display info about day, day time
-    '''
-    #hero.turn_counter = 0 #+ turn_counter
-    '''
-    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
-    day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
-    day = math.floor(turn_counter/4)
-    
-    #4 # for four day times (morning, noon...)
-    if turn_counter % 4 == 0:
-        day_time = day_time_list[3]
-    elif turn_counter % 3 == 0:
-        day_time = day_time_list[2]
-    elif turn_counter % 2 == 0:
-        day_time = day_time_list[1]
-    else:
-        day_time = day_time_list[0]
-    '''
-    return hero.turn_counter
-    
-
-
 
 def hero_on_map(hero = None):
     '''
@@ -346,6 +321,42 @@ def quest(hero = None, npc = None):
                     hero.quest_blocked_list.append(element)
                 
     return hero, npc
+
+def next_level_promotion(hero = None):
+    '''
+    check if there is hero level promotion
+    allows to player modify one of hero attributes
+    displays result 
+    '''
+    if hero.actualExp > ((50*hero.level)*2*hero.level):
+        
+        player_choice = mod_display.display_next_level_promotion(hero = hero)
+        hero.level += 1
+        hero.maxLife += 20 # buff to max life
+        hero.actualLife = hero.maxLife # full life regenration
+        mod_display.display_hero_chart(hero)
+        if player_choice == 1:
+            hero.attrib_dict["siła"] += 1
+            print("Wzrosła siła i życie")
+        elif player_choice == 2:
+            hero.attrib_dict["zwinność"] += 1
+            print("Wzrosła zwinność i życie")
+        elif player_choice == 3:
+            hero.attrib_dict["percepcja"] += 1
+            print("Wzrosła percepcja i życie")
+        elif player_choice == 4:
+            hero.attrib_dict["inteligencja"] += 1
+            print("Wzrosła inteligencja i życie")
+        else:
+            hero.attrib_dict["siła woli"] += 1
+            print("Wzrosła siła woli i życie")
+    
+        mod_display.pause()
+                
+    return hero
+
+
+
 
 
 
