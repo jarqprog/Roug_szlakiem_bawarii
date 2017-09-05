@@ -2,8 +2,7 @@
 #!/usr/bin/python3
 
 import time, random, os, math
-import mod_hero, mod_enemy, mod_items, mod_display
-from mod_display import dot_loop, pause, clear_screen
+import mod_hero, mod_enemy, mod_items, mod_display, mod_npc
 
 
 
@@ -11,7 +10,7 @@ def priority_test(enemy = None, hero = None):
     '''
     who's attacker, who's defender
     '''
-    clear_screen()
+    mod_display.clear_screen()
     mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = None)
     # zwinność, percepcja i inteligencja have influence on this test:
     hero_test_stats = (int(hero.attrib_dict["zwinność"])+int(hero.attrib_dict["percepcja"])+
@@ -24,19 +23,19 @@ def priority_test(enemy = None, hero = None):
         print('\r\r'+hero.name+":", hero_test_stats)
         print('\r\r'+enemy.name+":", test_var2)
         if hero_test_stats > test_var2:
-            print("\nRezultat:", end=''), dot_loop()
+            print("\nRezultat:", end=''), mod_display.dot_loop()
             print("\n\natakuje",hero.name+'!')
             attacker = hero
             break
           
         elif hero_test_stats < test_var2:
-            print("\nRezultat:", end=''), dot_loop()
+            print("\nRezultat:", end=''), mod_display.dot_loop()
             print("\n\natakuje",enemy.name+'!')
             attacker = enemy
             break
 
-    pause()
-    clear_screen()
+    mod_display.pause()
+    mod_display.clear_screen()
 
     return attacker
 
@@ -51,20 +50,20 @@ def win_fight(enemy = None, hero = None):
         mod_display.display_looted_items(add_remove_items_dict) # display treasures from enemy inventory
         mod_hero.inventory_update(hero, add_remove_items_dict)
 
-    clear_screen()
-    print("Może coś jeszcze?", end=''), dot_loop()
-    pause()
+    mod_display.clear_screen()
+    print("Może coś jeszcze?", end=''), mod_display.dot_loop()
+    mod_display.pause()
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
     mod_display.display_hero_chart(hero=hero)
-    pause()
+    mod_display.pause()
     return hero
 
 def rip(enemy = None, hero = None):
     print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
     mod_display.display_hero_chart(hero = hero)
-    pause()
-    clear_screen()
+    mod_display.pause()
+    mod_display.clear_screen()
     mod_display.game_over(hero = hero)
 
 def counterattack(enemy = None, hero = None, attacker = None, attack = None):
@@ -78,7 +77,7 @@ def counterattack(enemy = None, hero = None, attacker = None, attack = None):
     elif attacker == enemy: defender = hero
 
     print("\nkontratak!", end='')
-    dot_loop()
+    mod_display.dot_loop()
     counterattack_result = 0
     print('\n'+defender.name, " kontratakuje: rzuca",str(defender.attrib_dict[str(defender.combat_attribute)]),"razy kością K4:")
     damage = random.randint(defender.dmg_list[0], defender.dmg_list[1])
@@ -86,7 +85,7 @@ def counterattack(enemy = None, hero = None, attacker = None, attack = None):
         counterattack_var = random.randint(1,4)
         print((str(counterattack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
         counterattack_result += counterattack_var
-    print("\n\nRezultat:", end=''), dot_loop()
+    print("\n\nRezultat:", end=''), mod_display.dot_loop()
     print('\n\n'+defender.name+':',counterattack_result,'+',defender.attack,"(atak):", counterattack_result+defender.attack)
     print(attacker.name+':', attack), time.sleep(0.3)
     if attack < counterattack_result+defender.attack:
@@ -138,12 +137,12 @@ def fight(enemy = None, hero = None, attacker = None):
         print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
         defend_result += defend_var
         
-    print("\n\nRezultat:", end=''), dot_loop()
+    print("\n\nRezultat:", end=''), mod_display.dot_loop()
     print('\n\n'+attacker.name+':',attack_result,'+',attacker.attack,"(atak):", attack_result+attacker.attack)
     print(defender.name+':',defend_result,'+',defender.defend,"(obrona):", defend_result+defender.defend)
     if attack_result+attacker.attack <= defend_result+defender.defend:
         print('\n'+defender.name, "obronił się!")
-        pause()
+        mod_display.pause()
         attacker_change = 1
         #attacker = priority_test(enemy = enemy, hero = hero)
         #if float(defend_result+defender.defend) > (float(attack_result+attacker.attack)*1.2):
@@ -178,11 +177,11 @@ def event_fight_spec_enemy(enemy = None, hero = None):
     # update hero attrinute:
     mod_hero.combat_attribute_default(hero = hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
-    print("Twój przeciwnik to", end=''), dot_loop()
+    print("Twój przeciwnik to", end=''), mod_display.dot_loop()
     
     print(' ',enemy.name.upper()+'!','\n')
-    pause()
-    clear_screen()
+    mod_display.pause()
+    mod_display.clear_screen()
     # pętla walki:
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
@@ -195,8 +194,8 @@ def event_fight_spec_enemy(enemy = None, hero = None):
         while True:
             mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
             attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
-            pause()
-            clear_screen()
+            mod_display.pause()
+            mod_display.clear_screen()
             if hero.actualLife < 1:
                 rip(enemy = enemy, hero = hero)
                 combat_end = 1
@@ -223,11 +222,11 @@ def event_fight(enemy = None, hero = None):
     # update hero attrinute:
     mod_hero.combat_attribute_default(hero = hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
-    print("Twój przeciwnik to", end=''), dot_loop()
+    print("Twój przeciwnik to", end=''), mod_display.dot_loop()
     
     print(' ',enemy.name.upper()+'!','\n')
-    pause()
-    clear_screen()
+    mod_display.pause()
+    mod_display.clear_screen()
     # pętla walki:
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
@@ -240,8 +239,8 @@ def event_fight(enemy = None, hero = None):
         while True:
             mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
             attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
-            pause()
-            clear_screen()
+            mod_display.pause()
+            mod_display.clear_screen()
             if hero.actualLife < 1:
                 rip(enemy = enemy, hero = hero)
                 combat_end = 1
@@ -252,6 +251,30 @@ def event_fight(enemy = None, hero = None):
                 break
             elif attacker_change == 1:
                 break
+
+
+def event_npc(npc = None, hero = None):
+    '''
+    event == meet specified (by name) NPC
+    '''
+    # random generate enemy (using filters):
+    npc = mod_npc.npc_settingsnpc_settings(name = npc.name, loc = None, gen = None)
+    print(npc.speach_list)
+    ##### tutaj wyświetlamy funkcje display
+    mod_display.pause()
+    mod_display.clear_screen()
+
+
+def event_random_npc(hero = None):
+    '''
+    event == meet random (from hero location) NPC
+    '''
+    # random generate enemy (using filters):
+    npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
+    mod_display.display_NPC_random_speach(npc = npc)
+    ##### tutaj wyświetlamy funkcje display
+    mod_display.pause()
+    mod_display.clear_screen()
 
 
 def event_choose(hero = None, location = None):

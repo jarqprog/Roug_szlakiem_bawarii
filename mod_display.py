@@ -3,7 +3,7 @@
 import os, math
 import random, time
 import mod_hero 
-import mod_enemy
+import mod_enemy, mod_npc, mod_event
 
 
 def clear_screen():
@@ -23,7 +23,7 @@ def pause():
     stop game action (for ex. in the middle of fight)
     '''
     pause = 0 # reset pause variable
-    pause = input("\n\nWciśnij <enter>, żeby kontynuować...\n\n") # temporary - we need here glitch
+    pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",) # temporary - we need here glitch
     if pause == str("q") and ("Q"): exit()
 
 def display_varied_info():
@@ -31,9 +31,10 @@ def display_varied_info():
     function with a list of short messages (mainly to increse playability). It random generates message to display from list:
     '''
     info_to_display_list = [
-    "Zapowiada się piękny dzień", "Zbiera się na burzę", "Noc była chłodna, ale poranek słoneczny i ciepły",
-    "Mam przeczucie, że coś się wydarzy",
-    "Jest bezpiecznie",
+    "Ładny dzień", "Zbiera się na burzę", "Trochę zimno",
+    "Mam przeczucie, że coś się wydarzy...",
+    "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
+    "Oby nikt tu na mnie nie czyhał", "Trochę wieje",
 
 
 
@@ -41,10 +42,13 @@ def display_varied_info():
 
     ]
 
+    random_chanse = random.randint(1,10)
+    if random_chanse > 7:
+        info_to_display = info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
+    else:
+        info_to_display = ''
 
-    info_to_display = info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
-
-    return print(info_to_display, end=''), dot_loop()
+    return print(info_to_display)
 
 
 def display_hero_chart(hero = None):
@@ -347,11 +351,27 @@ def display_looted_items(add_remove_items_dict):
 
 def display_calendar_location(hero = None):
     '''
-    display short info about day, day time, location
+    display short info about day, day time, location, weather info, eventually random npc statement
     '''
     calendar_list = hero.calendar_list
     location = mod_hero.display_location(hero)
     mod_hero.calendar(calendar_list)
     print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1], hero.calendar_list[2] +", miejsce:", location)
+    display_varied_info()
+    chance_to_random_npc_meet = random.randint(1,100)
+    if chance_to_random_npc_meet > 80:
+        mod_event.event_random_npc(hero = hero)
+    else:
+        print("")
  
     return calendar_list
+
+def display_NPC_random_speach(npc = None):
+    '''
+    display short random npc speach (decorational element)
+    '''
+    speach_index = random.randint(0, len(npc.speach_list)-1)
+    speach_to_display = npc.speach_list[speach_index]
+    print("Napotkany", npc.name, "do Ciebie:", "\x1b[6;30;44m"+speach_to_display + "..."+ "\x1b[0m" )
+
+ 
