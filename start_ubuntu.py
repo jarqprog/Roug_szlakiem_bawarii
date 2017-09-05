@@ -394,7 +394,7 @@ def core(hero, start_time):
                 position_horizontal -= 1
                 map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
         # Hero's actions different than WSAD movement.
-        elif input_char.upper() == b'E':
+        elif input_char.upper() == 'E':
             mod_display.display_hero_chart(hero=hero)
             print("\n\n\n\nWcisnij cokolwiek żeby wyjść.")
             input_char = getch()
