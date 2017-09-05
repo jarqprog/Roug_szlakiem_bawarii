@@ -343,7 +343,7 @@ def core(hero, start_time):
     input_char = "0"
     # If nothing else displayed above map - display calendar.
     mod_display.display_calendar_location(hero = hero)
-    print("\n" * 9)
+    print("\n" * 7)
     with open('Kraina_troli.txt', 'r') as myfile:
         board = myfile.read()
     board = list(board)
