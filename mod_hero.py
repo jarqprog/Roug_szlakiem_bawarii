@@ -51,9 +51,10 @@ class Hero:
         # if hero onbody_dict["prawa ręka"] is empty ("") default attribute is set by function:
         # combat_attribute_default(hero = hero) in this mod
         self.combat_attribute = combat_attribute_default(hero = self)
-        # speach_blocked_list contains speach statements, that have been told by NPC..
-        # if element od NPC speach list is in speach_blocked_list, NPC tells nex element on list
-        self.speach_blocked_list = []
+        # quest_info contains speach statements, that have been told by NPC..
+        # if element od NPC speach list is in value of dict key, key = quest name,
+        # NPC tells next element on list
+        self.quest_info = {}
 
         
 # BOHATER - inicjacja zmiennych ##############################
@@ -154,6 +155,8 @@ def display_location(hero = None):
         return "Kraina Trolli"
     elif hero.location == 3:
         return "Dymiąca Góra"
+    elif hero.location == 4:
+        return "Nawiedzone zamczysko"
 
 
 
@@ -320,6 +323,17 @@ def calendar(calendar_list = None):
     calendar_list.insert(2, time_of_day)
   
     return calendar_list
+
+def quest(hero = None, npc = None):
+    hero = hero_settings()
+    npc = mod_npc.npc_settings()
+    if npc not in hero.quest_info.keys():
+         hero.quest_info[quest_name] = npc.quest_list[0]
+         del npc.quest_list[0]
+    else:
+        hero.quest_info[quest_name].append(npc.quest_list[0])
+    
+    return hero
 
  
 
