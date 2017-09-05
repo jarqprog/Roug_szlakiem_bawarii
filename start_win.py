@@ -51,7 +51,7 @@ def plot():
     delay_print("Karzeł Oblib zwędził mu drogocenną obrączkę - prezent urodziowy od przyjaciela z młodości.\n")
     delay_print("Mullog usycha z żalu, błaga Cię o pomoc.\n")
     delay_print("Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n")
-    print("\n\n\n\n\nWciśnij cokolwiek.")
+    print("Wciśnij cokolwiek.")
     input_char = getch()
     os.system('cls')
 
@@ -130,7 +130,7 @@ def character_choice_screen(hero):
                 print("NIEZNAJOMY")
                 print("\nATRYBUTY:")
                 print("\nSIŁA : 1, ZWINNOŚĆ : 1, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 1\n\n\n")
-                print("To ekran tworzenia postaci.")
+                print("To ekran tworzenia postaci. Dostaniesz do rozdysponowanie 6 punktów.")
                 print("Wciśnij 'y' żeby stworzyć swoją postać, wciśnij coś innego żeby wrócić.")
                 input_char = getch()
                 if input_char.upper() == b'Y':
@@ -312,8 +312,9 @@ def core(hero, start_time):
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
-    print("\n" * 10)
-    with open('mapa_forest.txt', 'r') as myfile:
+    mod_display.display_calendar_location(hero = hero)
+    print("\n" * 9)
+    with open('Kraina_troli.txt', 'r') as myfile:
         board = myfile.read()
     board = list(board)
     position_horizontal = 1
@@ -348,7 +349,8 @@ def core(hero, start_time):
             if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
                 event_result = game_events(map_copy[position_horizontal + (position_vertical - 1) * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
                 map_copy[position_horizontal + position_vertical * 81] = "@"
@@ -357,7 +359,8 @@ def core(hero, start_time):
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
                 event_result = game_events(map_copy[position_horizontal + (position_vertical + 1) * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
                 map_copy[position_horizontal + position_vertical * 81] = "@"
@@ -366,7 +369,8 @@ def core(hero, start_time):
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
                 event_result = game_events(map_copy[(position_horizontal + 1) + position_vertical * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
                 map_copy[position_horizontal + position_vertical * 81] = "@"
@@ -375,7 +379,8 @@ def core(hero, start_time):
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
                 event_result = game_events(map_copy[(position_horizontal - 1) + position_vertical * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
                 map_copy[position_horizontal + position_vertical * 81] = "@"
