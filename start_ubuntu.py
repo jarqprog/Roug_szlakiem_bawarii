@@ -326,7 +326,9 @@ def core(hero, start_time):
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
-    print("\n" * 10)
+    # If nothing else displayed above map - display calendar.
+    mod_display.display_calendar_location(hero = hero)
+    print("\n" * 9)
     with open('mapa_forest.txt', 'r') as myfile:
         board = myfile.read()
     board = list(board)
@@ -362,7 +364,8 @@ def core(hero, start_time):
             if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
                 event_result = game_events(map_copy[position_horizontal + (position_vertical - 1) * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
                 map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
@@ -371,7 +374,8 @@ def core(hero, start_time):
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
                 event_result = game_events(map_copy[position_horizontal + (position_vertical + 1) * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
                 map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
@@ -380,7 +384,8 @@ def core(hero, start_time):
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
                 event_result = game_events(map_copy[(position_horizontal + 1) + position_vertical * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
                 map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
@@ -389,7 +394,8 @@ def core(hero, start_time):
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
                 event_result = game_events(map_copy[(position_horizontal - 1) + position_vertical * 81], hero)
             else:
-                print("\n" * 10)
+                mod_display.display_calendar_location(hero = hero)
+                print("\n" * 9)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
                 map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
