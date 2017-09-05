@@ -38,7 +38,7 @@ class Hero:
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
         self.life_recovery = 3 # define replenish life level after each turn
-        self.turn_counter = 0 # define actual game turn (number of main loop executed)
+        self.calendar_list = [1, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
 
         #self.time_of_day
 
@@ -280,8 +280,47 @@ def hero_creation():
     print("tworzenie bohatera - do zrobienia") # to ja bym zrobił
 
 
+def calendar(hero = None):
+    calendar_list = [1, 'niedziela','poranek']
 
-# zrób hero_coordinates(hero = None)
+
+def calendar(calendar_list = None, location = None):
+    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+    day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
+
+      
+
+    
+    week_index = week_list.index(calendar_list[1])
+    day_index = day_time_list.index(calendar_list[2])
+  
+
+  
+    if calendar_list[2] != day_time_list[3]:
+        time_of_day = day_time_list[day_index+1]
+        
+    else:
+        
+        time_of_day = day_time_list[0]
+        
+        if calendar_list[1] != week_list[6]:
+            day_of_week = week_list[week_index+1]
+            
+        if calendar_list[1] == week_list[6]:
+            day_of_week = week_list[0]
+        del calendar_list[1]
+        calendar_list.insert(1, day_of_week)
+      
+      calendar_list[0] +=1 
+    del calendar_list[2]
+      
+    calendar_list.insert(2, time_of_day)
+
+    print("dzień:", calendar_list[0], ",", calendar_list[1], calendar_list[2], "miejsce:", location)
+  
+    return hero.calendar_list
+
+
         
 
 
