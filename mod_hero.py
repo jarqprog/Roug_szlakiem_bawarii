@@ -310,7 +310,7 @@ def calendar(calendar_list = None):
         del calendar_list[1]
         calendar_list.insert(1, day_of_week)
       
-    calendar_list[0] +=1 
+        calendar_list[0] +=1 
     del calendar_list[2]
       
     calendar_list.insert(2, time_of_day)
