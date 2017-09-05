@@ -38,7 +38,7 @@ class Hero:
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
         self.life_recovery = 3 # define replenish life level after each turn
-        self.calendar_list = [1, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
+        self.calendar_list = [0, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
 
         #self.time_of_day
 
@@ -70,6 +70,7 @@ def hero_settings():
     
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
+    hero.calendar_list = [1, "niedziela", "wieczór"] 
 
 
     
@@ -144,12 +145,10 @@ def display_gold(hero = None):
 
 def display_location(hero = None):
     if hero.location == 1:
-        return "Łotrzykowa Dolina"
-    elif hero.location == 2:
         return "Niezmierzony Las"
+    elif hero.location == 2:
+        return "Kraina Trolli"
     elif hero.location == 3:
-        return "Kraina Gigantów"
-    elif hero.location == 4:
         return "Dymiąca Góra"
 
 
@@ -284,7 +283,7 @@ def calendar(hero = None):
     calendar_list = [1, 'niedziela','poranek']
 
 
-def calendar(calendar_list = None, location = None):
+def calendar(calendar_list = None):
     week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
 
@@ -311,15 +310,14 @@ def calendar(calendar_list = None, location = None):
         del calendar_list[1]
         calendar_list.insert(1, day_of_week)
       
-      calendar_list[0] +=1 
+    calendar_list[0] +=1 
     del calendar_list[2]
       
     calendar_list.insert(2, time_of_day)
-
-    print("dzień:", calendar_list[0], ",", calendar_list[1], calendar_list[2], "miejsce:", location)
   
-    return hero.calendar_list
+    return calendar_list
 
+ 
 
         
 

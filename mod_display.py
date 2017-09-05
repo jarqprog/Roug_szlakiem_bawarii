@@ -345,3 +345,13 @@ def display_looted_items(add_remove_items_dict):
         total_number_of_items += int(add_remove_items_dict[item])
     pause()
 
+def display_calendar_location(hero = None):
+    '''
+    display short info about day, day time, location
+    '''
+    calendar_list = hero.calendar_list
+    location = mod_hero.display_location(hero)
+    mod_hero.calendar(calendar_list)
+    print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1], hero.calendar_list[2] +", miejsce:", location)
+ 
+    return calendar_list
