@@ -28,7 +28,7 @@ def delay_print(s):
 def developers():
     ''' Returns info about authors screen. '''
     print("Wciśnij cokolwiek!")
-    delay_print("\n\n\n     Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n       PRZEDSTAWIAJĄ:")
+    delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "PRZEDSTAWIAJĄ:")
     input_char = getch()
     os.system('cls')
 
@@ -269,7 +269,24 @@ def game_events(position, hero):
     enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
     enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
-    if position == "N":
+    # 1st level events:
+    if position == "M":
+        print("\n" * 9)
+        print("Trafiłeś NA DZIWNY MIŚ.")
+    elif position == "L":
+        print("\n" * 9)
+        print("Trafiłeś NA LEŚNICZY.")
+    elif position == "R":
+        print("\n" * 9)
+        print("Trafiłeś OBÓZ NIESŁUSZNIE ROZBITYCH.")
+    elif position == "D":
+        print("\n" * 9)
+        print("Trafiłeś NA DOM BABCI.")
+    elif position == "Z":
+        print("\n" * 9)
+        print("Trafiłeś NA ZŁY WILK.")
+    # 2nd level events:
+    elif position == "N":
         print("\n" * 7)
         print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
         print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
@@ -301,27 +318,44 @@ def game_events(position, hero):
                               hero=hero)
         os.system('cls')
         print("\n" * 10)
+    # 3rd level events:
+    elif position == "P":
+        print("\n" * 9)
+        print("Trafiłeś NA PRZEŁĘCZ ZGUBY.")
+    elif position == "S":
+        print("\n" * 9)
+        print("Trafiłeś NA SZCZYT ROZPACZY.")
+    elif position == "F":
+        print("\n" * 9)
+        print("Trafiłeś NA FASOLOWE POLE.")
+    elif position == "C":
+        print("\n" * 9)
+        print("Trafiłeś NA CHATA PUSTELNIKA.")
+    # 4th level events:
+    elif position == "B":
+        print("\n" * 9)
+        print("Trafiłeś NA BOSS.")
+    # For all maps:
     else:
         print("\n" * 9)
         print("Nie mozesz sie tu ruszyc")
 
 
-def core(hero, start_time):
+def core(hero, start_time, board):
     """ Major loop of the whole game. """
     # General comment - lines above the map always = 10.
     event_result = None
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
+    # If nothing else displayed above map - display calendar.
     mod_display.display_calendar_location(hero = hero)
     print("\n" * 7)
-    with open('Kraina_troli.txt', 'r') as myfile:
+    with open(board, 'r') as myfile:
         board = myfile.read()
     board = list(board)
     position_horizontal = 1
     position_vertical = 18
-    lenght_of_the_map_plus_one = 81
-    map_copy = board[:]
-    map_copy[position_horizontal + position_vertical * 81] = "@"
+    board[position_horizontal + position_vertical * 81] = "@"
     while True:
         if input_char.upper() in [b'W', b'S', b'D', b'A']:
             # Event_results for:
@@ -336,7 +370,7 @@ def core(hero, start_time):
                 hero.attrib_dict["percepcja"] += 2
         # Event_results value reset.
         event_result = None
-        print("".join(map_copy))
+        print("".join(board))
         print("\nWciśnij W, S, A, D - poruszanie się, 'e' - karta bohatera, 'z' - dziennik, 'p' - pomoc, ")
         print("'g' - zapis gry, 'l' - legenda, 'k' - atrybuty lub '0' - wyjście z gry.")
         print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
@@ -344,46 +378,47 @@ def core(hero, start_time):
         print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
         print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|")
         input_char = getch()
+        # 81 - length of the map.
         if input_char.upper() == b'W':
             os.system('cls')
-            if map_copy[position_horizontal + (position_vertical - 1) * 81] != ".":
-                event_result = game_events(map_copy[position_horizontal + (position_vertical - 1) * 81], hero)
+            if board[position_horizontal + (position_vertical - 1) * 81] != ".":
+                event_result = game_events(board[position_horizontal + (position_vertical - 1) * 81], hero)
             else:
                 mod_display.display_calendar_location(hero = hero)
-                print("\n" * 9)
-                map_copy[position_horizontal + position_vertical * 81] = "."
+                print("\n" * 7)
+                board[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                board[position_horizontal + position_vertical * 81] = "@"
         elif input_char.upper() == b'S':
             os.system('cls')
-            if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
-                event_result = game_events(map_copy[position_horizontal + (position_vertical + 1) * 81], hero)
+            if board[position_horizontal + (position_vertical + 1) * 81] != ".":
+                event_result = game_events(board[position_horizontal + (position_vertical + 1) * 81], hero)
             else:
                 mod_display.display_calendar_location(hero = hero)
-                print("\n" * 9)
-                map_copy[position_horizontal + position_vertical * 81] = "."
+                print("\n" * 7)
+                board[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                board[position_horizontal + position_vertical * 81] = "@"
         elif input_char.upper() == b'D':
             os.system('cls')
-            if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
-                event_result = game_events(map_copy[(position_horizontal + 1) + position_vertical * 81], hero)
+            if board[(position_horizontal + 1) + position_vertical * 81] != ".":
+                event_result = game_events(board[(position_horizontal + 1) + position_vertical * 81], hero)
             else:
                 mod_display.display_calendar_location(hero = hero)
-                print("\n" * 9)
-                map_copy[position_horizontal + position_vertical * 81] = "."
+                print("\n" * 7)
+                board[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                board[position_horizontal + position_vertical * 81] = "@"
         elif input_char.upper() == b'A':
             os.system('cls')
-            if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
-                event_result = game_events(map_copy[(position_horizontal - 1) + position_vertical * 81], hero)
+            if board[(position_horizontal - 1) + position_vertical * 81] != ".":
+                event_result = game_events(board[(position_horizontal - 1) + position_vertical * 81], hero)
             else:
                 mod_display.display_calendar_location(hero = hero)
-                print("\n" * 9)
-                map_copy[position_horizontal + position_vertical * 81] = "."
+                print("\n" * 7)
+                board[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
-                map_copy[position_horizontal + position_vertical * 81] = "@"
+                board[position_horizontal + position_vertical * 81] = "@"
         # Hero's actions different than WSAD movement.
         elif input_char.upper() == b'E':
             mod_display.display_hero_chart(hero=hero)
@@ -405,14 +440,14 @@ def core(hero, start_time):
             print("Tu powinien być zapis gry")
         elif input_char.upper() == b'L':
             os.system('cls')
-            print("\n")
-            print("Legenda:\n")
-            print("W = Wioska Szwarzwald")
-            print("? = Niespodzianka")
-            print("M = Most trolla Silnorękiego")
-            print("+ = Zródło życia")
-            print("G = Gaj Łotrzyków")
-            print("N = NPC")
+            print("Legenda:\n\n")
+            print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
+            print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
+            print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
+            print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "M = Most trolla Silnorękiego")
+            print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
+            print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
+            print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
             print("C = Zimno/ ciepła niespodzianka Mariana. Spotkania z nim prowadzą do zmian w percepcji.")
         elif input_char.upper() == 'K':
             os.system('clear')
@@ -496,7 +531,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\n\n\nJak Cię zwą?: ")
     os.system('cls')
-    core(starting_atributes, start_time)
+    core(starting_atributes, start_time, "Dymiąca_góra.txt")
 
 
 main()
