@@ -277,7 +277,7 @@ def game_events(position, hero):
     elif position == "W":
         print("\n" * 9)
         print("Trafiłeś do wioski Szwarzwald")
-    elif position == "C":
+    elif position == "H":
         print("\n" * 6)
         delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
         delay_print("Czas na gre hot and cold. ")
@@ -290,7 +290,7 @@ def game_events(position, hero):
     elif position == "G":
         print("\n" * 9)
         print("Trafiłeś do gaju Łotrzyków.")
-    elif position == "M":
+    elif position == "T":
         print("\n" * 9)
         print("Most pilnowany przez trolla Silnorękiego")
     elif position == "+":

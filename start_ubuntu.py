@@ -19,6 +19,7 @@ os.system('clear')
 def delay_print(s):
     ''' Delays printing. '''
     for c in s:
+        #if input_char
         sys.stdout.write('%s' % c)
         sys.stdout.flush()
         time.sleep(0.004)
@@ -286,6 +287,14 @@ def game_events(position, hero):
     enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
     enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
+    # 1st level events:
+        #if position == "W":
+        #print("\n" * 9)
+        #print("Trafiłeś do wioski Szwarzwald")
+        #elif position == "W":
+        #print("\n" * 9)
+        #print("Trafiłeś do wioski Szwarzwald")
+    # 2nd level events:
     if position == "N":
         print("\n" * 7)
         print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
@@ -294,7 +303,7 @@ def game_events(position, hero):
     elif position == "W":
         print("\n" * 9)
         print("Trafiłeś do wioski Szwarzwald")
-    elif position == "C":
+    elif position == "H":
         print("\n" * 6)
         delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
         delay_print("Czas na gre hot and cold. ")
@@ -307,7 +316,7 @@ def game_events(position, hero):
     elif position == "G":
         print("\n" * 9)
         print("Trafiłeś do gaju Łotrzyków.")
-    elif position == "M":
+    elif position == "T":
         print("\n" * 9)
         print("Most pilnowany przez trolla Silnorękiego")
     elif position == "+":
@@ -318,6 +327,9 @@ def game_events(position, hero):
                               hero=hero)
         os.system('clear')
         print("\n" * 10)
+    # 3rd level events:
+    # 4th level events:
+    # For all maps:
     else:
         print("\n" * 9)
         print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
