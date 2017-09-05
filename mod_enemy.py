@@ -1,5 +1,5 @@
 
-# mod_varied_info - custom mod, contains enemy data
+# mod_enemy - custom mod, contains enemy data
 # function enemy_settings(name = None, loc = None, lvl = None, gen = None) load specified or random oponent to main
 
 import random
@@ -72,9 +72,9 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
     #   Szczurołak
     ratman = Enemy(u"szczurołak",3, 1, 0, "animal", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [1,2])
-    ratman.attrib_dict = {u"siła":1, "zwinność":4, "percepcja":1, "inteligencja":1, "siła woli":1}
+    ratman.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":1, "inteligencja":1, "siła woli":1}
     ratman.speach_list = [u"wrrrr", "(sapie)"]
-    ratman.specials_list = [u"szybki jest!"]
+    ratman.specials_list = [u"dość szybki jest!"]
     ratman.maxdrop = 0
 
     # Goblin
@@ -201,8 +201,9 @@ def combat_attribute_default(enemy = None):
 def enemy_info(enemy = None):    
     '''display shot info about enemy (imported from enemy specials_list and speach_list)'''
     if len(enemy.speach_list) > 0:
-        print(enemy.name,"do Ciebie:",'"'+enemy.speach_list[random.randint(0, len(enemy.speach_list)-1)]+'"'+'\n')
+        print(enemy.name,"do Ciebie:",'"'+"\x1b[6;30;44m"+enemy.speach_list[random.randint(0, len(enemy.speach_list)-1)]+ "\x1b[0m"+'"'+'\n')
     if len(enemy.specials_list) > 0:
         print(enemy.name,"ma właściwość:",enemy.specials_list[random.randint(0, len(enemy.specials_list)-1)])
+
 
 

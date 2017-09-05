@@ -1,7 +1,7 @@
 
 # mod_hero - custom mod, contains hero data
 
-import mod_items, math
+import mod_items, math, mod_npc
 
 
 ################################ Hero class:
@@ -51,6 +51,10 @@ class Hero:
         # if hero onbody_dict["prawa ręka"] is empty ("") default attribute is set by function:
         # combat_attribute_default(hero = hero) in this mod
         self.combat_attribute = combat_attribute_default(hero = self)
+        # speach_blocked_list contains speach statements, that have been told by NPC..
+        # if element od NPC speach list is in speach_blocked_list, NPC tells nex element on list
+        self.speach_blocked_list = []
+
         
 # BOHATER - inicjacja zmiennych ##############################
 
