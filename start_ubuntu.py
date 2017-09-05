@@ -399,6 +399,7 @@ def core(hero, start_time):
             print("\n\n\n\nWcisnij cokolwiek żeby wyjść.")
             input_char = getch()
             os.system('clear')
+            print("\n" * 10)
         elif input_char.upper() == 'Z':
             os.system('clear')
             print("\n" * 9)
