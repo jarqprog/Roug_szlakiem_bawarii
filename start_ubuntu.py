@@ -59,19 +59,19 @@ def character_choice_screen(hero):
     """ Returns hero's starting atributes. """
     while True:
         os.system('clear')
-        print("\n _    _       _                                  _             _ ")
-        print("| |  | |     | |                                | |           (_)")
-        print("| |  | |_   _| |__   ___  _ __   _ __   ___  ___| |_ __ _  ___ _ ")
-        print("| |/\| | | | | '_ \ / _ \| '__| | '_ \ / _ \/ __| __/ _` |/ __| |")
-        print("\  /\  / |_| | |_) | (_) | |    | |_) | (_) \__ \ || (_| | (__| |")
-        print(" \/  \/ \__, |_.__/ \___/|_|    | .__/ \___/|___/\__\__,_|\___|_|")
-        print("         __/ |                  | |                              ")
-        print("        |___/                   |_|                              \n\n")
+        print("\x1b[6;30;45m" + "\n _    _       _                                  _             _ " + "\x1b[0m")
+        print("\x1b[6;30;45m" + "| |  | |     | |                                | |           (_)" + "\x1b[0m")
+        print("\x1b[6;30;45m" + "| |  | |_   _| |__   ___  _ __   _ __   ___  ___| |_ __ _  ___ _ " + "\x1b[0m")
+        print("\x1b[6;30;45m" + "| |/\| | | | | '_ \ / _ \| '__| | '_ \ / _ \/ __| __/ _` |/ __| |" + "\x1b[0m")
+        print("\x1b[6;30;45m" + "\  /\  / |_| | |_) | (_) | |    | |_) | (_) \__ \ || (_| | (__| |" + "\x1b[0m")
+        print("\x1b[6;30;45m" + " \/  \/ \__, |_.__/ \___/|_|    | .__/ \___/|___/\__\__,_|\___|_|" + "\x1b[0m")
+        print("\x1b[6;30;45m" + "         __/ |                  | |                              " + "\x1b[0m")
+        print("\x1b[6;30;45m" + "        |___/                   |_|                              \n\n" + "\x1b[0m")
         delay_print("Wybierz swoje przeznaczenie:\n")
-        delay_print("\n1. WOJOWNIK\n")
-        delay_print("\n2. ŁOWCA\n")
-        delay_print("\n3. NINJA\n")
-        delay_print("\n4. STWÓRZ WŁASNĄ POSTAĆ\n")
+        delay_print("\x1b[6;30;41m" + "\n1. WOJOWNIK\n" + "\x1b[0m")
+        delay_print("\x1b[6;30;42m" + "\n2. ŁOWCA\n" + "\x1b[0m")
+        delay_print("\x1b[6;30;44m" + "\n3. NINJA\n" + "\x1b[0m")
+        delay_print("\x1b[6;30;43m" + "\n4. STWÓRZ WŁASNĄ POSTAĆ\n" + "\x1b[0m")
         input_char = getch()
         if input_char.upper() == '1':
             os.system('clear')
@@ -317,7 +317,7 @@ def game_events(position, hero):
         print("\n" * 10)
     else:
         print("\n" * 9)
-        print("Nie mozesz sie tu ruszyc")
+        print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
 
 
 def core(hero, start_time):
@@ -334,7 +334,7 @@ def core(hero, start_time):
     position_vertical = 18
     lenght_of_the_map_plus_one = 81
     map_copy = board[:]
-    map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
+    map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
     while True:
         if input_char.upper() in [b'W', b'S', b'D', b'A']:
             # Event_results for:
@@ -365,7 +365,7 @@ def core(hero, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
-                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
+                map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == 'S':
             os.system('clear')
             if map_copy[position_horizontal + (position_vertical + 1) * 81] != ".":
@@ -374,7 +374,7 @@ def core(hero, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
-                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
+                map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == 'D':
             os.system('clear')
             if map_copy[(position_horizontal + 1) + position_vertical * 81] != ".":
@@ -383,7 +383,7 @@ def core(hero, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
-                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
+                map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == 'A':
             os.system('clear')
             if map_copy[(position_horizontal - 1) + position_vertical * 81] != ".":
@@ -392,7 +392,7 @@ def core(hero, start_time):
                 print("\n" * 10)
                 map_copy[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
-                map_copy[position_horizontal + position_vertical * 81] = ('\x1b[6;30;42m' + "@" + '\x1b[0m')
+                map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         # Hero's actions different than WSAD movement.
         elif input_char.upper() == 'E':
             mod_display.display_hero_chart(hero=hero)
@@ -504,7 +504,7 @@ def main():
     starting_atributes = character_choice_screen(hero)
     controls()
     start_time = datetime.datetime.now()
-    hero.name = input("\n\n\nJak Cię zwą?: ")
+    hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
     os.system('clear')
     core(starting_atributes, start_time)
 
