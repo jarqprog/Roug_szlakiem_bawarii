@@ -26,7 +26,7 @@ def delay_print(s):
 
 def developers():
     ''' Returns info about authors screen. '''
-    print("Wciśnij cokolwiek!")
+    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     delay_print("\n\n\n     Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n       PRZEDSTAWIAJĄ:")
     input_char = getch()
     os.system('clear')
@@ -39,18 +39,21 @@ def title_screen():
     delay_print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | \n")
     delay_print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
     delay_print("\nROGUELIKE EXPERIENCE\n\n")
-    print("Wciśnij cokolwiek.")
+    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system('clear')
 
 
 def plot():
     ''' Returns plot screen.'''
-    delay_print("\n\n\n\n\nDawno, dawno temu w Bawarii...Twój przyjaciel, pustelnik Mullog, został okradziony.\n")
-    delay_print("Karzeł Oblib zwędził mu drogocenną obrączkę - prezent urodziowy od przyjaciela z młodości.\n")
-    delay_print("Mullog usycha z żalu, błaga Cię o pomoc.\n")
-    delay_print("Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n")
-    print("\n\n\n\n\nWciśnij cokolwiek.")
+    print("\n\n\n\n\n")
+    delay_print("\x1b[6;30;43m" + "Dawno, dawno temu w Bawarii...Twój przyjaciel, pustelnik Mullog, został okradziony.\n"
+                + "\x1b[0m")
+    delay_print("\x1b[6;30;43m" + "Karzeł Oblib zwędził mu drogocenną obrączkę - prezent urodziowy od przyjaciela z młodości.\n"
+                + "\x1b[0m")
+    delay_print("\x1b[6;30;43m" + "Mullog usycha z żalu, błaga Cię o pomoc.\n" + "\x1b[0m")
+    delay_print("\x1b[6;30;43m" + "Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n" + "\x1b[0m")
+    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system('cls')
 
@@ -129,7 +132,7 @@ def character_choice_screen(hero):
                 print("NIEZNAJOMY")
                 print("\nATRYBUTY:")
                 print("\nSIŁA : 1, ZWINNOŚĆ : 1, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 1\n\n\n")
-                print("To ekran tworzenia postaci.")
+                print("To ekran tworzenia postaci. Dostaniesz do rozdysponowanie 6 punktów.")
                 print("Wciśnij 'y' żeby stworzyć swoją postać, wciśnij coś innego żeby wrócić.")
                 input_char = getch()
                 if input_char.upper() == 'Y':
@@ -177,13 +180,13 @@ def character_choice_screen(hero):
                     print("INTELIGENCJA", brainpower, "SIŁA WOLI", willpower)
                     klasa = input("Klasa postaci w której czujesz się najlepiej to: ")
                     klasa = klasa.upper()
-                    print("Wybrałeś swoje przeznaczenie. Wciśnij cokolwiek, żeby rozpocząc gre.")
+                    print("\x1b[6;30;42m" + "Wybrałeś swoje przeznaczenie. Wciśnij coś i rozpocznij gre!." + "\x1b[0m")
                     input_char = getch()
                     os.system('clear')
                     created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
                                          "inteligencja": brainpower, "siła woli": willpower}
                     hero.attrib_dict.update(created_attr_dict)
-                    hero.proffession = "Cień"
+                    hero.proffession = klasa
                     return hero
         else:
             continue
@@ -207,7 +210,7 @@ def getch():
 def controls():
     ''' Returns controls screen. '''
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W, S, A, D\nZaawansowane sterowanie jest pod mapką.")
-    print("Wciśnij cokolwiek.")
+    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system('clear')
 
@@ -295,10 +298,10 @@ def game_events(position, hero):
         print("\n" * 6)
         delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
         delay_print("Czas na gre hot and cold. ")
-        delay_print("Nacisnij cokolwiek, żeby zacząć.")
+        delay_print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby zacząć." + "\x1b[0m")
         input_char = getch()
         difficulty_choice = hot_warm_cold()
-        os.system('cls')
+        os.system('clear')
         print("\n" * 10)
         return difficulty_choice
     elif position == "G":
@@ -329,7 +332,7 @@ def core(hero, start_time):
     # If nothing else displayed above map - display calendar.
     mod_display.display_calendar_location(hero = hero)
     print("\n" * 9)
-    with open('mapa_forest.txt', 'r') as myfile:
+    with open('Kraina_troli.txt', 'r') as myfile:
         board = myfile.read()
     board = list(board)
     position_horizontal = 1
@@ -338,7 +341,7 @@ def core(hero, start_time):
     map_copy = board[:]
     map_copy[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
     while True:
-        if input_char.upper() in [b'W', b'S', b'D', b'A']:
+        if input_char.upper() in ['W', 'S', 'D', 'A']:
             # Event_results for:
             #           1. Hot_and_cold mini-game.
             if event_result == 0:
@@ -402,7 +405,7 @@ def core(hero, start_time):
         # Hero's actions different than WSAD movement.
         elif input_char.upper() == 'E':
             mod_display.display_hero_chart(hero=hero)
-            print("\n\n\n\nWcisnij cokolwiek żeby wyjść.")
+            print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby wyjść." + "\x1b[0m")
             input_char = getch()
             os.system('clear')
             print("\n" * 10)
@@ -470,7 +473,7 @@ def core(hero, start_time):
                                   str(hero.profession)]
                     user_score = "        ".join(user_score)
                     HALL_OF_FAME.write(str(user_score) + "\n")
-                    print("\n\nNacisnij cokolwiek")
+                    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
                     input_char = getch()
                 with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
                     os.system('clear')
@@ -482,7 +485,7 @@ def core(hero, start_time):
                     for i in HALL_OF_FAME:
                         print(list_place, ".", "".join(i))
                         list_place += 1
-                    print("\n\n\nNacisnij cokolwiek")
+                    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
                     input_char = getch()
                     os.system('cls')
                     break
