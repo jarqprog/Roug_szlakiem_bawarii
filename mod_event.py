@@ -260,9 +260,7 @@ def event_npc(npc = None, hero = None):
     # random generate enemy (using filters):
     npc = mod_npc.npc_settingsnpc_settings(name = npc.name, loc = None, gen = None)
     print(npc.speach_list)
-    ##### tutaj wyświetlamy funkcje display
-    mod_display.pause()
-    mod_display.clear_screen()
+
 
 
 def event_random_npc(hero = None):
@@ -272,9 +270,7 @@ def event_random_npc(hero = None):
     # random generate enemy (using filters):
     npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
     mod_display.display_NPC_random_speach(npc = npc)
-    ##### tutaj wyświetlamy funkcje display
-    mod_display.pause()
-    mod_display.clear_screen()
+
 
 
 def event_choose(hero = None, location = None):
