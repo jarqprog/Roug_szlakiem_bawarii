@@ -395,8 +395,13 @@ def display_event_quest(npc = None, hero = None):
                     info_to_display = (element +". Gratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
                     hero.actualExp += npc.xp_reward
                     hero.quest_completed_list.append(npc.quest_name)
-                    if "portal" in npc.quest_special_reward:
-                        hero.location += 1
+                    if "portal 2" in npc.quest_special_reward:
+                        hero.new_location = 2
+                    elif "portal 3" in npc.quest_special_reward:
+                        hero.new_location = 3
+                    elif "portal 4" in npc.quest_special_reward:
+                        hero.new_location = 4
+
                 else:             
                     info_to_display = element
                 

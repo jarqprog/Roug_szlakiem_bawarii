@@ -118,13 +118,13 @@ def npc_settings(name = None, loc = None, gen = None):
     forester.xp_reward = 100
     forester.quest_name = "Narzędzia pomiarowe"
     forester.quest_list = [
-        "Słyszałem o Tobie - może mi pomożesz... Złodziejski Miś ukradł mi narzędzia pomiarowe, nie mogę wykonać swojej pracy. Jeśli mi pomożesz, pokażę Ci drogę do nastęþnej krainy",
+        "Słyszałem o Tobie - może mi pomożesz... Złodziejski Miś ukradł mi narzędzia pomiarowe, nie mogę wykonać swojej pracy. Jeśli mi pomożesz, pokażę Ci drogę do nastęþnej krainy..",
         "Brawo, bardzo Ci dziękuję. Czas na Twoją nagrodę!"    
     ]
     
     forester.quest_condition = "Zdobyto narzędzia pomiarowe"
     forester.inventory_dict = {"diament":1, "liczydło":-1, "lina pomiarowa":-1}
-    forester.quest_special_reward = ["portal"]
+    forester.quest_special_reward = ["portal 2"]
 
 
     # obóz Nieszłusznie rozbitych

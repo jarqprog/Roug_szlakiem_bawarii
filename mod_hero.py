@@ -368,13 +368,25 @@ def hero_life_regeneration(hero = None):
               
     return hero
 
-def portal_to_next_location(hero = None):
-    
+def portal_to_next_location(hero = None):  
     '''
-
+    check if it's time to teleport hero to new location, if True: teleport hero
     '''
+    if hero.location != hero.new_location:
+        hero.location = hero.new_location
 
-    set_map(hero = hero, board = NAZWA NASTEPNEJ MAPY)
+        if "portal 2" in npc.quest_special_reward:
+            board = 2
+        elif "portal 3" in npc.quest_special_reward:
+            board = 3
+        elif "portal 4" in npc.quest_special_reward:
+            board = 4
+
+        print(hero.location, hero.new_location, "teleport", board)
+        mod_display.pause()
+        #set_map(hero = hero, board = NAZWA NASTEPNEJ MAPY)
+
+    return hero
 
 
 
