@@ -50,6 +50,27 @@ def display_varied_info():
 
     return print(info_to_display)
 
+def display_quest_log(hero = None):
+    
+    clear_screen()
+    print('\n\x1b[6;31;47m'+hero.name+", zadania do wykonania:\x1b[0m\n")
+    if len(hero.quest_info) > 0:
+        for quest_name in hero.quest_info.keys():
+            if quest_name not in hero.quest_completed_list:
+                print(' \x1b[6;30;44m'+quest_name+':\x1b[0m')
+                for npc_statment in hero.quest_info[quest_name]:
+                    print(npc_statment,'\n')
+    if len(hero.quest_completed_list) > 0:
+        print("\n\n\x1b[6;31;47m, zadania wykonane:\x1b[0m\n")
+        for quest_name in hero.quest_info.keys():
+                if quest_name in hero.quest_completed_list:
+                    print(' \x1b[6;30;44m'+quest_name+':\x1b[0m')
+                    for npc_statment in hero.quest_info[quest_name]:
+                        print(npc_statment,'\n')
+
+    dot_loop()
+    pause()
+
 
 def display_hero_chart(hero = None):
     """display hero's chart - attributes, inventory items, wearing items"""
