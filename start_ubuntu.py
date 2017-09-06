@@ -92,7 +92,7 @@ def character_choice_screen(hero):
                     hero.attrib_dict.update(warrior_attr_dict)
                     hero.proffession = "Wojownik"
                     return hero
-        if input_char.upper() == "2":
+        elif input_char.upper() == "2":
             os.system("clear")
             with open("2. ŁOWCA.txt", "r") as myfile:
                 picture = myfile.read()
@@ -108,7 +108,7 @@ def character_choice_screen(hero):
                     hero.attrib_dict.update(hunter_attr_dict)
                     hero.proffession = "Łowca"
                     return hero
-        if input_char.upper() == "3":
+        elif input_char.upper() == "3":
             os.system("clear")
             with open("3. NINJA.txt", "r") as myfile:
                 picture = myfile.read()
@@ -124,7 +124,7 @@ def character_choice_screen(hero):
                     hero.attrib_dict.update(ninja_attr_dict)
                     hero.proffession = "Ninja"
                     return hero
-        if input_char.upper() == "4":
+        elif input_char.upper() == "4":
             os.system("clear")
             with open("4. STWORZONA POSTAĆ.txt", "r") as myfile:
                 picture = myfile.read()
@@ -166,19 +166,19 @@ def create_character(hero):
                 strenght += 1
                 points -= 1
                 continue
-            if input_char.upper() == "Z":
+            elif input_char.upper() == "Z":
                 agility += 1
                 points -= 1
                 continue
-            if input_char.upper() == "P":
+            elif input_char.upper() == "P":
                 cognition += 1
                 points -= 1
                 continue
-            if input_char.upper() == "I":
+            elif input_char.upper() == "I":
                 brainpower += 1
                 points -= 1
                 continue
-            if input_char.upper() == "W":
+            elif input_char.upper() == "W":
                 willpower += 1
                 points -= 1
                 continue
@@ -243,11 +243,11 @@ def hot_warm_cold():
             print("\nMasz 15 prób. Jak zgadniejsz, dostaniesz punkt PERCEPCJI.")
             difficulty_choice = 15
             break
-        if difficulty_choice == "2":
+        elif difficulty_choice == "2":
             print("\nMasz 10 prób. Jak zgadniejsz, dostaniesz 2 punkty PERCEPCJI.")
             difficulty_choice = 10
             break
-        if difficulty_choice == "3":
+        elif difficulty_choice == "3":
             print("\nMasz 5 prób. Jak zgadniejsz, dostaniesz 3 punkty PERCEPCJI.")
             difficulty_choice = 5
             break
@@ -296,7 +296,7 @@ def hot_warm_cold_boss(hero, start_time):
     os.system("clear")
     with open("wizard.txt", "r") as wizard:
         picture = wizard.read()
-    print("\x1b[6;30;41m" + picture + "\x1b[0m")
+    print("\x1b[6;30;42m" + picture + "\x1b[0m")
     correct_answer = []
     numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     # Collecting random choices.
@@ -466,7 +466,7 @@ def hall_of_fame(hero, start_time):
         print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
         input_char = getch()
         os.system("clear")
-        if  input_char.upper() == "Y":
+        if input_char.upper() == "Y":
             main()
         else:
             sys.exit()
@@ -525,16 +525,17 @@ def movement(hero, start_time, board, position_horizontal, position_vertical):
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
     event_result = None
+    mod_hero.hero_life_regeneration(hero)
     while True:
         if input_char.upper() in ["W", "S", "D", "A"]:
             # Event_results for hot_and_cold mini-game.
             if event_result == 0:
                 hero.attrib_dict["percepcja"] += 1
-            elif event_result == 5:
+            if event_result == 5:
                 hero.attrib_dict["percepcja"] += 4
-            elif event_result == 10:
+            if event_result == 10:
                 hero.attrib_dict["percepcja"] += 3
-            elif event_result == 15:
+            if event_result == 15:
                 hero.attrib_dict["percepcja"] += 2
         # Event_results value reset.
         event_result = None
@@ -588,10 +589,10 @@ def movement(hero, start_time, board, position_horizontal, position_vertical):
                 position_horizontal -= 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         else:
-            input_char_not_movement(hero, start_time, board, input_char, event_result)
+            input_char_not_movement(hero, start_time, board, input_char, event_result, position_horizontal, position_vertical)
 
 
-def input_char_not_movement(hero, start_time, board, input_char, event_result):
+def input_char_not_movement(hero, start_time, board, input_char, event_result, position_horizontal, position_vertical):
     """ Returns input_char result different than movement. """
     if input_char.upper() == "E":
         mod_display.display_hero_chart(hero=hero)
@@ -642,13 +643,12 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result):
         else:
             os.system("clear")
             print("\n" * 10)
-            movement(hero, start_time, board)
+            movement(hero, start_time, board, position_horizontal, position_vertical)
     else:
         os.system("clear")
         print("\n" * 10)
-        movement(hero, start_time, board)
+        movement(hero, start_time, board, position_horizontal, position_vertical)
 
-################## mod_hero.hero_life_regeneration(hero) - na koniec pętli.
 
 def main():
     # Hero class import to main:
