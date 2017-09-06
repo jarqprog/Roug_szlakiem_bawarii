@@ -499,7 +499,8 @@ def main_loop(hero, start_time, board):
                     HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
                     list_place = 1
                     for i in HALL_OF_FAME:
-                        print(list_place, ".", "".join(i))
+                        # Format list place display to {:04d}.
+                        print('{:04d}'.format(list_place), ".", "".join(i))
                         list_place += 1
                     print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
                     input_char = getch()

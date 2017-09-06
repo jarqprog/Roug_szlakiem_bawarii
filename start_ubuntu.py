@@ -59,7 +59,7 @@ def plot():
 
 
 def character_choice_screen(hero):
-    """ Returns hero's starting atributes. """
+    """ Returns starting attributes. """
     while True:
         os.system("clear")
         print("\x1b[6;30;45m" + "\n _    _       _                                  _             _ " + "\x1b[0m")
@@ -136,61 +136,67 @@ def character_choice_screen(hero):
                 print("Wciśnij 'y' żeby stworzyć swoją postać, wciśnij coś innego żeby wrócić.")
                 input_char = getch()
                 if input_char.upper() == "Y":
-                    os.system("clear")
-                    strenght = 1
-                    agility = 1
-                    cognition = 1
-                    brainpower = 1
-                    willpower = 1
-                    points = 6
-                    while True:
-                        os.system("clear")
-                        if points == 0:
-                            break
-                        else:
-                            print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
-                            print("INTELIGENCJA", brainpower, "SIŁA WOLI", willpower)
-                            print("Masz", points, "punktów atrybutów do rozdysponowania.")
-                            print("Wciśnij 's', 'z', 'p', 'i', 'w' żeby dodać punkt do atrybutu")
-                            print("kolejno: siły, zwinności, percepcji, inteligencji, siły woli.")
-                            input_char = getch()
-                            if input_char.upper() == "S":
-                                strenght += 1
-                                points -= 1
-                                continue
-                            if input_char.upper() == "Z":
-                                agility += 1
-                                points -= 1
-                                continue
-                            if input_char.upper() == "P":
-                                cognition += 1
-                                points -= 1
-                                continue
-                            if input_char.upper() == "I":
-                                brainpower += 1
-                                points -= 1
-                                continue
-                            if input_char.upper() == "W":
-                                willpower += 1
-                                points -= 1
-                                continue
-                            else:
-                                continue
-                    print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
-                    print("INTELIGENCJA", brainpower, "SIŁA WOLI", willpower)
-                    klasa = input("Klasa postaci w której czujesz się najlepiej to: ")
-                    klasa = klasa.upper()
-                    print("\x1b[6;30;42m" + "Wybrałeś swoje przeznaczenie. Wciśnij coś i rozpocznij gre!." + "\x1b[0m")
-                    input_char = getch()
-                    os.system("clear")
-                    created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
-                                         "inteligencja": brainpower, "siła woli": willpower}
-                    hero.attrib_dict.update(created_attr_dict)
-                    hero.proffession = klasa
-                    return hero
+                    character_created = create_character(hero)
+                    return character_created
         else:
             continue
 
+
+def create_character(hero):
+    ''' Returns created character. '''
+    os.system("clear")
+    strenght = 1
+    agility = 1
+    cognition = 1
+    brainpower = 1
+    willpower = 1
+    points = 6
+    while True:
+        os.system("clear")
+        if points == 0:
+            break
+        else:
+            print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
+            print("INTELIGENCJA", brainpower, "SIŁA WOLI", willpower)
+            print("Masz", points, "punktów atrybutów do rozdysponowania.")
+            print("Wciśnij 's', 'z', 'p', 'i', 'w' żeby dodać punkt do atrybutu")
+            print("kolejno: siły, zwinności, percepcji, inteligencji, siły woli.")
+            input_char = getch()
+            if input_char.upper() == "S":
+                strenght += 1
+                points -= 1
+                continue
+            if input_char.upper() == "Z":
+                agility += 1
+                points -= 1
+                continue
+            if input_char.upper() == "P":
+                cognition += 1
+                points -= 1
+                continue
+            if input_char.upper() == "I":
+                brainpower += 1
+                points -= 1
+                continue
+            if input_char.upper() == "W":
+                willpower += 1
+                points -= 1
+                continue
+            else:
+                continue
+    print("\n\nSIŁA", strenght, "ZWINNOŚĆ", agility, "PERCEPCJA", cognition)
+    print("INTELIGENCJA", brainpower, "SIŁA WOLI", willpower)
+    klasa = input("Klasa postaci w której czujesz się najlepiej to: ")
+    klasa = klasa.upper()
+    print("\x1b[6;30;42m" + "Wybrałeś swoje przeznaczenie. Wciśnij coś i rozpocznij gre!." + "\x1b[0m")
+    input_char = getch()
+    os.system("clear")
+    created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
+                            "inteligencja": brainpower, "siła woli": willpower}
+    hero.attrib_dict.update(created_attr_dict)
+    hero.proffession = klasa
+    return hero
+        
 
 def getch():
     ''' Returns input without 'enter'. '''
@@ -220,6 +226,7 @@ def hot_warm_cold():
     os.system("clear")
     correct_answer = []
     string.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    # Collecting random choices.
     random_number = random.choice(range(9))
     random_letter1 = random.choice(string.letters)
     random_letter2 = random.choice(string.letters)
@@ -229,6 +236,7 @@ def hot_warm_cold():
         i = random.choice(choices_for_sequence)
         choices_for_sequence.remove(i)
         correct_answer.append(i)
+    # Difficulty choice.
     while True:
         difficulty_choice = input("\nWybierz poziom trudnośći. 1, 2 lub 3 dla: łatwy, trudny lub życzenie śmierci:")
         if difficulty_choice == "1":
@@ -245,6 +253,7 @@ def hot_warm_cold():
             break
         else:
             print("\nPOWIEDZIAŁEM 1, 2 lub 3 !!!")
+    # Give instructions to player.
     print("\nPomyślałem o 3 elementowym miksie cyfr i liter. Zgadnij!")
     print("Pamietaj:")
     print("Jak mówie", " " * 5, "to znaczy, że:\n")
@@ -252,6 +261,7 @@ def hot_warm_cold():
     print("Ciepło", " " * 8, "zgadłeś ale w złych pozycjach")
     print("Gorąco", " " * 8, "co najmniej jeden element jest dobrze i w dobrej pozycji.")
     for i in range(difficulty_choice):
+        # Player takes guess.
         user_guess = input("--->")
         user_guess = list(user_guess.upper())
         if user_guess == correct_answer:
@@ -263,6 +273,7 @@ def hot_warm_cold():
                 print("Chyba zapomniałeś, że zgadujesz 3 elementy.....")
                 continue
             i = 0
+            # Collecting hints for player.
             suggestions = []
             for element in correct_answer:
                 if element == user_guess[i]:
@@ -485,11 +496,11 @@ def main_loop(hero, start_time, board):
                 finish_time = datetime.datetime.now()
                 # Get rid of microseconds.
                 game_time = (str(finish_time - start_time)).split(".")[0]
-                # Sum up atributes.
-                sum_of_atributes = 0
+                # Sum up attributes.
+                sum_of_attributes = 0
                 for value in hero.attrib_dict.values():
                     try:
-                        sum_of_atributes += int(value)
+                        sum_of_attributes += int(value)
                     except ValueError:
                         continue
                 user_name = input("\nWpisz swoje prawdziwe imię: ")
@@ -500,11 +511,11 @@ def main_loop(hero, start_time, board):
                 user_name += " " * (20 - len(user_name))
                 for k, v in hero.attrib_dict.items():
                     print(k, ":", v)
-                print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_atributes,
+                print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_attributes,
                       "\nKLASA: ", hero.proffession)
                 # Add final results to Hall of Fame.
                 with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
-                    user_score = [str(sum_of_atributes), str(user_name), str(game_time),
+                    user_score = [str(sum_of_attributes), str(user_name), str(game_time),
                                   str(hero.proffession)]
                     user_score = "        ".join(user_score)
                     HALL_OF_FAME.write(str(user_score) + "\n")
@@ -518,7 +529,7 @@ def main_loop(hero, start_time, board):
                     HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
                     list_place = 1
                     for i in HALL_OF_FAME:
-                        # Format list place display to {:04d}".
+                        # Format list place display to {:04d}.
                         print('{:04d}'.format(list_place), ".", "".join(i))
                         list_place += 1
                     print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
