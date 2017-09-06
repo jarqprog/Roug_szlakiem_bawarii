@@ -358,6 +358,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "R":
@@ -383,8 +384,9 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
         return difficulty_choice
     elif position == "+":
-        print("\n" * 9)
-        print("żródło życia")
+        mod_event.event_well_of_life(hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "?":
         mod_event.event_fight(enemy=mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None),
                               hero=hero)
@@ -531,6 +533,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
     event_result = None
+    mod_hero.portal_to_next_location(hero = hero) ######################################################
     mod_hero.hero_life_regeneration(hero)   #############################################################
     while True:
         if input_char.upper() in ["W", "S", "D", "A"]:
