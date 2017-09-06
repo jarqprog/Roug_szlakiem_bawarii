@@ -358,7 +358,7 @@ def game_events(position, hero):
         print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
 
 
-def core(hero, start_time, board):
+def main_loop(hero, start_time, board):
     """ Major loop of the whole game. """
     # General comment - lines above the map always = 10.
     event_result = None
@@ -395,7 +395,7 @@ def core(hero, start_time, board):
         print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
         print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|")
         input_char = getch()
-        # 81 - length of the map.
+        # 81 = length of the map.
         if input_char.upper() == "W":
             os.system("clear")
             if board[position_horizontal + (position_vertical - 1) * 81] != ".":
@@ -500,11 +500,12 @@ def core(hero, start_time, board):
                 user_name += " " * (20 - len(user_name))
                 for k, v in hero.attrib_dict.items():
                     print(k, ":", v)
-                print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_atributes)
+                print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_atributes,
+                      "\nKLASA: ", hero.proffession)
                 # Add final results to Hall of Fame.
                 with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
                     user_score = [str(sum_of_atributes), str(user_name), str(game_time),
-                                  str(hero.profession)]
+                                  str(hero.proffession)]
                     user_score = "        ".join(user_score)
                     HALL_OF_FAME.write(str(user_score) + "\n")
                     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
@@ -512,17 +513,21 @@ def core(hero, start_time, board):
                 with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
                     os.system("clear")
                     print("\nHALL_OF_FAME:\n")
-                    # Use '/t' to fit the results.
+                    # Use spaces to fit the results.
                     print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
                     HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
                     list_place = 1
                     for i in HALL_OF_FAME:
-                        print(list_place, ".", "".join(i))
+                        # Format list place display to {:04d}".
+                        print('{:04d}'.format(list_place), ".", "".join(i))
                         list_place += 1
-                    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
+                    print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
                     input_char = getch()
                     os.system("clear")
-                    break
+                    if  input_char.upper() == "Y":
+                        main()
+                    else:
+                        break
             else:
                 os.system("clear")
                 print("\n" * 10)
@@ -549,7 +554,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
     os.system("clear")
-    core(starting_atributes, start_time, "Niezmierzony_las.txt")
+    main_loop(starting_atributes, start_time, "Niezmierzony_las.txt")
 
 main()
 
