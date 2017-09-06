@@ -267,8 +267,7 @@ def hero_creation():
     print("tworzenie bohatera - do zrobienia") # to ja bym zrobił
 
 
-def calendar(hero = None):
-    calendar_list = [1, 'niedziela','poranek']
+
 
 
 def calendar(calendar_list = None):

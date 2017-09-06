@@ -52,8 +52,8 @@ def npc_settings(name = None, loc = None, gen = None):
     "podobno leśniczego okradli" ]
     villager.map_symbol = "V"
 
-    villager1 = Npc("wieśniak", [1])
-    villager.speach_list = ["Jak się masz?", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
+    villager1 = Npc("garbaty wieśniak", [1]) ############ to do
+    villager.speach_list = ["Cieżkie życie!", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
     "słyszałem o niedźwiedziu, który kradnie rzeczy", "uważaj na wilki i gobliny",
     "podobno leśniczego okradli" ]
 
@@ -87,7 +87,7 @@ def npc_settings(name = None, loc = None, gen = None):
     "Moja wioska potrzebuje pomocy.." ]
 
 
-    villager3 = Npc("wieśniak", [2])
+    villager3 = Npc("wieśniak Hans", [2])
     villager.speach_list = ["Jak się masz?", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
     "Oblib... tak, poszedł do Dymiącej góry..", "uważaj na wilki i gobliny",
     "Uważaj, przejścia do Dymiącej góry pilnuje straszny Troll Silnorękiego!" ]
@@ -113,10 +113,7 @@ def npc_settings(name = None, loc = None, gen = None):
     redhood.quest_list = [
         "Możesz mi pomóc? Babcię porwał wilk. Odszukaj go, zwróć Starowinkę, to będę Ci dozgonnie wdzięczna!",
         "Ojejku, jejku, Babcia uratowana! Dziękuję Ci! (całus) ",
-        "No co tam?"
-        
-        
-        
+        "No co tam?"       
         
     ]
     
@@ -166,25 +163,25 @@ def npc_settings(name = None, loc = None, gen = None):
 
 
     # Sołtys
-    forester = Npc("Sołtys", [2])
-    forester.speach_list = ["No, bywaj tu!", "Cieszysz oczy!", "Co u Ciebie?", "Witaj w naszej wiosce", "Uważaj, to niebezpieczna okolica", "Oblib, chyba tu był, poszedł do Dymiącej Góry.."]
-    forester.xp_reward = 300
-    forester.quest_name = "Narzędzia pomiarowe"
-    forester.quest_list = [
-        "Słyszałem o Tobie - może mi pomożesz... Złodziejski Miś ukradł mi narzędzia pomiarowe, nie mogę wykonać swojej pracy. Jeśli mi pomożesz, pokażę Ci drogę do nastęþnej krainy..",
-        "Brawo, bardzo Ci dziękuję. Czas na Twoją nagrodę!"    
+    mayor = Npc("Sołtys", [2])
+    mayor.speach_list = ["No, bywaj tu!", "Cieszysz oczy!", "Co u Ciebie?", "Witaj w naszej wiosce", "Uważaj, to niebezpieczna okolica", "Oblib, chyba tu był, poszedł do Dymiącej Góry.."]
+    mayor.xp_reward = 300
+    mayor.quest_name = "Zabytkowy obraz"
+    mayor.quest_list = [
+        "Ratuj proszę! Herszt łotrzyków okradł nas, w tym zabytkowy obraz, który wiele dla nas znaczy.. Jeśli go odzyskasz, to damy rubiny, którymi przekupisz Trolla Silnorękiego.. ",
+        
+        "Dziękuję! Wspaniale. Doprawdy nie wiem, jak Ci dziękować.. A tak, oto Twoja nagroda! Idź, daj to Trollowi, to Cię przepuści.. "    
     ]
     
-    forester.quest_condition = "Zdobyto narzędzia pomiarowe"
-    forester.inventory_dict = {"diament":1, "liczydło":-1, "lina pomiarowa":-1}
-    forester.quest_special_reward = ["portal 2"]
+    mayor.quest_condition = "Zdobyto zabytkowy obraz"
+    mayor.inventory_dict = {"rubiny":3, "zabytkowy obraz":-1}
     
 
 
 
 
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor
 
 
 
