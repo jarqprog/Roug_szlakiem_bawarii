@@ -353,11 +353,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
     # 1st level events:
     if position == "M":
-        mod_event.event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+        mod_event.quest_event_thievish_bear(hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
+        mod_hero.portal_to_next_location(hero = hero)
         input_char = getch()
         os.system("clear")
         print("\n" * 10)
@@ -525,6 +527,7 @@ def set_map(hero, start_time, board):
     board = list(board)
     position_hor = 1
     position_ver = 18
+    # 81 = additional parameter for coordinates.
     board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
     movement(hero, start_time, board, position_hor, position_ver)
 
@@ -533,7 +536,6 @@ def movement(hero, start_time, board, position_hor, position_ver):
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
     event_result = None
-    mod_hero.portal_to_next_location(hero = hero) ######################################################
     mod_hero.hero_life_regeneration(hero)   #############################################################
     while True:
         if input_char.upper() in ["W", "S", "D", "A"]:
@@ -556,7 +558,6 @@ def movement(hero, start_time, board, position_hor, position_ver):
         print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
         print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|")
         input_char = getch()
-        # 81 = length of the map.
         if input_char.upper() == "W":
             os.system("clear")
             if board[position_hor + (position_ver - 1) * 81] != ".":
