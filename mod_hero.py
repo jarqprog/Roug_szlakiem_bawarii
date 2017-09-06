@@ -1,7 +1,7 @@
 
 # mod_hero - custom mod, contains hero data
 
-import mod_items, math, mod_npc, mod_display, start_ubuntu
+import mod_items, math, mod_npc, mod_display
 
 
 ################################ Hero class:
@@ -82,10 +82,7 @@ def hero_settings():
     hero.new_location = 1
     hero.map_board = ""
     hero.gold = 2 # initial wealt in pouch
-
-
-
-    
+  
     return hero
 
 def attack_points_calc(hero = None):
@@ -369,13 +366,14 @@ def hero_life_regeneration(hero = None):
               
     return hero
 
+"""
 def portal_to_next_location(hero = None):  
     '''
-    check if it's time to teleport hero to new location, if True: teleport hero
+    #check if it's time to teleport hero to new location, if True: teleport hero
     '''
     if hero.location != hero.new_location:
         hero.location = hero.new_location
-
+        '''
         if hero.new_location == 2:
             hero.map_board = "Kraina_troli.txt"
         elif hero.new_location == 3:
@@ -383,13 +381,13 @@ def portal_to_next_location(hero = None):
         elif hero.new_location == 4:
             hero.map_board = "Nawiedzone_zamczysko.txt"
         
-        board = hero.map_board
-
-        start_ubuntu.set_map(hero, start_time, board)
+        '''
 
 
 
-    return hero
+    return hero.location
+"""
+
 
 
 
