@@ -333,4 +333,37 @@ def quest_event_smashed_camp(hero = None):
     return hero
 
 
+def event_well_of_life(hero = None):
+    '''
+    full life regeneration
+    '''
+
+    print("\n\nZa cenę 50 sztuk złota w pełni Cię uleczę.. ")
+    if hero.gold >= 50:
+        
+        while True:
+            player_choice = input("Jeśli chcesz skorzystać, wpisz 't', jeśli nie, wpisz 'n' i zatwierdź <enter> -->")
+            
+            try: 
+                if player_choice == 't' or player_choice == 'n':
+                    if player_choice == 't':
+                        print("Uzupełniono życie!")
+                        hero.actualLife = hero.maxLife
+                        hero.gold -= 50
+                        mod_display.pause()
+                    elif player_choice == 'n':
+                        print("Bywaj zatem!")
+                        mod_display.pause()
+                    break
+                        
+
+
+            except:
+                continue
+
+    else:
+        print("Niestety brakuje Ci złota")
+        mod_display.pause()
+
+    return hero
 
