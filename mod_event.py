@@ -290,8 +290,12 @@ def event_random_npc(hero = None):
     event == meet random (from hero location) NPC
     '''
     # random generate npc (using filters):
-    npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
-    mod_display.display_NPC_random_speach(npc = npc)
+    try:
+        npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
+        mod_display.display_NPC_random_speach(npc = npc)
+        
+    except:
+        pass
 
 
 
