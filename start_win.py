@@ -341,7 +341,7 @@ def game_events(position, hero):
         print("Nie mozesz sie tu ruszyc")
 
 
-def core(hero, start_time, board):
+def main_loop(hero, start_time, board):
     """ Major loop of the whole game. """
     # General comment - lines above the map always = 10.
     event_result = None
@@ -486,7 +486,7 @@ def core(hero, start_time, board):
                 # Add final results to Hall of Fame.
                 with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
                     user_score = [str(sum_of_atributes), str(user_name), str(game_time),
-                                  str(hero.profession)]
+                                  str(hero.proffession)]
                     user_score = "        ".join(user_score)
                     HALL_OF_FAME.write(str(user_score) + "\n")
                     print("\n\nNacisnij cokolwiek")
@@ -494,17 +494,21 @@ def core(hero, start_time, board):
                 with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
                     os.system('cls')
                     print("\nHALL_OF_FAME:\n")
-                    # Use '/t' to fit the results.
+                    # Use spaces to fit the results.
                     print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
                     HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
                     list_place = 1
                     for i in HALL_OF_FAME:
-                        print(list_place, ".", "".join(i))
+                        # Format list place display to {:04d}.
+                        print('{:04d}'.format(list_place), ".", "".join(i))
                         list_place += 1
-                    print("\n\n\nNacisnij cokolwiek")
+                    print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
                     input_char = getch()
-                    os.system('cls')
-                    break
+                    os.system("clear")
+                    if  input_char.upper() == "Y":
+                        main()
+                    else:
+                        break
             else:
                 os.system('cls')
                 print("\n" * 10)
@@ -531,7 +535,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\n\n\nJak Cię zwą?: ")
     os.system('cls')
-    core(starting_atributes, start_time, "Dymiąca_góra.txt")
+    main_loop(starting_atributes, start_time, "Niezmierzony_las.txt")
 
 
 main()
