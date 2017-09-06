@@ -62,7 +62,6 @@ def npc_settings(name = None, loc = None, gen = None):
     "Poszedłbym głębiej w las, ale dużo niedźwiedzi", "Słyszałem, że leśniczy potrzebuje pomocy",
     "podobne gdzieś tu jest bestia, która gada", "strasznie tu czasem", "uważaj na wilki",
     "dużo tu szczurołaków", "podobno dziewczynka w czerwonym kapturze ma problem z babcią"]
-    mushrooman.map_symbol = "M"
 
     hans = Npc("Hans z wioski", [1])
     hans.speach_list = ["w sąsiedniej krainie moja wioska potrzebuje pomocy - hojnie nagrodzimy",
@@ -77,7 +76,7 @@ def npc_settings(name = None, loc = None, gen = None):
 
     
     wrongly_smashed = Npc("Niesłusznie rozbity", [1])
-    wrongly_smashed.speach_list = ["Serwus, chodź do naszego obozu, mamy dobry miodzik"]
+    wrongly_smashed.speach_list = ["Serwus, chodź do naszego obozu, mamy dobry miodzik", "Lecę, mamy dziś spotkanie! ", "Lepiej nam się ostatnio wiedzie! "]
 
 
     #   wieśniak (name, location_list, inventory_dict, speach_list)
@@ -207,7 +206,7 @@ def npc_settings(name = None, loc = None, gen = None):
         npc_random_list = []
          # temporary helper list
         tmp_lvl = 0 # helps in loop below:
-        for element in npc_all_list:
+        for element in npc_regular_list:
             if (loc in element.location_list or loc == None):
                 npc_random_list.append(element)
         
