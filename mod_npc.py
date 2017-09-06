@@ -140,9 +140,23 @@ def npc_settings(name = None, loc = None, gen = None):
         "Więcej miodzika nie mamy.. "
     ]
 
+    # Złodziejski miś
+    thievish_bear_quest = Npc("Złodziejski Miś", [1])
+    thievish_bear_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
+    thievish_bear_quest.xp_reward = 40
+    thievish_bear_quest.quest_name = "Złodziejski Miś"
+    thievish_bear_quest.quest_condition = "Zdobyto miodzik"
+    thievish_bear_quest.inventory_dict = {"liczydło":1, "lina pomiarowa":1, "miodzik":-1}
+    thievish_bear_quest.quest_list = [
+        "Chcesz odzyskać fanty dla Leśniczego? Przynieś mi miodzika. Jeśli wrócisz z pustymi rękami, zaatakuję Cię! ",
+        "Proszę, oto rzeczy Leśniczego, no idź do niego i nie zawracaj mi głowy więcej.. "]
+    
+
+
+
 
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood, forester, wrongly_smashed_camp
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest
 
 
 

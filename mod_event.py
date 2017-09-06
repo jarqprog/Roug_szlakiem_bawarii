@@ -333,6 +333,23 @@ def quest_event_smashed_camp(hero = None):
     return hero
 
 
+def quest_event_thievish_bear(hero = None):
+    '''
+    bad quest thievish_bear_quest
+    '''
+
+    npc = mod_npc.npc_settings(name = "Złodziejski Miś", loc = None, gen = None)
+    if npc.quest_list[0] in hero.quest_blocked_list:
+        if npc.quest_condition not in hero.quest_condition_list:      
+            event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+
+    else:
+        event_quest(npc = "Złodziejski Miś", hero = hero)
+
+
+    return hero
+
+
 def event_well_of_life(hero = None):
     '''
     full life regeneration

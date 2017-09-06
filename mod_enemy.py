@@ -134,13 +134,13 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     #################################### quest/special enemies: - special monsters has Capitalic in names (Zły Miś, Głupi Jaś) 
 
     #   Złodziejski miś (QUEST in lvl 1)
-    bear_special_quest = Enemy("Złodziejski Miś",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    bear_special_quest.attrib_dict = {"siła":4, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
-    bear_special_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
-    bear_special_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
-    bear_special_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
-    bear_special_quest.quest_condition = "Zdobyto narzędzia pomiarowe"
-    bear_special_quest.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
+    thievish_bear_quest = Enemy("Złodziejski Miś",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    thievish_bear_quest.attrib_dict = {"siła":4, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
+    thievish_bear_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
+    thievish_bear_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
+    thievish_bear_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
+    thievish_bear_quest.quest_condition = "Zdobyto narzędzia pomiarowe"
+    thievish_bear_quest.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
 
     #   Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
     wolf_special_quest = Enemy("Zły Wilk",1, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
@@ -159,7 +159,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
     
     
-    bear_special_quest, wolf_special_quest]
+    thievish_bear_quest, wolf_special_quest]
 
 ############## list with random enemies - we use this in functions below (to random enemy using filters),
     # quest monsters are excluded:
