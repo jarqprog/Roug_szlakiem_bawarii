@@ -13,13 +13,13 @@ import mod_enemy
 import mod_event
 import mod_items
 
-os.system('clear')
+os.system("clear")
 
 
 def delay_print(s):
     ''' Delays printing. '''
     for c in s:
-        sys.stdout.write('%s' % c)
+        sys.stdout.write("%s" % c)
         sys.stdout.flush()
         time.sleep(0.004)
 
@@ -29,7 +29,7 @@ def developers():
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "PRZEDSTAWIAJĄ:")
     input_char = getch()
-    os.system('clear')
+    os.system("clear")
 
 
 def title_screen():
@@ -41,7 +41,7 @@ def title_screen():
     delay_print("\nROGUELIKE EXPERIENCE\n\n")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
-    os.system('clear')
+    os.system("clear")
 
 
 def plot():
@@ -55,13 +55,13 @@ def plot():
     delay_print("\x1b[6;30;43m" + "Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n" + "\x1b[0m")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
-    os.system('cls')
+    os.system("clear")
 
 
 def character_choice_screen(hero):
     """ Returns hero's starting atributes. """
     while True:
-        os.system('clear')
+        os.system("clear")
         print("\x1b[6;30;45m" + "\n _    _       _                                  _             _ " + "\x1b[0m")
         print("\x1b[6;30;45m" + "| |  | |     | |                                | |           (_)" + "\x1b[0m")
         print("\x1b[6;30;45m" + "| |  | |_   _| |__   ___  _ __   _ __   ___  ___| |_ __ _  ___ _ " + "\x1b[0m")
@@ -76,9 +76,9 @@ def character_choice_screen(hero):
         delay_print("\x1b[6;30;44m" + "\n3. NINJA\n" + "\x1b[0m")
         delay_print("\x1b[6;30;43m" + "\n4. STWÓRZ WŁASNĄ POSTAĆ\n" + "\x1b[0m")
         input_char = getch()
-        if input_char.upper() == '1':
-            os.system('clear')
-            with open('1. WOJOWNIK.txt', 'r') as myfile:
+        if input_char.upper() == "1":
+            os.system("clear")
+            with open("1. WOJOWNIK.txt", "r") as myfile:
                 picture = myfile.read()
                 print(picture)
                 print("WOJOWNIK")
@@ -86,15 +86,15 @@ def character_choice_screen(hero):
                 print("SIŁA : 5, ZWINNOŚĆ : 2, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 2")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
-                if input_char.upper() == 'Y':
-                    os.system('clear')
+                if input_char.upper() == "Y":
+                    os.system("clear")
                     warrior_attr_dict = {"siła": 5, "zwinność": 2, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
                     hero.attrib_dict.update(warrior_attr_dict)
                     hero.proffession = "Wojownik"
                     return hero
-        if input_char.upper() == '2':
-            os.system('clear')
-            with open('2. ŁOWCA.txt', 'r') as myfile:
+        if input_char.upper() == "2":
+            os.system("clear")
+            with open("2. ŁOWCA.txt", "r") as myfile:
                 picture = myfile.read()
                 print(picture)
                 print("ŁOWCA")
@@ -102,15 +102,15 @@ def character_choice_screen(hero):
                 print("SIŁA : 2, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 1, SIŁA WOLI : 2")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
-                if input_char.upper() == 'Y':
-                    os.system('clear')
+                if input_char.upper() == "Y":
+                    os.system("clear")
                     hunter_attr_dict = {"siła": 2, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 2}
                     hero.attrib_dict.update(hunter_attr_dict)
                     hero.proffession = "Łowca"
                     return hero
-        if input_char.upper() == '3':
-            os.system('clear')
-            with open('3. NINJA.txt', 'r') as myfile:
+        if input_char.upper() == "3":
+            os.system("clear")
+            with open("3. NINJA.txt", "r") as myfile:
                 picture = myfile.read()
                 print(picture)
                 print("NINJA")
@@ -118,15 +118,15 @@ def character_choice_screen(hero):
                 print("SIŁA : 1, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 3, SIŁA WOLI : 1")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
-                if input_char.upper() == 'Y':
-                    os.system('clear')
+                if input_char.upper() == "Y":
+                    os.system("clear")
                     ninja_attr_dict = {"siła": 1, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 1}
                     hero.attrib_dict.update(ninja_attr_dict)
                     hero.proffession = "Ninja"
                     return hero
-        if input_char.upper() == '4':
-            os.system('clear')
-            with open('4. STWORZONA POSTAĆ.txt', 'r') as myfile:
+        if input_char.upper() == "4":
+            os.system("clear")
+            with open("4. STWORZONA POSTAĆ.txt", "r") as myfile:
                 picture = myfile.read()
                 print(picture)
                 print("NIEZNAJOMY")
@@ -135,8 +135,8 @@ def character_choice_screen(hero):
                 print("To ekran tworzenia postaci. Dostaniesz do rozdysponowanie 6 punktów.")
                 print("Wciśnij 'y' żeby stworzyć swoją postać, wciśnij coś innego żeby wrócić.")
                 input_char = getch()
-                if input_char.upper() == 'Y':
-                    os.system('clear')
+                if input_char.upper() == "Y":
+                    os.system("clear")
                     strenght = 1
                     agility = 1
                     cognition = 1
@@ -144,7 +144,7 @@ def character_choice_screen(hero):
                     willpower = 1
                     points = 6
                     while True:
-                        os.system('clear')
+                        os.system("clear")
                         if points == 0:
                             break
                         else:
@@ -154,23 +154,23 @@ def character_choice_screen(hero):
                             print("Wciśnij 's', 'z', 'p', 'i', 'w' żeby dodać punkt do atrybutu")
                             print("kolejno: siły, zwinności, percepcji, inteligencji, siły woli.")
                             input_char = getch()
-                            if input_char.upper() == 'S':
+                            if input_char.upper() == "S":
                                 strenght += 1
                                 points -= 1
                                 continue
-                            if input_char.upper() == 'Z':
+                            if input_char.upper() == "Z":
                                 agility += 1
                                 points -= 1
                                 continue
-                            if input_char.upper() == 'P':
+                            if input_char.upper() == "P":
                                 cognition += 1
                                 points -= 1
                                 continue
-                            if input_char.upper() == 'I':
+                            if input_char.upper() == "I":
                                 brainpower += 1
                                 points -= 1
                                 continue
-                            if input_char.upper() == 'W':
+                            if input_char.upper() == "W":
                                 willpower += 1
                                 points -= 1
                                 continue
@@ -182,7 +182,7 @@ def character_choice_screen(hero):
                     klasa = klasa.upper()
                     print("\x1b[6;30;42m" + "Wybrałeś swoje przeznaczenie. Wciśnij coś i rozpocznij gre!." + "\x1b[0m")
                     input_char = getch()
-                    os.system('clear')
+                    os.system("clear")
                     created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
                                          "inteligencja": brainpower, "siła woli": willpower}
                     hero.attrib_dict.update(created_attr_dict)
@@ -212,14 +212,14 @@ def controls():
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W, S, A, D\nZaawansowane sterowanie jest pod mapką.")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
-    os.system('clear')
+    os.system("clear")
 
 
 def hot_warm_cold():
     ''' Hot warm cold mini-game. '''
-    os.system('clear')
+    os.system("clear")
     correct_answer = []
-    string.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    string.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     random_number = random.choice(range(9))
     random_letter1 = random.choice(string.letters)
     random_letter2 = random.choice(string.letters)
@@ -318,7 +318,7 @@ def game_events(position, hero):
         delay_print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby zacząć." + "\x1b[0m")
         input_char = getch()
         difficulty_choice = hot_warm_cold()
-        os.system('clear')
+        os.system("clear")
         print("\n" * 10)
         return difficulty_choice
     elif position == "G":
@@ -333,7 +333,7 @@ def game_events(position, hero):
     elif position == "?":
         mod_event.event_fight(enemy=mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None),
                               hero=hero)
-        os.system('clear')
+        os.system("clear")
         print("\n" * 10)
     # 3rd level events:
     elif position == "P":
@@ -374,7 +374,7 @@ def core(hero, start_time, board):
     position_vertical = 18
     board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
     while True:
-        if input_char.upper() in ['W', 'S', 'D', 'A']:
+        if input_char.upper() in ["W", "S", "D", "A"]:
             # Event_results for:
             #           1. Hot_and_cold mini-game.
             if event_result == 0:
@@ -396,8 +396,8 @@ def core(hero, start_time, board):
         print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|")
         input_char = getch()
         # 81 - length of the map.
-        if input_char.upper() == 'W':
-            os.system('clear')
+        if input_char.upper() == "W":
+            os.system("clear")
             if board[position_horizontal + (position_vertical - 1) * 81] != ".":
                 event_result = game_events(board[position_horizontal + (position_vertical - 1) * 81], hero)
             else:
@@ -406,8 +406,8 @@ def core(hero, start_time, board):
                 board[position_horizontal + position_vertical * 81] = "."
                 position_vertical -= 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == 'S':
-            os.system('clear')
+        elif input_char.upper() == "S":
+            os.system("clear")
             if board[position_horizontal + (position_vertical + 1) * 81] != ".":
                 event_result = game_events(board[position_horizontal + (position_vertical + 1) * 81], hero)
             else:
@@ -416,8 +416,8 @@ def core(hero, start_time, board):
                 board[position_horizontal + position_vertical * 81] = "."
                 position_vertical += 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == 'D':
-            os.system('clear')
+        elif input_char.upper() == "D":
+            os.system("clear")
             if board[(position_horizontal + 1) + position_vertical * 81] != ".":
                 event_result = game_events(board[(position_horizontal + 1) + position_vertical * 81], hero)
             else:
@@ -426,8 +426,8 @@ def core(hero, start_time, board):
                 board[position_horizontal + position_vertical * 81] = "."
                 position_horizontal += 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == 'A':
-            os.system('clear')
+        elif input_char.upper() == "A":
+            os.system("clear")
             if board[(position_horizontal - 1) + position_vertical * 81] != ".":
                 event_result = game_events(board[(position_horizontal - 1) + position_vertical * 81], hero)
             else:
@@ -437,26 +437,26 @@ def core(hero, start_time, board):
                 position_horizontal -= 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         # Hero's actions different than WSAD movement.
-        elif input_char.upper() == 'E':
+        elif input_char.upper() == "E":
             mod_display.display_hero_chart(hero=hero)
             print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby wyjść." + "\x1b[0m")
             input_char = getch()
-            os.system('clear')
+            os.system("clear")
             print("\n" * 10)
-        elif input_char.upper() == 'Z':
-            os.system('clear')
+        elif input_char.upper() == "Z":
+            os.system("clear")
             print("\n" * 9)
             print("Tu powinien być dziennik")
-        elif input_char.upper() == 'P':
-            os.system('clear')
+        elif input_char.upper() == "P":
+            os.system("clear")
             print("\n" * 9)
             print("Tu powinien być pomoc")
-        elif input_char.upper() == 'G':
-            os.system('clear')
+        elif input_char.upper() == "G":
+            os.system("clear")
             print("\n" * 9)
             print("Tu powinien być zapis gry")
-        elif input_char.upper() == 'L':
-            os.system('clear')
+        elif input_char.upper() == "L":
+            os.system("clear")
             print("Legenda:\n\n")
             print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
             print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
@@ -466,8 +466,8 @@ def core(hero, start_time, board):
             print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
             print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
             print("C = Zimno/ ciepła niespodzianka Mariana. Spotkania z nim prowadzą do zmian w percepcji.")
-        elif input_char.upper() == 'K':
-            os.system('clear')
+        elif input_char.upper() == "K":
+            os.system("clear")
             print("\n" * 4)
             print("KLASA: ", hero.proffession)
             print("SIŁA: ", hero.attrib_dict["siła"])
@@ -475,13 +475,13 @@ def core(hero, start_time, board):
             print("PERCEPCJA: ", hero.attrib_dict["percepcja"])
             print("INTELIGENCJA: ", hero.attrib_dict["inteligencja"])
             print("SIŁA WOLI: ", hero.attrib_dict["siła woli"])
-        elif input_char.upper() == '0':
+        elif input_char.upper() == "0":
             # Game end and hall of fame enlist.
-            os.system('clear')
+            os.system("clear")
             print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
             input_char = getch()
-            if input_char.upper() == '0':
-                os.system('clear')
+            if input_char.upper() == "0":
+                os.system("clear")
                 finish_time = datetime.datetime.now()
                 # Get rid of microseconds.
                 game_time = (str(finish_time - start_time)).split(".")[0]
@@ -510,7 +510,7 @@ def core(hero, start_time, board):
                     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
                     input_char = getch()
                 with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
-                    os.system('clear')
+                    os.system("clear")
                     print("\nHALL_OF_FAME:\n")
                     # Use '/t' to fit the results.
                     print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
@@ -521,14 +521,14 @@ def core(hero, start_time, board):
                         list_place += 1
                     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
                     input_char = getch()
-                    os.system('cls')
+                    os.system("clear")
                     break
             else:
-                os.system('clear')
+                os.system("clear")
                 print("\n" * 10)
                 continue
         else:
-            os.system('clear')
+            os.system("clear")
             print("\n" * 10)
             continue
 
@@ -548,8 +548,8 @@ def main():
     controls()
     start_time = datetime.datetime.now()
     hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
-    os.system('clear')
-    core(starting_atributes, start_time, "Kraina_troli.txt")
+    os.system("clear")
+    core(starting_atributes, start_time, "Niezmierzony_las.txt")
 
 main()
 
