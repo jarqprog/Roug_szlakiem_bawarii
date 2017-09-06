@@ -287,10 +287,63 @@ def hot_warm_cold():
     print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer),
           " .Ale dostaniesz 1 percepcji za dobre chęci. Wciśnij cokolwiek.")
     input_char = getch()
-    return 0
+    difficulty_choice = 0
+    return difficulty_choice
 
 
-def game_events(position, hero):
+def hot_warm_cold_boss(hero, start_time):
+    ''' Hot warm cold boss mini-game. '''
+    os.system("clear")
+    with open("wizard.txt", "r") as wizard:
+        picture = wizard.read()
+    print("\x1b[6;30;41m" + picture + "\x1b[0m")
+    correct_answer = []
+    numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    # Collecting random choices.
+    for e in range(3):
+        i = random.choice(numbers)
+        numbers.remove(i)
+        correct_answer.append(i)
+    # Give instructions to player.
+    print("\nW końcu jestes godny zmierzenia się z moją szaradą !!!")
+    print("\nPomyślałem o 3 cyfrowej liczbie. Zgadnij! ALBO GIŃ HAHAHAHAHA !!!!")
+    print("\nMasz 15 prób!!!")
+    print("Pamietaj:")
+    print("Jak mówie", " " * 5, "to znaczy, że:\n")
+    print("Zimno", " " * 9, "nie zgadłeś")
+    print("Ciepło", " " * 8, "zgadłeś ale w złych pozycjach")
+    print("Gorąco", " " * 8, "co najmniej jeden element jest dobrze i w dobrej pozycji.")
+    for i in range(15):
+        # Player takes guess.
+        user_guess = input("--->")
+        user_guess = list(user_guess.upper())
+        if user_guess == correct_answer:
+            print("\nBrawo!!! WYGRAŁEŚ !!! ")
+            input_char = getch()
+            win_screen((hero, start_time))
+        else:
+            if len(user_guess) != 3:
+                print("Chyba zapomniałeś, że zgadujesz 3 elementy.....")
+                continue
+            i = 0
+            # Collecting hints for player.
+            suggestions = []
+            for element in correct_answer:
+                if element == user_guess[i]:
+                    suggestions.insert(0, "HOT!")
+                elif element in user_guess:
+                    suggestions.append("WARM!")
+                i += 1
+            if not suggestions:
+                suggestions.append("COLD!")
+        print(suggestions)
+    print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer),
+          " . GINIESZ !!!")
+    input_char = getch()
+    loose_screen((hero, start_time))
+
+    
+def game_events(position, hero, start_time):
     """ Returns event. """
     # ENEMY CLASS IMPORT TO MAIN:
     enemy = mod_enemy.enemy_settings(name=None, loc=None, lvl=None, gen=None)
@@ -361,12 +414,93 @@ def game_events(position, hero):
         print("Trafiłeś NA CHATA PUSTELNIKA.")
     # 4th level events:
     elif position == "B":
-        print("\n" * 9)
-        print("Trafiłeś NA BOSS.")
+        hot_warm_cold_boss(hero = hero, start_time = start_time)
     # For all maps:
     else:
         print("\n" * 9)
         print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
+
+
+def hall_of_fame(hero, start_time):
+    os.system("clear")
+    finish_time = datetime.datetime.now()
+    # Get rid of microseconds.
+    game_time = (str(finish_time - start_time)).split(".")[0]
+    # Sum up attributes.
+    sum_of_attributes = 0
+    for value in hero.attrib_dict.values():
+        try:
+            sum_of_attributes += int(value)
+        except ValueError:
+            continue
+    user_name = input("\nWpisz swoje prawdziwe imię: ")
+    print("\nGratulacje,", user_name, ".Twoje osiągnięcia zostaną zapisane.\n")
+    print("ATRYBUTY NA KONIEC: \n")
+    # User_name length must = 20.
+    user_name = '{:.20}'.format(user_name)
+    user_name += " " * (20 - len(user_name))
+    for k, v in hero.attrib_dict.items():
+        print(k, ":", v)
+    print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_attributes,
+            "\nKLASA: ", hero.proffession)
+    # Add final results to Hall of Fame.
+    with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
+        user_score = [str(sum_of_attributes), str(user_name), str(game_time),
+                        str(hero.proffession)]
+        user_score = "        ".join(user_score)
+        HALL_OF_FAME.write(str(user_score) + "\n")
+        print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
+        input_char = getch()
+    with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
+        os.system("clear")
+        print("\nHALL_OF_FAME:\n")
+        # Use spaces to fit the results.
+        print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
+        HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
+        list_place = 1
+        for i in HALL_OF_FAME:
+            # Format list place display to {:04d}.
+            print('{:04d}'.format(list_place), ".", "".join(i))
+            list_place += 1
+        print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
+        input_char = getch()
+        os.system("clear")
+        if  input_char.upper() == "Y":
+            main()
+        else:
+            break
+
+
+def win_screen(hero, start_time):
+    os.system("clear")
+    print("     .--------.")
+    print("   .'          '.")
+    print("  /   O      O   \")
+    print(" :                :")
+    print(" |                | ")
+    print(" : ',          ,' :")
+    print("  \  '-......-'  /")
+    print("   '.          .'")
+    print("     '-......-'")
+    print(" \t\tWYGRAŁEŚ!!!")
+    input_char = getch()
+    hall_of_fame(hero, start_time)
+
+
+def loose_screen(hero, start_time):
+    os.system("clear")
+    print("     .-......-.")
+    print("   .'          '.")
+    print("  /   O      O   \")
+    print(" :           `    :")
+    print(" |                | ")
+    print(" :    .------.    :")
+    print("  \  '        '  /")
+    print("   '.          .'")
+    print("     '-......-'")
+    print("\t\tPRZEGRAŁEŚ!!!")
+    input_char = getch()
+    hall_of_fame(hero, start_time)
 
 
 def main_loop(hero, start_time, board):
@@ -410,7 +544,7 @@ def main_loop(hero, start_time, board):
         if input_char.upper() == "W":
             os.system("clear")
             if board[position_horizontal + (position_vertical - 1) * 81] != ".":
-                event_result = game_events(board[position_horizontal + (position_vertical - 1) * 81], hero)
+                event_result = game_events(board[position_horizontal + (position_vertical - 1) * 81], hero, start_time)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
@@ -420,7 +554,7 @@ def main_loop(hero, start_time, board):
         elif input_char.upper() == "S":
             os.system("clear")
             if board[position_horizontal + (position_vertical + 1) * 81] != ".":
-                event_result = game_events(board[position_horizontal + (position_vertical + 1) * 81], hero)
+                event_result = game_events(board[position_horizontal + (position_vertical + 1) * 81], hero, start_time)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
@@ -430,7 +564,7 @@ def main_loop(hero, start_time, board):
         elif input_char.upper() == "D":
             os.system("clear")
             if board[(position_horizontal + 1) + position_vertical * 81] != ".":
-                event_result = game_events(board[(position_horizontal + 1) + position_vertical * 81], hero)
+                event_result = game_events(board[(position_horizontal + 1) + position_vertical * 81], hero, start_time)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
@@ -440,7 +574,7 @@ def main_loop(hero, start_time, board):
         elif input_char.upper() == "A":
             os.system("clear")
             if board[(position_horizontal - 1) + position_vertical * 81] != ".":
-                event_result = game_events(board[(position_horizontal - 1) + position_vertical * 81], hero)
+                event_result = game_events(board[(position_horizontal - 1) + position_vertical * 81], hero, start_time)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
@@ -472,11 +606,12 @@ def main_loop(hero, start_time, board):
             print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
             print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
             print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
-            print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "M = Most trolla Silnorękiego")
+            print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
             print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
             print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
             print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
-            print("C = Zimno/ ciepła niespodzianka Mariana. Spotkania z nim prowadzą do zmian w percepcji.")
+            print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
+                  + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
         elif input_char.upper() == "K":
             os.system("clear")
             print("\n" * 4)
@@ -487,58 +622,13 @@ def main_loop(hero, start_time, board):
             print("INTELIGENCJA: ", hero.attrib_dict["inteligencja"])
             print("SIŁA WOLI: ", hero.attrib_dict["siła woli"])
         elif input_char.upper() == "0":
-            # Game end and hall of fame enlist.
             os.system("clear")
             print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
             input_char = getch()
             if input_char.upper() == "0":
-                os.system("clear")
-                finish_time = datetime.datetime.now()
-                # Get rid of microseconds.
-                game_time = (str(finish_time - start_time)).split(".")[0]
-                # Sum up attributes.
-                sum_of_attributes = 0
-                for value in hero.attrib_dict.values():
-                    try:
-                        sum_of_attributes += int(value)
-                    except ValueError:
-                        continue
-                user_name = input("\nWpisz swoje prawdziwe imię: ")
-                print("\nGratulacje,", user_name, ".Twoje osiągnięcia zostaną zapisane.\n")
-                print("ATRYBUTY NA KONIEC: \n")
-                # User_name length must = 20.
-                user_name = '{:.20}'.format(user_name)
-                user_name += " " * (20 - len(user_name))
-                for k, v in hero.attrib_dict.items():
-                    print(k, ":", v)
-                print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_attributes,
-                      "\nKLASA: ", hero.proffession)
-                # Add final results to Hall of Fame.
-                with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
-                    user_score = [str(sum_of_attributes), str(user_name), str(game_time),
-                                  str(hero.proffession)]
-                    user_score = "        ".join(user_score)
-                    HALL_OF_FAME.write(str(user_score) + "\n")
-                    print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
-                    input_char = getch()
-                with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
-                    os.system("clear")
-                    print("\nHALL_OF_FAME:\n")
-                    # Use spaces to fit the results.
-                    print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
-                    HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
-                    list_place = 1
-                    for i in HALL_OF_FAME:
-                        # Format list place display to {:04d}.
-                        print('{:04d}'.format(list_place), ".", "".join(i))
-                        list_place += 1
-                    print("\x1b[6;31;47m" + "Wciśnij 'Y' żeby zagrać jeszcze raz, coś innego żeby wyjść." + "\x1b[0m")
-                    input_char = getch()
-                    os.system("clear")
-                    if  input_char.upper() == "Y":
-                        main()
-                    else:
-                        break
+                # Game end and hall of fame enlist.
+                hall_of_fame(hero, start_time)
+                break
             else:
                 os.system("clear")
                 print("\n" * 10)
@@ -548,6 +638,7 @@ def main_loop(hero, start_time, board):
             print("\n" * 10)
             continue
 
+################## mod_hero.hero_life_regeneration(hero) - na koniec pętli.
 
 def main():
     # Hero class import to main:
@@ -565,7 +656,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
     os.system("clear")
-    main_loop(starting_atributes, start_time, "Niezmierzony_las.txt")
+    main_loop(starting_atributes, start_time, "Nawiedzone_zamczysko.txt")
 
 main()
 
