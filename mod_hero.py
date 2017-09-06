@@ -37,7 +37,7 @@ class Hero:
         self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
-        self.life_recovery = 3 # define replenish life level after each turn
+        self.life_recovery = 5 # define replenish life level after each turn
         self.calendar_list = [0, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
 
         #self.time_of_day
@@ -354,6 +354,17 @@ def next_level_promotion(hero = None):
         mod_display.pause()
                 
     return hero
+
+
+def hero_life_regeneration(hero = None):
+    '''
+    regenerate hero life point after each turn 
+    '''
+    hero.actualLife += hero.life_recovery
+    if hero.actualLife > hero.maxLife: hero.actualLife = hero.maxLife
+              
+    return hero
+
 
 
 
