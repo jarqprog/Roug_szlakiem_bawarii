@@ -98,8 +98,6 @@ def npc_settings(name = None, loc = None, gen = None):
     
     villager, mushrooman, hans, gretchel, wrongly_smashed, villager1, villager2, villager3
 
-
-
     ]
 
 ############################# QUEST NPC
@@ -174,13 +172,27 @@ def npc_settings(name = None, loc = None, gen = None):
     
     mayor.quest_condition = "Zdobyto zabytkowy obraz"
     mayor.inventory_dict = {"rubiny":3, "zabytkowy obraz":-1}
+
+
+
+    # Troll Silnoręki
+    troll_strong_hand = Npc("Troll Silnoręki", [1])
+    troll_strong_hand.speach_list = [u"Chcieć na druga strona dziury? Dać rubiny", "(sapie)", "Śmierć tu znaleźć.. "]
+    troll_strong_hand.xp_reward = 800
+    troll_strong_hand.quest_name = "Rubiny dla trolla"
+    troll_strong_hand.quest_condition = "Zdobyto rubiny"
+    troll_strong_hand.inventory_dict = {"rubiny":-3}
+    troll_strong_hand.quest_list = [
+        "Dać mi trzy rubiny, ja cie puścić. Wrócić bez nich - zginąć marnie, zginąć marnie, tak... ",
+        "Ty przejść, ja cie nie zabić teraz.. "]
+    troll_strong_hand.quest_special_reward = ["portal 3"]
     
 
 
 
 
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor, troll_strong_hand
 
 
 

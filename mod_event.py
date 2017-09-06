@@ -293,7 +293,7 @@ def event_random_npc(hero = None):
     try:
         npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
         mod_display.display_NPC_random_speach(npc = npc)
-        
+
     except:
         pass
 
@@ -353,6 +353,35 @@ def quest_event_thievish_bear(hero = None):
         if "liczydło" in hero.inventory_dict.keys():
             #if npc.quest_condition not in hero.quest_condition_list:
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
+
+            
+
+
+    return hero
+
+
+def quest_event_strong_hand_troll(hero = None):
+    '''
+    bad quest strong_hand_troll
+    '''
+
+
+    try:
+        if hero.inventory_dict["rubiny"] == 3 :
+            hero.quest_condition_list.append("Zdobyto rubiny")
+    except:
+        None
+
+
+    npc = mod_npc.npc_settings(name = "Troll Silnoręki", loc = None, gen = None)
+    if npc.quest_list[0] in hero.quest_blocked_list:
+        if npc.quest_condition not in hero.quest_condition_list:      
+            event_fight_spec_enemy(enemy = "Troll Silnoręki", hero = hero)
+
+    else:
+        event_quest(npc = "Troll Silnoręki", hero = hero)
+        mod_display.pause()
+
 
             
 

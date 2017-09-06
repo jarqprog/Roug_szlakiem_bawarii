@@ -153,13 +153,25 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Herszt bandytów (QUEST in lvl 1)
-    ringleader = Enemy("Herszt bandytów",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,7])
-    ringleader.attrib_dict = {"siła":2, "zwinność":5, "percepcja":4, "inteligencja":2, "siła woli":2}
+    ringleader = Enemy("Herszt bandytów",25, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,5])
+    ringleader.attrib_dict = {"siła":2, "zwinność":3, "percepcja":2, "inteligencja":2, "siła woli":2}
     ringleader.treasure_dict = {"zabytkowy obraz":1, "srebro":10, "sztylet zwinności":1}
     ringleader.speach_list = [u"No co, chodź na solo! ", "No dawaj mi tu! "]
     ringleader.specials_list = [u"Herszt bandy! ", "Straszna menda! ", "Sprytny jest.. "]
     ringleader.quest_condition = "Zdobyto zabytkowy obraz"
     ringleader.quest_info = "Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. "
+
+
+    #   Troll Silnoręki (QUEST in lvl 2)
+    troll_strong_hand = Enemy("Troll Silnoręki",75, 3, 4, "beast", [2], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
+    troll_strong_hand.attrib_dict = {u"siła":5, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
+    troll_strong_hand.treasure_dict = {u"srebro":random.randint(1,20), "rubiny":random.randint(0,8)}
+    troll_strong_hand.speach_list = [u"Chcesz pokonać przełęcz? Po moim trupie! ", "A masz! ", "Ja cie zjeść! ", "(przeraźliwy ryk) "]
+    troll_strong_hand.specials_list = [u"Przeraźliwy! ", "Śmierć się zbliża! "]
+    
+    #troll_strong_hand.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
+
+
 
 
 
@@ -169,7 +181,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
     
     
-    thievish_bear_quest, wolf_special_quest, ringleader]
+    thievish_bear_quest, wolf_special_quest, ringleader, troll_strong_hand]
 
 ############## list with random enemies - we use this in functions below (to random enemy using filters),
     # quest monsters are excluded:
