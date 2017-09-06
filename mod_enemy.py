@@ -152,6 +152,16 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     wolf_special_quest.quest_info = "Babcia wyskoczyła z wilczego brzucha! Wróć do Czerwonego kapturka po nagrodę!"
 
 
+    #   Herszt bandytów (QUEST in lvl 1)
+    ringleader = Enemy("Herszt bandytów",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,7])
+    ringleader.attrib_dict = {"siła":2, "zwinność":5, "percepcja":4, "inteligencja":2, "siła woli":2}
+    ringleader.treasure_dict = {"zabytkowy obraz":1, "srebro":10, "sztylet zwinności":1}
+    ringleader.speach_list = [u"No co, chodź na solo! ", "No dawaj mi tu! "]
+    ringleader.specials_list = [u"Herszt bandy! ", "Straszna menda! ", "Sprytny jest.. "]
+    ringleader.quest_condition = "Zdobyto zabytkowy obraz"
+    ringleader.quest_info = "Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. "
+
+
 
 ############## list with all enemies - we use this in functions below (to summon enemy by name):
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
@@ -159,7 +169,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
     
     
-    thievish_bear_quest, wolf_special_quest]
+    thievish_bear_quest, wolf_special_quest, ringleader]
 
 ############## list with random enemies - we use this in functions below (to random enemy using filters),
     # quest monsters are excluded:
