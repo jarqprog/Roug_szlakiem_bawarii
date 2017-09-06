@@ -1,7 +1,7 @@
 
 # mod_hero - custom mod, contains hero data
 
-import mod_items, math, mod_npc, mod_display
+import mod_items, math, mod_npc, mod_display, start_ubuntu
 
 
 ################################ Hero class:
