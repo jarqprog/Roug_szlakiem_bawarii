@@ -344,7 +344,7 @@ def hot_warm_cold_boss(hero, start_time):
     loose_screen(hero, start_time)
 
 
-def game_events(position, hero, start_time):
+def game_events(position, hero, start_time, board, position_hor, position_ver):
     """ Returns event. """
     # ENEMY CLASS IMPORT TO MAIN:
     enemy = mod_enemy.enemy_settings(name=None, loc=None, lvl=None, gen=None)
@@ -353,20 +353,25 @@ def game_events(position, hero, start_time):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
     # 1st level events:
     if position == "M":
-        print("\n" * 9)
-        print("Trafiłeś NA DZIWNY MIŚ.")
+        mod_event.event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "L":
-        print("\n" * 9)
-        print("Trafiłeś NA LEŚNICZY.")
+        mod_event.event_quest(npc = "Leśniczy", hero = hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "R":
-        print("\n" * 9)
-        print("Trafiłeś OBÓZ NIESŁUSZNIE ROZBITYCH.")
+        mod_event.quest_event_smashed_camp(hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "D":
-        print("\n" * 9)
-        print("Trafiłeś NA DOM BABCI.")
+        mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "Z":
-        print("\n" * 9)
-        print("Trafiłeś NA ZŁY WILK.")
+        mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "H":
         print("\n" * 6)
         delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
@@ -516,17 +521,17 @@ def set_map(hero, start_time, board):
     with open(board, 'r') as myfile:
         board = myfile.read()
     board = list(board)
-    position_horizontal = 1
-    position_vertical = 18
-    board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-    movement(hero, start_time, board, position_horizontal, position_vertical)
+    position_hor = 1
+    position_ver = 18
+    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+    movement(hero, start_time, board, position_hor, position_ver)
 
-def movement(hero, start_time, board, position_horizontal, position_vertical):
+def movement(hero, start_time, board, position_hor, position_ver):
     """ Returns input_char WSAD result. """
     # Initiate non-empty variable for upper() compatibility.
     input_char = "0"
     event_result = None
-    mod_hero.hero_life_regeneration(hero)
+    mod_hero.hero_life_regeneration(hero)   #############################################################
     while True:
         if input_char.upper() in ["W", "S", "D", "A"]:
             # Event_results for hot_and_cold mini-game.
@@ -551,49 +556,49 @@ def movement(hero, start_time, board, position_horizontal, position_vertical):
         # 81 = length of the map.
         if input_char.upper() == "W":
             os.system("clear")
-            if board[position_horizontal + (position_vertical - 1) * 81] != ".":
-                event_result = game_events(board[position_horizontal + (position_vertical - 1) * 81], hero, start_time)
+            if board[position_hor + (position_ver - 1) * 81] != ".":
+                event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, position_hor, position_ver)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
-                board[position_horizontal + position_vertical * 81] = "."
-                position_vertical -= 1
-                board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+                board[position_hor + position_ver * 81] = "."
+                position_ver -= 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "S":
             os.system("clear")
-            if board[position_horizontal + (position_vertical + 1) * 81] != ".":
-                event_result = game_events(board[position_horizontal + (position_vertical + 1) * 81], hero, start_time)
+            if board[position_hor + (position_ver + 1) * 81] != ".":
+                event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, position_hor, position_ver)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
-                board[position_horizontal + position_vertical * 81] = "."
-                position_vertical += 1
-                board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+                board[position_hor + position_ver * 81] = "."
+                position_ver += 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "D":
             os.system("clear")
-            if board[(position_horizontal + 1) + position_vertical * 81] != ".":
-                event_result = game_events(board[(position_horizontal + 1) + position_vertical * 81], hero, start_time)
+            if board[(position_hor + 1) + position_ver * 81] != ".":
+                event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
-                board[position_horizontal + position_vertical * 81] = "."
-                position_horizontal += 1
-                board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+                board[position_hor + position_ver * 81] = "."
+                position_hor += 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "A":
             os.system("clear")
-            if board[(position_horizontal - 1) + position_vertical * 81] != ".":
-                event_result = game_events(board[(position_horizontal - 1) + position_vertical * 81], hero, start_time)
+            if board[(position_hor - 1) + position_ver * 81] != ".":
+                event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
             else:
                 mod_display.display_calendar_location(hero = hero)
                 print("\n" * 7)
-                board[position_horizontal + position_vertical * 81] = "."
-                position_horizontal -= 1
-                board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+                board[position_hor + position_ver * 81] = "."
+                position_hor -= 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         else:
-            input_char_not_movement(hero, start_time, board, input_char, event_result, position_horizontal, position_vertical)
+            input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver)
 
 
-def input_char_not_movement(hero, start_time, board, input_char, event_result, position_horizontal, position_vertical):
+def input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver):
     """ Returns input_char result different than movement. """
     if input_char.upper() == "E":
         mod_display.display_hero_chart(hero=hero)
@@ -617,7 +622,7 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         os.system("clear")
         print("Legenda:\n\n")
         print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
-        print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
+        print("R = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
         print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
         print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
         print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
@@ -644,11 +649,11 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         else:
             os.system("clear")
             print("\n" * 10)
-            movement(hero, start_time, board, position_horizontal, position_vertical)
+            movement(hero, start_time, board, position_hor, position_ver)
     else:
         os.system("clear")
         print("\n" * 10)
-        movement(hero, start_time, board, position_horizontal, position_vertical)
+        movement(hero, start_time, board, position_hor, position_ver)
 
 
 def main():
@@ -670,4 +675,3 @@ def main():
     set_map(starting_atributes, start_time, "Niezmierzony_las.txt")
 
 main()
-
