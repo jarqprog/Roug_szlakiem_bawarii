@@ -28,7 +28,7 @@ def delay_print(s):
 def developers():
     """ Returns info about authors screen. """
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
-    delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "PRZEDSTAWIAJĄ:")
+    delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "   PRZEDSTAWIAJĄ:")
     input_char = getch()
     os.system("clear")
 
@@ -429,6 +429,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         hot_warm_cold_boss(hero = hero, start_time = start_time)
     # For all maps:
     else:
+        os.system("clear")
         print("\n" * 9)
         print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
 
@@ -520,10 +521,8 @@ def loose_screen(hero, start_time):
 
 def set_map(hero, start_time, board):
     """ Prints map. """
-    # If nothing else displayed above map - display calendar.
-    mod_display.display_calendar_location(hero)
     # General comment - lines above the map always = 10.
-    print("\n" * 7)
+    print("\n" * 10)
     with open(board, 'r') as myfile:
         board = myfile.read()
     board = list(board)
@@ -553,50 +552,48 @@ def movement(hero, start_time, board, position_hor, position_ver):
         # Event_results value reset.
         event_result = None
         print("".join(board))
-        print("\nWciśnij W, S, A, D - poruszanie się, 'e' - karta bohatera, 'z' - dziennik, 'p' - pomoc, ")
+        print("Wciśnij W, S, A, D - poruszanie się, 'e' - karta bohatera, 'z' - dziennik, 'p' - pomoc, ")
         print("'g' - zapis gry, 'l' - legenda, 'k' - atrybuty lub '0' - wyjście z gry.")
-        print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
+        print(" ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
         print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
         print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
-        print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|")
+        print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
+        # If nothing else displayed above map - display calendar.
+        mod_display.display_calendar_location(hero)
         input_char = getch()
         if input_char.upper() == "W":
             os.system("clear")
+            print("\n" * 10)
             if board[position_hor + (position_ver - 1) * 81] != ".":
                 event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, position_hor, position_ver)
             else:
-                mod_display.display_calendar_location(hero = hero)
-                print("\n" * 7)
                 board[position_hor + position_ver * 81] = "."
                 position_ver -= 1
                 board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "S":
             os.system("clear")
+            print("\n" * 10)
             if board[position_hor + (position_ver + 1) * 81] != ".":
                 event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, position_hor, position_ver)
             else:
-                mod_display.display_calendar_location(hero = hero)
-                print("\n" * 7)
                 board[position_hor + position_ver * 81] = "."
                 position_ver += 1
                 board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "D":
             os.system("clear")
+            print("\n" * 10)
             if board[(position_hor + 1) + position_ver * 81] != ".":
                 event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
             else:
-                mod_display.display_calendar_location(hero = hero)
-                print("\n" * 7)
                 board[position_hor + position_ver * 81] = "."
                 position_hor += 1
                 board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
         elif input_char.upper() == "A":
             os.system("clear")
+            print("\n" * 10)
             if board[(position_hor - 1) + position_ver * 81] != ".":
                 event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
             else:
-                mod_display.display_calendar_location(hero = hero)
-                print("\n" * 7)
                 board[position_hor + position_ver * 81] = "."
                 position_hor -= 1
                 board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
