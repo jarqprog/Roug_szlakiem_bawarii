@@ -70,6 +70,9 @@ def display_hero_chart(hero = None):
     onbody_key_list = list(hero.onbody_dict.keys())
     onbody_value_list = list(hero.onbody_dict.values())
 
+    mod_hero.attack_points_calc(hero)
+    mod_hero.defend_points_calc(hero)
+
 
     #################### OTHERS: life, exp, gold, location ############################
     other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak", "obrona", "obrażenia", "pancerz" ]
@@ -218,6 +221,8 @@ def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
     display basic info about enemy compared to hero's stats 
     '''
     clear_screen()
+    mod_hero.attack_points_calc(hero)
+    mod_hero.defend_points_calc(hero)
     mod_enemy.enemy_info(enemy = enemy)
     # check what is main enemy attribut in combat
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
@@ -379,34 +384,35 @@ def display_event_quest(npc = None, hero = None):
     '''
     display quest info, dialogs, info about quest result
     '''
+    random_speach = "".join('\n'+npc.name + " do Ciebie: " + str(npc.speach_list[random.randint(0,len(npc.speach_list)-1)]))
+    print(random_speach)
 
-    for element in npc.quest_list:
+    if npc.quest_name not in hero.quest_completed_list:
 
-        if element not in hero.quest_blocked_list:
-            element_to_display = element
-            
-            info_to_display = npc.name +": "+ element_to_display
-            quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."
-            if npc.quest_condition in hero.quest_condition_list:
-                info_to_display += ("Gratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
-                hero.actualExp += npc.xp_reward
+        for element in hero.quest_info[npc.quest_name]:
+            if element not in hero.quest_blocked_list:
+                if npc.quest_condition in hero.quest_condition_list:
+                    info_to_display = (element +". Gratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
+                    hero.actualExp += npc.xp_reward
+                    hero.quest_completed_list.append(npc.quest_name)
+                    if "portal" in npc.quest_special_reward:
+                        hero.location += 1
+                else:             
+                    info_to_display = element
+                
+                quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."                    
+                print('\n'+info_to_display), dot_loop()
+                print("".join(quest_name_to_display))
+                if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
+                    print("\r - wykonane.")
+                    add_remove_items_dict = npc.inventory_dict
+                    mod_hero.inventory_update(hero, add_remove_items_dict)                     
+                    display_looted_items(add_remove_items_dict)
+                
+                break
 
 
-            break
-    
-    if len(hero.quest_blocked_list) < len(npc.quest_list):
-        print('\n'+info_to_display), dot_loop()
-        print("".join(quest_name_to_display))
-        if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
-            print("\r - wykonane.")
-            add_remove_items_dict = npc.inventory_dict
-            mod_hero.inventory_update(hero, add_remove_items_dict)                     
-            display_looted_items(add_remove_items_dict)
-            index = hero.quest_condition_list.index(npc.quest_condition)
-            del hero.quest_condition_list[index]
-
-
-    return hero
+    return hero, npc
 
 
 def display_next_level_promotion(hero = None):

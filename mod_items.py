@@ -175,6 +175,10 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     placek_sliwkowy.info_list = ["pyszności!"]
     wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 0, [1], info_list)
     placek_sliwkowy.info_list = ["pyszności!"]
+    # quest z misiem lvl 1
+    honey = Items("miodzik", 1, "quest", 1, [1], info_list)
+    placek_sliwkowy.info_list = ["pyszności"]
+
 
 
 
@@ -189,7 +193,8 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     ring_of_strenght,
     
     
-    diament, ruby, jantar, heart_of_mountain
+    diament, ruby, jantar, heart_of_mountain,
+    honey
     ]
 
 
