@@ -359,10 +359,12 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
-        mod_hero.portal_to_next_location(hero = hero)
-        input_char = getch()
-        os.system("clear")
-        print("\n" * 10)
+        if hero.new_location == 2:
+            set_map(hero, start_time, "Kraina_troli.txt")
+        else:
+            input_char = getch()
+            os.system("clear")
+            print("\n" * 10)
     elif position == "R":
         mod_event.quest_event_smashed_camp(hero)
         os.system("clear")
@@ -494,7 +496,7 @@ def win_screen(hero, start_time):
     print("  (  '-......-'  )")
     print("   '.          .'")
     print("     '-......-'")
-    print(" \t\tWYGRAŁEŚ!!!")
+    print(" \t\t Zdobyłeś obrączke !!! WYGRAŁEŚ!!!")
     input_char = getch()
     hall_of_fame(hero, start_time)
 
@@ -527,7 +529,7 @@ def set_map(hero, start_time, board):
     board = list(board)
     position_hor = 1
     position_ver = 18
-    # 81 = additional parameter for coordinates.
+    # 81 = additional parameter for board coordinates.
     board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
     movement(hero, start_time, board, position_hor, position_ver)
 
