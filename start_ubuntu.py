@@ -12,6 +12,7 @@ import mod_items
 import mod_enemy
 import mod_event
 import mod_items
+import mod_npc
 
 os.system("clear")
 
@@ -509,7 +510,7 @@ def loose_screen(hero, start_time):
 def set_map(hero, start_time, board):
     """ Prints map. """
     # If nothing else displayed above map - display calendar.
-    mod_display.display_calendar_location(hero = hero)
+    mod_display.display_calendar_location(hero)
     # General comment - lines above the map always = 10.
     print("\n" * 7)
     with open(board, 'r') as myfile:
@@ -666,7 +667,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
     os.system("clear")
-    set_map(starting_atributes, start_time, "Nawiedzone_zamczysko.txt")
+    set_map(starting_atributes, start_time, "Niezmierzony_las.txt")
 
 main()
 
