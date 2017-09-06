@@ -137,12 +137,14 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     bear_special_quest = Enemy("Złodziejski Miś",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
     bear_special_quest.attrib_dict = {"siła":4, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
     bear_special_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
-    bear_special_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał? Figa, niczego Ci nie dam!"]
+    bear_special_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
     bear_special_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
+    bear_special_quest.quest_condition = "Zdobyto narzędzia pomiarowe"
+    bear_special_quest.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
 
     #   Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
-    wolf_special_quest = Enemy("Zły Wilk",12, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    wolf_special_quest.attrib_dict = {"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":2}
+    wolf_special_quest = Enemy("Zły Wilk",1, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    wolf_special_quest.attrib_dict = {"siła":1, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":2}
     wolf_special_quest.treasure_dict = {"wilcza skóra":1}
     wolf_special_quest.speach_list = [u"Ty chcesz wyciągnąć Babcię? Po moim trupie!"]
     wolf_special_quest.specials_list = [u"Ten wilk mówi!", "Ma wypchany brzuch (zapewne Babcią!)"]

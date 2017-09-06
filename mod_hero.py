@@ -32,15 +32,13 @@ class Hero:
         self.attack = 0 # initial attack points
         self.defend = 0 # initial defend points
         self.courage = 0 # initial courage points
-        self.attack_attribute = None
-        self.defend_attribute = None
+        self.attack = 0
+        self.defend = 0
         self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
         self.life_recovery = 5 # define replenish life level after each turn
         self.calendar_list = [0, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
-
-        #self.time_of_day
 
 
         
@@ -57,6 +55,8 @@ class Hero:
         self.quest_info = {}
         self.quest_condition_list = []
         self.quest_blocked_list = []
+        self.quest_completed_list = []
+        self.new_location = 1
 
         
 # BOHATER - inicjacja zmiennych ##############################
@@ -78,6 +78,8 @@ def hero_settings():
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
     hero.calendar_list = [0, "niedziela", "wieczór"]
+    #hero.attack = attack_points_calc(hero)
+    #hero.defend = defend_points_calc(hero)
 
 
 
@@ -301,26 +303,27 @@ def calendar(calendar_list = None):
 
 
 def quest(hero = None, npc = None):
-    
+
     if npc.quest_name not in hero.quest_info.keys():
         for element in npc.quest_list:
             if element not in hero.quest_info.values():
-                hero.quest_info = {npc.quest_name:element}
+                hero.quest_info[npc.quest_name] = [element]
                 break
+
+    else:
+        if npc.quest_list[0] not in hero.quest_blocked_list:       
+            hero.quest_blocked_list.append(npc.quest_list[0])
         
-    elif npc.quest_name in hero.quest_info.keys():
-        if npc.quest_condition in hero.quest_condition_list:
+        
+    if npc.quest_condition in hero.quest_condition_list:
+        if npc.quest_list[1] not in hero.quest_info[npc.quest_name]:
             temporary_list = []
-            for element in npc.quest_list:
-                if element not in hero.quest_info[npc.quest_name]:
-                    temporary_list.append(element)
-                    hero.quest_info[npc.quest_name] += temporary_list[0]
-                    del temporary_list[:]
-                    break
-                elif element in hero.quest_info[npc.quest_name]:
-                    hero.quest_blocked_list.append(element)
-                
-    return hero, npc
+            temporary_list.append([npc.quest_list[1]])
+            hero.quest_info[npc.quest_name] += temporary_list[0]
+            del temporary_list[:]
+
+    return hero
+
 
 def next_level_promotion(hero = None):
     '''
@@ -364,6 +367,17 @@ def hero_life_regeneration(hero = None):
     if hero.actualLife > hero.maxLife: hero.actualLife = hero.maxLife
               
     return hero
+
+def portal_to_next_location(hero = None):
+    
+    '''
+
+    '''
+
+    set_map(hero = hero, board = NAZWA NASTEPNEJ MAPY)
+
+
+
 
 
 

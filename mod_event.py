@@ -176,8 +176,10 @@ def event_fight_spec_enemy(enemy = None, hero = None):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
     # update hero attrinute:
     mod_hero.combat_attribute_default(hero = hero)
+    mod_hero.attack_points_calc(hero)
+    mod_hero.defend_points_calc(hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
-    print("Twój przeciwnik to", end=''), mod_display.dot_loop()
+    print("Szykuj się do walki. Twój przeciwnik to", end=''), mod_display.dot_loop()
     
     print(' ',enemy.name.upper()+'!','\n')
     mod_display.pause()
@@ -201,6 +203,7 @@ def event_fight_spec_enemy(enemy = None, hero = None):
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:
+                enemy.actualLife = 0
                 hero.quest_condition_list.append(enemy.quest_condition)
                 if enemy.quest_info: print(enemy.quest_info)
                 win_fight(enemy = enemy, hero = hero)
@@ -223,6 +226,8 @@ def event_fight(enemy = None, hero = None):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
     # update hero attrinute:
     mod_hero.combat_attribute_default(hero = hero)
+    mod_hero.attack_points_calc(hero)
+    mod_hero.defend_points_calc(hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
     print("Twój przeciwnik to", end=''), mod_display.dot_loop()
     
@@ -253,6 +258,8 @@ def event_fight(enemy = None, hero = None):
                 break
             elif attacker_change == 1:
                 break
+    
+    return hero
 
 
 def event_quest(npc = None, hero = None):
@@ -263,6 +270,8 @@ def event_quest(npc = None, hero = None):
     npc = mod_npc.npc_settings(name = npc, loc = None, gen = None)
     mod_hero.quest(hero = hero, npc = npc)
     mod_display.display_event_quest(hero = hero, npc = npc)
+
+        
 
     return hero
 
@@ -308,3 +317,20 @@ def event_choose(hero = None, location = None):
     
     
     return hero.inventory_dict
+
+def quest_event_smashed_camp(hero = None):
+    '''
+    smashed camp quest
+    '''
+
+    npc = mod_npc.npc_settings(name = "Obóz niesłusznie rozbitych", loc = None, gen = None)
+    if npc.quest_condition not in hero.quest_condition_list:
+        hero.quest_condition_list.append(npc.quest_condition)
+
+    event_quest(npc = "Obóz niesłusznie rozbitych", hero = hero)
+
+
+    return hero
+
+
+

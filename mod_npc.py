@@ -18,6 +18,7 @@ class Npc:
         self.xp_reward = 0
         self.quest_name = ""
         self.quest_condition = ""
+        self.quest_special_reward = ""
 
      
 
@@ -74,12 +75,16 @@ def npc_settings(name = None, loc = None, gen = None):
     "słyszałam o leśniczym, który potrzebuje pomocy..", "podobno dziewczynka w kapturze ma problem z babcią",
     "dużo tu szczurołaków"]
 
+    
+    wrongly_smashed = Npc("Niesłusznie rozbity", [1])
+    wrongly_smashed.speach_list = ["Serwus, chodź do naszego obozu, mamy dobry miodzik"]
+
 
 
     # npc_regular_list contains list with not quest npc to generate and export to main:
     npc_regular_list = [
     
-    villager, mushrooman, hans, gretchel
+    villager, mushrooman, hans, gretchel, wrongly_smashed
 
 
 
@@ -89,12 +94,13 @@ def npc_settings(name = None, loc = None, gen = None):
 
     # Czerowny Kapturek
     redhood = Npc("Czerwony Kapturek", [1])
-    redhood.speach_list = ["O, witaj!", "Miło Cię widzieć"]
-    redhood.xp_reward = 100
+    redhood.speach_list = ["O, witaj! Co u Ciebie?", "Miło Cię widzieć!"]
+    redhood.xp_reward = 50
     redhood.quest_name = "Ratuj Babcię"
     redhood.quest_list = [
         "Możesz mi pomóc? Babcię porwał wilk. Odszukaj go, zwróć Starowinkę, to będę Ci dozgonnie wdzięczna!",
-        "Ojejku, jejku, Babcia uratowana! Dziękuję Ci! (całus) "
+        "Ojejku, jejku, Babcia uratowana! Dziękuję Ci! (całus) ",
+        "No co tam?"
         
         
         
@@ -104,8 +110,39 @@ def npc_settings(name = None, loc = None, gen = None):
     redhood.quest_condition = "Babcia uratowana"
     redhood.inventory_dict = {"diament":1}
 
+
+
+    # Leśniczy
+    forester = Npc("Leśniczy", [1])
+    forester.speach_list = ["O, witaj!", "Miło Cię widzieć", "Co u Ciebie?", "Dużo mam pracy"]
+    forester.xp_reward = 100
+    forester.quest_name = "Narzędzia pomiarowe"
+    forester.quest_list = [
+        "Słyszałem o Tobie - może mi pomożesz... Złodziejski Miś ukradł mi narzędzia pomiarowe, nie mogę wykonać swojej pracy. Jeśli mi pomożesz, pokażę Ci drogę do nastęþnej krainy",
+        "Brawo, bardzo Ci dziękuję. Czas na Twoją nagrodę!"    
+    ]
+    
+    forester.quest_condition = "Zdobyto narzędzia pomiarowe"
+    forester.inventory_dict = {"diament":1, "liczydło":-1, "lina pomiarowa":-1}
+    forester.quest_special_reward = ["portal"]
+
+
+    # obóz Nieszłusznie rozbitych
+    wrongly_smashed_camp = Npc
+    wrongly_smashed_camp = Npc("Obóz niesłusznie rozbitych", [1])
+    wrongly_smashed_camp.speach_list = ["No czołem, czołem!", "Co tam u Ciebie?", "Dobry miodzik mamy, co nie?"]
+    wrongly_smashed_camp.xp_reward = 5
+    wrongly_smashed_camp.quest_name = "Otrzymałem miodzik!"
+    wrongly_smashed_camp.quest_condition = "Zdobyto miodzik"
+    wrongly_smashed_camp.inventory_dict = {"miodzik":1}
+    wrongly_smashed_camp.quest_list = [
+        "Hihi, pewnie chcesz naszego miodzika? A proszę bardzo! ",
+        "Więcej miodzika nie mamy.. "
+    ]
+
+
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp
 
 
 
