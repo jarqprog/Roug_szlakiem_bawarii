@@ -17,7 +17,7 @@ os.system("clear")
 
 
 def delay_print(s):
-    ''' Delays printing. '''
+    """ Delays printing. """
     for c in s:
         sys.stdout.write("%s" % c)
         sys.stdout.flush()
@@ -25,7 +25,7 @@ def delay_print(s):
 
 
 def developers():
-    ''' Returns info about authors screen. '''
+    """ Returns info about authors screen. """
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "PRZEDSTAWIAJĄ:")
     input_char = getch()
@@ -33,7 +33,7 @@ def developers():
 
 
 def title_screen():
-    ''' Returns title screen '''
+    """ Returns title screen """
     delay_print("\n ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ \n")
     delay_print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|\n")
     delay_print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | \n")
@@ -45,7 +45,7 @@ def title_screen():
 
 
 def plot():
-    ''' Returns plot screen.'''
+    """ Returns plot screen."""
     print("\n\n\n\n\n")
     delay_print("\x1b[6;30;43m" + "Dawno, dawno temu w Bawarii...Twój przyjaciel, pustelnik Mullog, został okradziony.\n"
                 + "\x1b[0m")
@@ -143,7 +143,7 @@ def character_choice_screen(hero):
 
 
 def create_character(hero):
-    ''' Returns created character. '''
+    """ Returns created character. """
     os.system("clear")
     strenght = 1
     agility = 1
@@ -199,7 +199,7 @@ def create_character(hero):
         
 
 def getch():
-    ''' Returns input without 'enter'. '''
+    """ Returns input without 'enter'. """
     import sys
     import tty
     import termios
@@ -214,7 +214,7 @@ def getch():
 
 
 def controls():
-    ''' Returns controls screen. '''
+    """ Returns controls screen. """
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W, S, A, D\nZaawansowane sterowanie jest pod mapką.")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
@@ -222,7 +222,7 @@ def controls():
 
 
 def hot_warm_cold():
-    ''' Hot warm cold mini-game. '''
+    """ Hot warm cold mini-game. """
     os.system("clear")
     correct_answer = []
     string.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -292,7 +292,7 @@ def hot_warm_cold():
 
 
 def hot_warm_cold_boss(hero, start_time):
-    ''' Hot warm cold boss mini-game. '''
+    """ Hot warm cold boss mini-game. """
     os.system("clear")
     with open("wizard.txt", "r") as wizard:
         picture = wizard.read()
@@ -320,7 +320,7 @@ def hot_warm_cold_boss(hero, start_time):
         if user_guess == correct_answer:
             print("\nBrawo!!! WYGRAŁEŚ !!! ")
             input_char = getch()
-            win_screen((hero, start_time))
+            win_screen(hero, start_time)
         else:
             if len(user_guess) != 3:
                 print("Chyba zapomniałeś, że zgadujesz 3 elementy.....")
@@ -340,9 +340,9 @@ def hot_warm_cold_boss(hero, start_time):
     print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer),
           " . GINIESZ !!!")
     input_char = getch()
-    loose_screen((hero, start_time))
+    loose_screen(hero, start_time)
 
-    
+
 def game_events(position, hero, start_time):
     """ Returns event. """
     # ENEMY CLASS IMPORT TO MAIN:
@@ -366,15 +366,6 @@ def game_events(position, hero, start_time):
     elif position == "Z":
         print("\n" * 9)
         print("Trafiłeś NA ZŁY WILK.")
-    # 2nd level events:
-    elif position == "N":
-        print("\n" * 7)
-        print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
-        print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
-        print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
-    elif position == "W":
-        print("\n" * 9)
-        print("Trafiłeś do wioski Szwarzwald")
     elif position == "H":
         print("\n" * 6)
         delay_print("Spotykasz troglodyte Mariana. To może oznaczać tylko jedno:\n")
@@ -385,12 +376,6 @@ def game_events(position, hero, start_time):
         os.system("clear")
         print("\n" * 10)
         return difficulty_choice
-    elif position == "G":
-        print("\n" * 9)
-        print("Trafiłeś do gaju Łotrzyków.")
-    elif position == "T":
-        print("\n" * 9)
-        print("Most pilnowany przez trolla Silnorękiego")
     elif position == "+":
         print("\n" * 9)
         print("żródło życia")
@@ -399,6 +384,21 @@ def game_events(position, hero, start_time):
                               hero=hero)
         os.system("clear")
         print("\n" * 10)
+    # 2nd level events:
+    elif position == "N":
+        print("\n" * 7)
+        print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
+        print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
+        print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
+    elif position == "W":
+        print("\n" * 9)
+        print("Trafiłeś do wioski Szwarzwald")
+    elif position == "G":
+        print("\n" * 9)
+        print("Trafiłeś do gaju Łotrzyków.")
+    elif position == "T":
+        print("\n" * 9)
+        print("Most pilnowany przez trolla Silnorękiego")
     # 3rd level events:
     elif position == "P":
         print("\n" * 9)
@@ -422,6 +422,7 @@ def game_events(position, hero, start_time):
 
 
 def hall_of_fame(hero, start_time):
+    """ Exports to and reads from hall of fame.txt."""
     os.system("clear")
     finish_time = datetime.datetime.now()
     # Get rid of microseconds.
@@ -454,7 +455,7 @@ def hall_of_fame(hero, start_time):
     with open("HALL_OF_FAME.txt", "r", encoding='utf-8') as HALL_OF_FAME:
         os.system("clear")
         print("\nHALL_OF_FAME:\n")
-        # Use spaces to fit the results.
+        # Use pre-calculated number of spaces to fit the results.
         print(" " * 3,  "PUNKTY", " " * 2, "GRACZ", " " * 21, "CZAS", " " * 9, "KLASA\n")
         HALL_OF_FAME = sorted(HALL_OF_FAME.readlines(), reverse=True)
         list_place = 1
@@ -468,18 +469,19 @@ def hall_of_fame(hero, start_time):
         if  input_char.upper() == "Y":
             main()
         else:
-            break
+            sys.exit()
 
 
 def win_screen(hero, start_time):
+    """ Returns win screen. """
     os.system("clear")
     print("     .--------.")
     print("   .'          '.")
-    print("  /   O      O   \")
+    print("  (   O      O   )")
     print(" :                :")
     print(" |                | ")
     print(" : ',          ,' :")
-    print("  \  '-......-'  /")
+    print("  (  '-......-'  )")
     print("   '.          .'")
     print("     '-......-'")
     print(" \t\tWYGRAŁEŚ!!!")
@@ -488,14 +490,15 @@ def win_screen(hero, start_time):
 
 
 def loose_screen(hero, start_time):
+    """ Returns loose screen. """
     os.system("clear")
     print("     .-......-.")
     print("   .'          '.")
-    print("  /   O      O   \")
+    print("  (   O      O   )")
     print(" :           `    :")
     print(" |                | ")
     print(" :    .------.    :")
-    print("  \  '        '  /")
+    print("  (  '        '  )")
     print("   '.          .'")
     print("     '-......-'")
     print("\t\tPRZEGRAŁEŚ!!!")
@@ -503,14 +506,11 @@ def loose_screen(hero, start_time):
     hall_of_fame(hero, start_time)
 
 
-def main_loop(hero, start_time, board):
-    """ Major loop of the whole game. """
-    # General comment - lines above the map always = 10.
-    event_result = None
-    # Initiate non-empty variable for upper() compatibility.
-    input_char = "0"
+def set_map(hero, start_time, board):
+    """ Prints map. """
     # If nothing else displayed above map - display calendar.
     mod_display.display_calendar_location(hero = hero)
+    # General comment - lines above the map always = 10.
     print("\n" * 7)
     with open(board, 'r') as myfile:
         board = myfile.read()
@@ -518,10 +518,16 @@ def main_loop(hero, start_time, board):
     position_horizontal = 1
     position_vertical = 18
     board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+    movement(hero, start_time, board, position_horizontal, position_vertical)
+
+def movement(hero, start_time, board, position_horizontal, position_vertical):
+    """ Returns input_char WSAD result. """
+    # Initiate non-empty variable for upper() compatibility.
+    input_char = "0"
+    event_result = None
     while True:
         if input_char.upper() in ["W", "S", "D", "A"]:
-            # Event_results for:
-            #           1. Hot_and_cold mini-game.
+            # Event_results for hot_and_cold mini-game.
             if event_result == 0:
                 hero.attrib_dict["percepcja"] += 1
             elif event_result == 5:
@@ -581,62 +587,66 @@ def main_loop(hero, start_time, board):
                 board[position_horizontal + position_vertical * 81] = "."
                 position_horizontal -= 1
                 board[position_horizontal + position_vertical * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        # Hero's actions different than WSAD movement.
-        elif input_char.upper() == "E":
-            mod_display.display_hero_chart(hero=hero)
-            print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby wyjść." + "\x1b[0m")
-            input_char = getch()
-            os.system("clear")
-            print("\n" * 10)
-        elif input_char.upper() == "Z":
-            os.system("clear")
-            print("\n" * 9)
-            print("Tu powinien być dziennik")
-        elif input_char.upper() == "P":
-            os.system("clear")
-            print("\n" * 9)
-            print("Tu powinien być pomoc")
-        elif input_char.upper() == "G":
-            os.system("clear")
-            print("\n" * 9)
-            print("Tu powinien być zapis gry")
-        elif input_char.upper() == "L":
-            os.system("clear")
-            print("Legenda:\n\n")
-            print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
-            print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
-            print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
-            print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
-            print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
-            print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
-            print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
-            print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
-                  + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
-        elif input_char.upper() == "K":
-            os.system("clear")
-            print("\n" * 4)
-            print("KLASA: ", hero.proffession)
-            print("SIŁA: ", hero.attrib_dict["siła"])
-            print("ZWINNOŚĆ: ", hero.attrib_dict["zwinność"])
-            print("PERCEPCJA: ", hero.attrib_dict["percepcja"])
-            print("INTELIGENCJA: ", hero.attrib_dict["inteligencja"])
-            print("SIŁA WOLI: ", hero.attrib_dict["siła woli"])
-        elif input_char.upper() == "0":
-            os.system("clear")
-            print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
-            input_char = getch()
-            if input_char.upper() == "0":
-                # Game end and hall of fame enlist.
-                hall_of_fame(hero, start_time)
-                break
-            else:
-                os.system("clear")
-                print("\n" * 10)
-                continue
+        else:
+            input_char_not_movement(hero, start_time, board, input_char, event_result)
+
+
+def input_char_not_movement(hero, start_time, board, input_char, event_result):
+    """ Returns input_char result different than movement. """
+    if input_char.upper() == "E":
+        mod_display.display_hero_chart(hero=hero)
+        print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby wyjść." + "\x1b[0m")
+        input_char = getch()
+        os.system("clear")
+        print("\n" * 10)
+    elif input_char.upper() == "Z":
+        os.system("clear")
+        print("\n" * 9)
+        print("Tu powinien być dziennik")
+    elif input_char.upper() == "P":
+        os.system("clear")
+        print("\n" * 9)
+        print("Tu powinien być pomoc")
+    elif input_char.upper() == "G":
+        os.system("clear")
+        print("\n" * 9)
+        print("Tu powinien być zapis gry")
+    elif input_char.upper() == "L":
+        os.system("clear")
+        print("Legenda:\n\n")
+        print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
+        print("O = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
+        print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
+        print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
+        print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
+        print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
+        print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
+        print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
+                + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
+    elif input_char.upper() == "K":
+        os.system("clear")
+        print("\n" * 4)
+        print("KLASA: ", hero.proffession)
+        print("SIŁA: ", hero.attrib_dict["siła"])
+        print("ZWINNOŚĆ: ", hero.attrib_dict["zwinność"])
+        print("PERCEPCJA: ", hero.attrib_dict["percepcja"])
+        print("INTELIGENCJA: ", hero.attrib_dict["inteligencja"])
+        print("SIŁA WOLI: ", hero.attrib_dict["siła woli"])
+    elif input_char.upper() == "0":
+        os.system("clear")
+        print("\nNa pewno? Wciśnij jeszcze raz '0' żeby wyjść z gry, coś innego żeby kontynuować.")
+        input_char = getch()
+        if input_char.upper() == "0":
+            # Game end and hall of fame enlist.
+            hall_of_fame(hero, start_time)
         else:
             os.system("clear")
             print("\n" * 10)
-            continue
+            movement(hero, start_time, board)
+    else:
+        os.system("clear")
+        print("\n" * 10)
+        movement(hero, start_time, board)
 
 ################## mod_hero.hero_life_regeneration(hero) - na koniec pętli.
 
@@ -656,7 +666,7 @@ def main():
     start_time = datetime.datetime.now()
     hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
     os.system("clear")
-    main_loop(starting_atributes, start_time, "Nawiedzone_zamczysko.txt")
+    set_map(starting_atributes, start_time, "Nawiedzone_zamczysko.txt")
 
 main()
 
