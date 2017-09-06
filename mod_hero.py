@@ -80,6 +80,7 @@ def hero_settings():
     #hero.attack = attack_points_calc(hero)
     #hero.defend = defend_points_calc(hero)
     hero.new_location = 1
+    hero.map_board = ""
     hero.gold = 2 # initial wealt in pouch
 
 
@@ -376,11 +377,16 @@ def portal_to_next_location(hero = None):
         hero.location = hero.new_location
 
         if hero.new_location == 2:
-            board = "Kraina Trolli"
+            hero.map_board = "Kraina Trolli.txt"
         elif hero.new_location == 3:
-            board = "Dymiąca Góra"
+            hero.map_board = "Dymiąca Góra.txt"
         elif hero.new_location == 4:
-            board = "Nawiedzone zamczysko"
+            hero.map_board = "Nawiedzone zamczysko.txt"
+        
+        board = hero.map_board
+
+        start_ubuntu.set_map(hero, start_time, board)
+
 
 
     return hero
