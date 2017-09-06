@@ -377,11 +377,11 @@ def portal_to_next_location(hero = None):
         hero.location = hero.new_location
 
         if hero.new_location == 2:
-            hero.map_board = "Kraina Trolli.txt"
+            hero.map_board = "Kraina_troli.txt"
         elif hero.new_location == 3:
-            hero.map_board = "Dymiąca Góra.txt"
+            hero.map_board = "Dymiąca_góra.txt"
         elif hero.new_location == 4:
-            hero.map_board = "Nawiedzone zamczysko.txt"
+            hero.map_board = "Nawiedzone_zamczysko.txt"
         
         board = hero.map_board
 
