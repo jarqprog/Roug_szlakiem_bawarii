@@ -23,7 +23,6 @@ class Hero:
         self.maxLife = 30 # max life points (limit)
         self.actualLife = 30 # actual number of life points
         self.actualExp = 1 # actual number of exp points
-        self.gold = 2 # initial wealt in pouch
         self.location = 1 # actual map level
         self.map_position = 0 # hero map position
         self.position_horizontal = 1 # hero map coordinate X
@@ -56,7 +55,7 @@ class Hero:
         self.quest_condition_list = []
         self.quest_blocked_list = []
         self.quest_completed_list = []
-        self.new_location = 1
+        #self.new_location = 1
 
         
 # BOHATER - inicjacja zmiennych ##############################
@@ -80,6 +79,8 @@ def hero_settings():
     hero.calendar_list = [0, "niedziela", "wieczór"]
     #hero.attack = attack_points_calc(hero)
     #hero.defend = defend_points_calc(hero)
+    hero.new_location = 1
+    hero.gold = 2 # initial wealt in pouch
 
 
 
@@ -375,16 +376,13 @@ def portal_to_next_location(hero = None):
     if hero.location != hero.new_location:
         hero.location = hero.new_location
 
-        if "portal 2" in npc.quest_special_reward:
-            board = 2
-        elif "portal 3" in npc.quest_special_reward:
-            board = 3
-        elif "portal 4" in npc.quest_special_reward:
-            board = 4
+        if hero.new_location == 2:
+            board = "Kraina Trolli"
+        elif hero.new_location == 3:
+            board = "Dymiąca Góra"
+        elif hero.new_location == 4:
+            board = "Nawiedzone zamczysko"
 
-        print(hero.location, hero.new_location, "teleport", board)
-        mod_display.pause()
-        #set_map(hero = hero, board = NAZWA NASTEPNEJ MAPY)
 
     return hero
 
