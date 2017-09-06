@@ -80,11 +80,24 @@ def npc_settings(name = None, loc = None, gen = None):
     wrongly_smashed.speach_list = ["Serwus, chodź do naszego obozu, mamy dobry miodzik"]
 
 
+    #   wieśniak (name, location_list, inventory_dict, speach_list)
+    villager2 = Npc("wieśniak ze Szwarzwaldu", [2])
+    villager.speach_list = ["Uważaj, niebezpiecznie tu!", "Przed nocą trzeba mi w dom..", "Stara mnie pogoniła", "Dużo tu grzybów i trolli..", "bry, bry",
+    "Oblib.. nie wiem o nim.., ale kręcił się jakiś karzeł..", "uważaj na trolle!",
+    "Moja wioska potrzebuje pomocy.." ]
+
+
+    villager3 = Npc("wieśniak", [2])
+    villager.speach_list = ["Jak się masz?", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
+    "Oblib... tak, poszedł do Dymiącej góry..", "uważaj na wilki i gobliny",
+    "Uważaj, przejścia do Dymiącej góry pilnuje straszny Troll Silnorękiego!" ]
+
+
 
     # npc_regular_list contains list with not quest npc to generate and export to main:
     npc_regular_list = [
     
-    villager, mushrooman, hans, gretchel, wrongly_smashed
+    villager, mushrooman, hans, gretchel, wrongly_smashed, villager1, villager2, villager3
 
 
 
@@ -150,6 +163,21 @@ def npc_settings(name = None, loc = None, gen = None):
     thievish_bear_quest.quest_list = [
         "Chcesz odzyskać fanty dla Leśniczego? Przynieś mi miodzika. Jeśli wrócisz z pustymi rękami, zaatakuję Cię! ",
         "Proszę, oto rzeczy Leśniczego, no idź do niego i nie zawracaj mi głowy więcej.. "]
+
+
+    # Sołtys
+    forester = Npc("Sołtys", [2])
+    forester.speach_list = ["No, bywaj tu!", "Cieszysz oczy!", "Co u Ciebie?", "Witaj w naszej wiosce", "Uważaj, to niebezpieczna okolica", "Oblib, chyba tu był, poszedł do Dymiącej Góry.."]
+    forester.xp_reward = 300
+    forester.quest_name = "Narzędzia pomiarowe"
+    forester.quest_list = [
+        "Słyszałem o Tobie - może mi pomożesz... Złodziejski Miś ukradł mi narzędzia pomiarowe, nie mogę wykonać swojej pracy. Jeśli mi pomożesz, pokażę Ci drogę do nastęþnej krainy..",
+        "Brawo, bardzo Ci dziękuję. Czas na Twoją nagrodę!"    
+    ]
+    
+    forester.quest_condition = "Zdobyto narzędzia pomiarowe"
+    forester.inventory_dict = {"diament":1, "liczydło":-1, "lina pomiarowa":-1}
+    forester.quest_special_reward = ["portal 2"]
     
 
 
