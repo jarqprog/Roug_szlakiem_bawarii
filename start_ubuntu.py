@@ -231,7 +231,6 @@ def controls():
     """ Returns controls screen. """
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
     print("\nWalka polega na umiejętnych rzutach kostką, na które oprócz szczęscia decyduje inicjatywa.\n")
-    print("\nW krainie w której obecnie przebywasz punkty życie regenerują się same po trochu z czasem.\n")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system("clear")
@@ -369,7 +368,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     # 1st level events:
     if position == "M":
         mod_event.quest_event_thievish_bear(hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
@@ -385,7 +383,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     elif position == "R":
         mod_event.quest_event_smashed_camp(hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
@@ -600,6 +597,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
         event_result = None
         if int(hero.actualLife) < 1:
             loose_screen(hero, start_time)
+        mod_hero.next_level_promotion(hero = hero)
         print("".join(board))
         print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
         print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
