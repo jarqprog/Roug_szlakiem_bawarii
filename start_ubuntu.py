@@ -255,7 +255,7 @@ def hot_warm_cold():
         correct_answer.append(i)
     # Difficulty choice.
     while True:
-        difficulty_choice = input("\nWybierz poziom trudnośći. 1, 2 lub 3 dla: łatwy, trudny lub życzenie śmierci:")
+        difficulty_choice = input("\nWybierz poziom trudności. 1, 2 lub 3 dla: łatwy, trudny lub życzenie śmierci:")
         if difficulty_choice == "1":
             print("\nMasz 15 prób. Jak zgadniejsz, dostaniesz punkt PERCEPCJI.")
             difficulty_choice = 15
@@ -380,7 +380,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             set_map(hero, start_time, "Kraina_troli.txt")
         else:
-            input_char = getch()
             os.system("clear")
             print("\n" * 10)
     elif position == "R":
@@ -475,7 +474,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         hot_warm_cold_boss(hero = hero, start_time = start_time)
     # For all maps:
     else:
-        os.system("clear")
         print("\n" * 9)
         print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
 
@@ -600,8 +598,9 @@ def movement(hero, start_time, board, position_hor, position_ver):
         if int(hero.actualLife) < 1:
             loose_screen(hero, start_time)
         mod_hero.next_level_promotion(hero = hero)
-        os.system("clear")
-        print("\n" * 10)
+        if input_char.upper() not in ["L", "K"]:
+            os.system("clear")
+            print("\n" * 10)
         print("".join(board))
         print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
         print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
