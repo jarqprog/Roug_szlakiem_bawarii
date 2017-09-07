@@ -205,7 +205,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     helmet_pot, armour_lether, wolf_skin,
     ring_of_strenght, ring_of_agility,  
     diament, ruby, jantar, heart_of_mountain,
-    honey
+    honey, mada_faka_ring
     ]
 
 
