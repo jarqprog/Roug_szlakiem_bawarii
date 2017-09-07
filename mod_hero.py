@@ -21,7 +21,7 @@ class Hero:
         self.onbody_dict = onbody_dict
 
         self.maxLife = 30 # max life points (limit)
-        self.actualLife = 30 # actual number of life points
+        self.actualLife = 1 # actual number of life points
         self.actualExp = 1 # actual number of exp points
         self.location = 1 # actual map level
         self.map_position = 0 # hero map position
@@ -321,7 +321,7 @@ def next_level_promotion(hero = None):
         
         player_choice = mod_display.display_next_level_promotion(hero = hero)
         hero.level += 1
-        hero.maxLife += 20 # buff to max life
+        hero.maxLife += 30 # buff to max life
         hero.actualLife = hero.maxLife # full life regenration
         mod_display.display_hero_chart(hero)
         if player_choice == 1:

@@ -291,7 +291,7 @@ def event_question_mark(hero = None):
     small chance to win silver, huge chance to fight with random enemy
     '''
     chance_factor = random.randint(1, 100)
-    if chance_factor < 10:
+    if chance_factor < 85:
         enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = hero.location, gen = None)
         event_fight(enemy = enemy, hero = hero)
 
@@ -347,9 +347,8 @@ def quest_event_thievish_bear(hero = None):
 
     else:
         event_quest(npc = "Złodziejski Miś", hero = hero)
-        mod_display.pause()
+        #mod_display.pause()
         if "liczydło" in hero.inventory_dict.keys():
-            #if npc.quest_condition not in hero.quest_condition_list:
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
 
     return hero
@@ -375,7 +374,7 @@ def quest_event_strong_hand_troll(hero = None):
 
     else:
         event_quest(npc = "Troll Silnoręki", hero = hero)
-        mod_display.pause()
+        #mod_display.pause()
 
     return hero
 
