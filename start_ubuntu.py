@@ -231,6 +231,7 @@ def controls():
     """ Returns controls screen. """
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
     print("\nWalka polega na umiejętnych rzutach kostką, na które oprócz szczęscia decyduje inicjatywa.\n")
+    print("\nW krainie w której obecnie przebywasz punkty życie regenerują się same po trochu z czasem.")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system("clear")
@@ -369,13 +370,14 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     if position == "M":
         mod_event.quest_event_thievish_bear(hero)
         input_char = getch()
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
         if hero.new_location == 2:
+            input_char = getch()
             hero.location = hero.new_location
+            os.system("clear")
             set_map(hero, start_time, "Kraina_troli.txt")
         else:
             input_char = getch()
@@ -435,7 +437,9 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "T":
         mod_event.quest_event_strong_hand_troll(hero)
         if hero.new_location == 3:
+            input_char = getch()
             hero.location = hero.new_location
+            os.system("clear")
             set_map(hero, start_time, "Dymiąca_góra.txt")
         else:
             input_char = getch()
@@ -447,7 +451,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("Trafiłeś NA PRZEŁĘCZ ZGUBY.")
     elif position == "S":
         print("\n" * 9)
-        print("Trafiłeś NA SZCZYT ROZPACZY.")
+        print("Trafiłeś NA STRAŻNIK PORTALU.")
     elif position == "F":
         print("\n" * 9)
         print("Trafiłeś NA FASOLOWE POLE.")
@@ -527,7 +531,7 @@ def win_screen(hero, start_time):
     print("  (  '-......-'  )")
     print("   '.          .'")
     print("     '-......-'")
-    print(" \t\t Zdobyłeś obrączke !!! WYGRAŁEŚ!!!")
+    print(" \t\t Odzyskałeś obrączke !!! WYGRAŁEŚ!!!")
     input_char = getch()
     hall_of_fame(hero, start_time)
 
@@ -572,11 +576,13 @@ def movement(hero, start_time, board, position_hor, position_ver):
         loose_screen(hero, start_time)
     else:
         # Life regenerates after every loop.
-        mod_hero.hero_life_regeneration(hero)
+        mod_hero.hero_life_regeneration(hero = hero)
         # Initiate non-empty variable for upper() compatibility.
         input_char = "0"
         event_result = None
         while True:
+            # Life regenerates after every loop.
+            mod_hero.hero_life_regeneration(hero = hero)
             if input_char.upper() in ["W", "S", "D", "A"]:
                 # Event_results for hot_and_cold mini-game.
                 if event_result == 0:
@@ -672,7 +678,7 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
         print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
         print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole" + "\t\t" + "C - Chata pustelnika")
-        print("N = Dziadek NPC" + "\t\t\t" + "S = Szczyt rozpaczy")
+        print("N = Dziadek NPC" + "\t\t\t" + "S = Strażnik portalu.")
         print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
                 + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
     elif input_char.upper() == "K":
