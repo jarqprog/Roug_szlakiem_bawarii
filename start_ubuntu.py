@@ -90,10 +90,11 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
-                    warrior_attr_dict = {"siła": 6, "zwinność": 1, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
+                    warrior_attr_dict = {"siła": 6, "zwinność": 2, "percepcja": 2, "inteligencja": 1, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "topór"
                     hero.attrib_dict.update(warrior_attr_dict)
-                    hero.dmg_list = [1,2]
+                    hero.dmg_list = [14,18]
+                    hero.act_armour = 4
                     hero.proffession = "Wojownik"
                     return hero
         elif input_char.upper() == "2":
@@ -112,6 +113,7 @@ def character_choice_screen(hero):
                     hero.onbody_dict["prawa ręka"] = "włócznia"
                     hero.attrib_dict.update(hunter_attr_dict)
                     hero.dmg_list = [3,35]
+                    hero.act_armour = 2
                     hero.proffession = "Łowca"
                     return hero
         elif input_char.upper() == "3":
@@ -598,6 +600,8 @@ def movement(hero, start_time, board, position_hor, position_ver):
         if int(hero.actualLife) < 1:
             loose_screen(hero, start_time)
         mod_hero.next_level_promotion(hero = hero)
+        os.system("clear")
+        print("\n" * 10)
         print("".join(board))
         print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
         print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
