@@ -206,7 +206,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
     items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
-    dagger,
+    dagger, axe,
     helmet_pot, armour_lether, wolf_skin,
 
     ring_of_strenght, ring_of_agility,
