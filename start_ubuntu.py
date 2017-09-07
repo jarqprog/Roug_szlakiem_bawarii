@@ -587,14 +587,10 @@ def movement(hero, start_time, board, position_hor, position_ver):
     if int(hero.actualLife) < 1:
         loose_screen(hero, start_time)
     else:
-        # Life regenerates after every loop.
-        mod_hero.hero_life_regeneration(hero = hero)
         # Initiate non-empty variable for upper() compatibility.
         input_char = "0"
         event_result = None
         while True:
-            # Life regenerates after every loop.
-            mod_hero.hero_life_regeneration(hero = hero)
             if input_char.upper() in ["W", "S", "D", "A"]:
                 # Event_results for hot_and_cold mini-game.
                 if event_result == 0:
