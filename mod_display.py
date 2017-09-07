@@ -383,7 +383,7 @@ def display_next_level_promotion(hero = None):
         print(str(number).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
         number += 1
     
-    player_choice = input("\nOtrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
+    player_choice = input("\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
     while True:
         try: 
             int(player_choice) in range(1, 5)
