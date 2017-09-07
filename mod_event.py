@@ -291,7 +291,7 @@ def event_question_mark(hero = None):
     small chance to win silver, huge chance to fight with random enemy
     '''
     chance_factor = random.randint(1, 100)
-    if chance_factor < 10:
+    if chance_factor < 85:
         enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = hero.location, gen = None)
         event_fight(enemy = enemy, hero = hero)
 
