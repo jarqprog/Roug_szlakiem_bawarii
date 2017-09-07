@@ -387,6 +387,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     elif position == "D":
         mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "Z":
@@ -469,8 +470,11 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         hot_warm_cold_boss(hero = hero, start_time = start_time)
     # For all maps:
     else:
+        os.system("clear")
         print("\n" * 9)
-        print("\x1b[6;30;41m" + "Nie mozesz sie tu ruszyc" + "\x1b[0m")
+        print("\x1b[6;30;41m" + "PRZESZKODA - NIE MOŻESZ SIĘ TUTAJ RUSZYĆ." + "\x1b[0m")
+        input_char = getch()
+        os.system("clear")
 
 
 def hall_of_fame(hero, start_time):
