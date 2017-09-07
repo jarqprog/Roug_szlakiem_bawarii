@@ -618,10 +618,11 @@ def movement(hero, start_time, board, position_hor, position_ver):
             print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
             print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
             print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
-            input_char = getch()
-            if input_char.upper() == "W":
+            if input_char in ["W", "S", "D", "A"]:
                 # If nothing else displayed above map - display calendar.
                 mod_display.display_calendar_location(hero)
+            input_char = getch()
+            if input_char.upper() == "W":
                 os.system("clear")
                 print("\n" * 10)
                 if board[position_hor + (position_ver - 1) * 81] != ".":
@@ -632,7 +633,6 @@ def movement(hero, start_time, board, position_hor, position_ver):
                     position_ver -= 1
                     board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
             elif input_char.upper() == "S":
-                mod_display.display_calendar_location(hero)
                 os.system("clear")
                 print("\n" * 10)
                 if board[position_hor + (position_ver + 1) * 81] != ".":
@@ -643,7 +643,6 @@ def movement(hero, start_time, board, position_hor, position_ver):
                     position_ver += 1
                     board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
             elif input_char.upper() == "D":
-                mod_display.display_calendar_location(hero)
                 os.system("clear")
                 print("\n" * 10)
                 if board[(position_hor + 1) + position_ver * 81] != ".":
@@ -654,7 +653,6 @@ def movement(hero, start_time, board, position_hor, position_ver):
                     position_hor += 1
                     board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
             elif input_char.upper() == "A":
-                mod_display.display_calendar_location(hero)
                 os.system("clear")
                 print("\n" * 10)
                 if board[(position_hor - 1) + position_ver * 81] != ".":
@@ -680,14 +678,6 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         mod_display.display_quest_log(hero)
         os.system("clear")
         print("\n" * 10)
-    elif input_char.upper() == "P":
-        os.system("clear")
-        print("\n" * 9)
-        print("Tu powinien być pomoc")
-    elif input_char.upper() == "G":
-        os.system("clear")
-        print("\n" * 9)
-        print("Tu powinien być zapis gry")
     elif input_char.upper() == "L":
         os.system("clear")
         print("Legenda:\n\n")
