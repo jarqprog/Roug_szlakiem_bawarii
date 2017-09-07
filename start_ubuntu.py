@@ -95,7 +95,6 @@ def character_choice_screen(hero):
                     hero.attrib_dict.update(warrior_attr_dict)
                     hero.dmg_list = [1,2]
                     hero.proffession = "Wojownik"
-                    hero.actualLife = 1
                     return hero
         elif input_char.upper() == "2":
             os.system("clear")
@@ -441,7 +440,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             set_map(hero, start_time, "Dymiąca_góra.txt")
         else:
-            input_char = getch()
             os.system("clear")
             print("\n" * 10)
     # 3rd level events:
@@ -572,93 +570,89 @@ def set_map(hero, start_time, board):
     """ Prints map. """
     # General comment - lines above the map always = 10.
     print("\n" * 10)
-    if int(hero.actualLife) < 1:
-        loose_screen(hero, start_time)
-    else:
-        with open(board, 'r') as myfile:
-            board = myfile.read()
-        board = list(board)
-        position_hor = 1
-        position_ver = 18
-        # 81 = additional parameter for board coordinates.
-        board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        movement(hero, start_time, board, position_hor, position_ver)
+    with open(board, 'r') as myfile:
+        board = myfile.read()
+    board = list(board)
+    position_hor = 1
+    position_ver = 18
+    # 81 = additional parameter for board coordinates.
+    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+    movement(hero, start_time, board, position_hor, position_ver)
 
 
 def movement(hero, start_time, board, position_hor, position_ver):
     """ Returns input_char WSAD result. """
-    if int(hero.actualLife) < 1:
-        loose_screen(hero, start_time)
-    else:
-        # Initiate non-empty variable for upper() compatibility.
-        input_char = "0"
+    # Initiate non-empty variable for upper() compatibility.
+    input_char = "0"
+    event_result = None
+    while True:
+        if input_char.upper() in ["W", "S", "D", "A"]:
+            # Event_results for hot_and_cold mini-game.
+            if event_result == 0:
+                hero.attrib_dict["percepcja"] += 1
+            if event_result == 5:
+                hero.attrib_dict["percepcja"] += 4
+            if event_result == 10:
+                hero.attrib_dict["percepcja"] += 3
+            if event_result == 15:
+                hero.attrib_dict["percepcja"] += 2
+        # Event_results value reset.
         event_result = None
-        while True:
-            if input_char.upper() in ["W", "S", "D", "A"]:
-                # Event_results for hot_and_cold mini-game.
-                if event_result == 0:
-                    hero.attrib_dict["percepcja"] += 1
-                if event_result == 5:
-                    hero.attrib_dict["percepcja"] += 4
-                if event_result == 10:
-                    hero.attrib_dict["percepcja"] += 3
-                if event_result == 15:
-                    hero.attrib_dict["percepcja"] += 2
-            # Event_results value reset.
-            event_result = None
-            print("".join(board))
-            print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
-            print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
-            print(" ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
-            print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
-            print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
-            print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
-            if input_char.upper() in ["W", "S", "D", "A"]:
-                # If nothing else displayed above map - display calendar.
-                mod_display.display_calendar_location(hero)
-            input_char = getch()
-            if input_char.upper() == "W":
-                os.system("clear")
-                print("\n" * 10)
-                if board[position_hor + (position_ver - 1) * 81] != ".":
-                    event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, 
-                                               position_hor, position_ver)
-                else:
-                    board[position_hor + position_ver * 81] = "."
-                    position_ver -= 1
-                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-            elif input_char.upper() == "S":
-                os.system("clear")
-                print("\n" * 10)
-                if board[position_hor + (position_ver + 1) * 81] != ".":
-                    event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, 
-                                               position_hor, position_ver)
-                else:
-                    board[position_hor + position_ver * 81] = "."
-                    position_ver += 1
-                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-            elif input_char.upper() == "D":
-                os.system("clear")
-                print("\n" * 10)
-                if board[(position_hor + 1) + position_ver * 81] != ".":
-                    event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, 
-                                               position_hor, position_ver)
-                else:
-                    board[position_hor + position_ver * 81] = "."
-                    position_hor += 1
-                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-            elif input_char.upper() == "A":
-                os.system("clear")
-                print("\n" * 10)
-                if board[(position_hor - 1) + position_ver * 81] != ".":
-                    event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, 
-                                               position_hor, position_ver)
-                else:
-                    board[position_hor + position_ver * 81] = "."
-                    position_hor -= 1
-                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        if int(hero.actualLife) < 1:
+            loose_screen(hero, start_time)
+        print("".join(board))
+        print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
+        print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
+        print(" ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
+        print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
+        print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
+        print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
+        if input_char.upper() in ["W", "S", "D", "A"]:
+            # If nothing else displayed above map - display calendar.
+            mod_display.display_calendar_location(hero)
+        input_char = getch()
+        if input_char.upper() == "W":
+            os.system("clear")
+            print("\n" * 10)
+            if board[position_hor + (position_ver - 1) * 81] != ".":
+                event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, 
+                                            position_hor, position_ver)
             else:
-                input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver)
+                board[position_hor + position_ver * 81] = "."
+                position_ver -= 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        elif input_char.upper() == "S":
+            os.system("clear")
+            print("\n" * 10)
+            if board[position_hor + (position_ver + 1) * 81] != ".":
+                event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, 
+                                            position_hor, position_ver)
+            else:
+                board[position_hor + position_ver * 81] = "."
+                position_ver += 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        elif input_char.upper() == "D":
+            os.system("clear")
+            print("\n" * 10)
+            if board[(position_hor + 1) + position_ver * 81] != ".":
+                event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, 
+                                            position_hor, position_ver)
+            else:
+                board[position_hor + position_ver * 81] = "."
+                position_hor += 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        elif input_char.upper() == "A":
+            os.system("clear")
+            print("\n" * 10)
+            if board[(position_hor - 1) + position_ver * 81] != ".":
+                event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, 
+                                            position_hor, position_ver)
+            else:
+                board[position_hor + position_ver * 81] = "."
+                position_hor -= 1
+                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        else:
+            input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver)
 
 
 def input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver):
