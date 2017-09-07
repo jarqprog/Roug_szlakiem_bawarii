@@ -86,27 +86,13 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     dagger.body = "prawa ręka"
     dagger.item_info = "obrażenia (max+5), zwinność"
 
-
+    # pałka
     club = Items("maczuga", 1, "weapon", 20, [1,2,3,4])
     club.buff_min_dmg = 1 # + "min dmg"
     club.buff_max_dmg = 1 # + "max dmg"
     club.combat_attribute = "siła"
     club.body = "prawa ręka"
     club.item_info = "obrażenia (min+1, max+1), siła"
-
-
-    '''
-    self.buff_str = 0 # + "siła"
-    self.buff_agg = 0 # + "zwinność"
-    self.buff_per = 0 # + "percepcja"
-    self.buff_int = 0 # + "inteligencja"
-    self.buff_wil = 0 # + "siła woli"
-    self.buff_arm = 0 # + "pancerz (act_armour)"
-    self.buff_min_dmg = 0 # + "min dmg"
-    self.buff_max_dmg = 0 # + "max dmg"
-    self.body = ""
-    self.combat_attribute = ""
-    '''
 
     # miecz (self, name, level, genre, price, location, item_info)
     sword = Items("miecz", 2, "weapon", 100, [1,2,3,4])
@@ -115,6 +101,14 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     sword.combat_attribute = "siła"
     sword.body = "prawa ręka"
     sword.item_info = "obrażenia (min+2, max+4), siła"
+
+    # włócznia (self, name, level, genre, price, location, item_info)
+    spear = Items("włócznia", 2, "weapon", 100, [1,2,3,4])
+    spear.buff_min_dmg = 2 # + "min dmg"
+    spear.buff_max_dmg = 4 # + "max dmg"
+    spear.combat_attribute = "siła"
+    spear.body = "prawa ręka"
+    spear.item_info = "obrażenia (min+2, max+4), siła"
 
     axe = Items("topór", 2, "weapon", 100, [1,2,3,4])
     axe.buff_min_dmg = 3 # + "min dmg"
