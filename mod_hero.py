@@ -69,7 +69,7 @@ def hero_settings():
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
     inventory_dict = {"srebro":3} #placki będzie można sprzedać albo nakarmić głodnego (quest)
-    
+
     ################################ show active items on Hero:
 
     onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
@@ -182,9 +182,14 @@ def combat_attribute_default(hero = None):
     if hero.onbody_dict["prawa ręka"] == "":
         if hero.attrib_dict["siła"] >= hero.attrib_dict["zwinność"]:
             hero.combat_attribute = "siła"
+
             return hero.combat_attribute
+
+
         else:
             hero.combat_attribute = "zwinność"
+
+
             return hero.combat_attribute            
             
     else:
@@ -350,11 +355,6 @@ def hero_life_regeneration(hero = None):
     if hero.actualLife > hero.maxLife: hero.actualLife = hero.maxLife
               
     return hero
-
-
-
-
-
 
 
 

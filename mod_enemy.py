@@ -88,14 +88,22 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     goblin.treasure_dict = {u"popsuta ryba":1}
     goblin.maxdrop = 2
 
+    # Banita
+    outlaw = Enemy(u"banita",18, 1, 1, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    outlaw.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
+    outlaw.speach_list = [u"Zostaw mnie!", "A masz!", "Co tam masz w sakiewce?", "Już ja powiem wszystko hersztowi!"]
+    outlaw.treasure_dict = {u"srebro":random.randint(1,3)}
+    outlaw.specials_list = [u"Kradnie i porywa", "Plaga krainy", "Słabowaty"]
+    outlaw.maxdrop = 1
+
+
      # Skurczybyk
-    skurczybyk = Enemy(u"skurczybyk",13, 2, 1, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
-    skurczybyk.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
-    skurczybyk.speach_list = [u"Ah, co tam masz w sakiewce?", "Złoto albo śmierć!"]
-    skurczybyk.treasure_dict = {u"jantar":random.randint(1,3), "pierścień skurczybyka":1, "nóż":1} # ring for optional quest
-    skurczybyk.speach_list = [u"Co tam masz w sakiewce?", "Złoto albo śmierć!", "Kto zadziera ze skurczybykiem, ten frajer!"]
-    skurczybyk.specials_list = [u"Straszna menda", "Lepkie ręce"]
-    skurczybyk.maxdrop = 2
+    scoundrel = Enemy(u"skurczybyk",20, 3, 2, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,8])
+    scoundrel.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":3, "inteligencja":1, "siła woli":1}
+    scoundrel.treasure_dict = {u"srebro":random.randint(1,7), "pierścień skurczybyka":1}
+    scoundrel.speach_list = [u"Co tam masz w sakiewce?", "Złoto albo śmierć!", "Kto zadziera ze skurczybykiem, ten frajer!"]
+    scoundrel.specials_list = [u"Straszna menda", "Lepkie ręce"]
+    scoundrel.maxdrop = 2
 
 
 
@@ -104,27 +112,35 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     bear.attrib_dict = {u"siła":4, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
     bear.speach_list = [u"Mrrrrr!", "Wrrrrrr!", "Rgh!"]
 
+#   Wilkołak (semi strong opponent)
+    werewolf = Enemy(u"wilkołak", 30, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [1,10])
+    werewolf.attrib_dict = {u"siła":3,"zwinność":13, "percepcja":3, "inteligencja":1, "siła woli":1}
+    werewolf.treasure_dict = {u"srebro":random.randint(1,5)}
+    werewolf.speach_list = [u"wrrrr...", "yyyy...", "jeść..", "głód...", "auuuuu..."]
+    werewolf.specials_list = [u"szybki i wściekły", "wiecznie głodny"]
+    werewolf.maxdrop = 2
+
 
     #   Ogr (strong opponent)
-    ogr = Enemy(u"ogr", 65, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [5,10])
+    ogr = Enemy(u"ogr", 50, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [5,10])
     ogr.attrib_dict = {u"siła":4,"zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
-    ogr.treasure_dict = {u"złoto":random.randint(1,20)} # placki???
+    ogr.treasure_dict = {u"srebro":random.randint(1,20)}
     ogr.speach_list = [u"Czo to...", "yyyy...", "ja stracha ty..", "Wont mi stomd!", "<czka>"]
     ogr.specials_list = [u"Okrótna siła", "Głupi jak but", "Niezdara", "Zgniata czaszki"]
     ogr.maxdrop = 4
 
     #   Troll (strong opponent)
-    troll = Enemy(u"troll", 75, 3, 4, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
+    troll = Enemy(u"troll", 75, 3, 4, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [9,11])
     troll.attrib_dict = {u"siła":5, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
-    troll.treasure_dict = {u"złoto":random.randint(1,100), "rubiny":random.randint(0,12)}
+    troll.treasure_dict = {u"srebro":random.randint(1,90), "rubiny":random.randint(0,3)}
     troll.speach_list = [u"U mnie głód! Ty smakowite!", "Ty grube!", "Ty ładne i smaczne!", "Argh!", "(warczy)"]
     troll.specials_list = [u"Kamienna skóra", "Niezdara", "Okrótna siła"]
     troll.maxdrop = 4
 
     #   Olbrzym górski
-    mountain_giant = Enemy(u"olbrzym górski", 99, 4, 5, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
+    mountain_giant = Enemy(u"olbrzym górski", 70, 3, 4, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
     mountain_giant.attrib_dict = {u"siła":6, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
-    mountain_giant.treasure_dict = {u"złoto":random.randint(1,100), "diamenty":random.randint(1,3), "olbrzymia maczuga": 1}
+    mountain_giant.treasure_dict = {u"srebro":random.randint(1,100), "diamenty":random.randint(1,3), "olbrzymia maczuga": 1}
     mountain_giant.speach_list = [u"Ty chcieć mi odebrać błyszczące?!", "Twój czerep nada się na ząb!", "(straszny ryk)", "Gnieść, łupić!"]
     mountain_giant.specials_list = [u"Olbrzymia wytrzymałość", "Okrótna siła"]
     mountain_giant.maxdrop = 5
@@ -178,16 +194,12 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 ############## list with all enemies - we use this in functions below (to summon enemy by name):
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
     # mogę po każdym przeciwniku robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    enemies_all_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
-    
-    
+    enemies_all_list = [wolf, ratman, goblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw,
     thievish_bear_quest, wolf_special_quest, ringleader, troll_strong_hand]
 
 ############## list with random enemies - we use this in functions below (to random enemy using filters),
     # quest monsters are excluded:
-    enemies_random_list = [wolf, ratman, goblin, skurczybyk, bear, ogr, troll, mountain_giant,
-
-
+    enemies_random_list = [wolf, ratman, goblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw
     ]
     
     # if enemy name was specified, it will export enemy by given name:

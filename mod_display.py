@@ -114,7 +114,7 @@ def display_hero_chart(hero = None):
     inventory_value_list.append("") # add to avoid error with "max" below
     
     # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie - tworzy zmienne użyte przy druku tabeli:
-    printing_var = 10 #helps correctly print hero chart
+    printing_var = 5 #helps correctly print hero chart
     long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var # longest attributes key
     long_att_val = (max(len(str(x)) for x in attrib_regular_value_list)) # longest attributes value
     long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var # longest inventory key
@@ -305,6 +305,7 @@ def display_looted_items(add_remove_items_dict):
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
+    pause()
 
 
 def display_calendar_location(hero = None):

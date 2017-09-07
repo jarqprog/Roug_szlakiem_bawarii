@@ -195,7 +195,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     # quest z misiem lvl 1
     honey = Items("miodzik", 1, "quest", 1, [1])
     placek_sliwkowy.item_info = "pyszności"
-    mada_faka_ring = Items("pierścień łotrzyka", 2, "quest", 50, [2,3])
+    mada_faka_ring = Items("pierścień skurczybyka", 2, "quest", 50, [2,3])
     mada_faka_ring.item_info = "coś mi się o uszy obiło, że lepiej zachować"
 
 

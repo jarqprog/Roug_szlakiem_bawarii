@@ -56,7 +56,7 @@ def win_fight(enemy = None, hero = None):
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
     mod_display.display_hero_chart(hero=hero)
-    mod_display.pause()
+    #mod_display.pause()
     return hero
 
 def rip(enemy = None, hero = None):
@@ -298,30 +298,6 @@ def event_random_npc(hero = None):
         pass
 
 
-
-def event_choose(hero = None, location = None):
-    '''
-    Depends on the event refers to specific event function
-    '''
-    ### tymczasowo mamy tylko walkę i zabawę z przedmiotami ;)
-    p = 1
-    while p < 3:
-        mod_display.display_hero_chart(hero = hero)
-        event = input("Jeśli chcesz walki, napisz: walka lub  po prostu naciśnij 'enter', żeby polosować itemy do ekwipunku ")
-        if event == "walka":
-            mod_display.display_varied_info()    
-            # załóżmy, że wylosowany został event z przeciwnikiem:
-            event_fight(enemy = None, hero = hero)
-            
-        else:
-            print("No to pogenerujemy przemioty dla zabawy...")
-            # mamy mało itemów, więc filtry wyłączyłem
-            mod_items.treasure_generator(maxloops = 20, maxitem_lvl = None, item_gen = None, hero = hero)
-        p += 1
-    
-    
-    return hero.inventory_dict
-
 def quest_event_smashed_camp(hero = None):
     '''
     smashed camp quest
@@ -413,6 +389,28 @@ def event_well_of_life(hero = None):
 
     else:
         mod_display.pause()
+
+    return hero
+
+
+def quest_event_gate_keeper(hero = None):
+    '''
+    lvl 3 quest: gate keeper
+    '''
+
+    npc = mod_npc.npc_settings(name = "Strażnik portalu", loc = None, gen = None)
+    if npc.quest_list[0] in hero.quest_blocked_list:
+        pass
+
+
+    else:
+        event_quest(npc = "Strażnik portalu", hero = hero)
+        mod_display.pause()
+        if "pierścień skurczybyka" in hero.inventory_dict.keys():
+            hero.quest_condition_list.append("Zdobyto pierścień skurczybyka")
+
+            
+
 
     return hero
 

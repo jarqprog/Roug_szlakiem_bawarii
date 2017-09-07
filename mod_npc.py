@@ -186,15 +186,31 @@ def npc_settings(name = None, loc = None, gen = None):
         "Dać mi trzy rubiny, ja cie puścić. Wrócić bez nich - zginąć marnie, zginąć marnie, tak... ",
         "Ty przejść, ja cie nie zabić teraz.. "]
     troll_strong_hand.quest_special_reward = ["portal 3"]
+
+
+
+    # Strażnik portalu
+    portal_keeper = Npc("Strażnik portalu", [3])
+    portal_keeper.speach_list = ["To niebezpieczna kraina, uważaj na siebie! ", "Co słychać? ",
+    "Oblib, oblib... no nie wiem.. ", "Pilnuję portalu.. ", "Mam nadzieję, że skończą się problemy ze skurczybykami.. "]
+    portal_keeper.xp_reward = 1000
+    portal_keeper.quest_name = "pierścień skurczybyka"
+    portal_keeper.quest_list = [
+        "Chcesz przejść przez bramę? Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę.. ",
+        
+        "Nie doceniałem Cię - wspaniale, otwieram portal - przejdź proszę! Uważaj jeno na podstępnego czarownika! Masz też coś na drogę.. "    
+    ]
+    
+    portal_keeper.quest_condition = "Zdobyto pierścień skurczybyka"
+    portal_keeper.inventory_dict = {"placek śliwkowy":2}
+    portal_keeper.quest_special_reward = ["portal 2"]
     
 
 
 
 
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor, troll_strong_hand
-
-
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor, troll_strong_hand, portal_keeper
 
     ]
 
