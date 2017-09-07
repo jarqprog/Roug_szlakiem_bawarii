@@ -89,8 +89,10 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
-                    warrior_attr_dict = {"siła": 5, "zwinność": 2, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
+                    warrior_attr_dict = {"siła": 6, "zwinność": 2, "percepcja": 2, "inteligencja": 1, "siła woli": 2}
+                    hero.onbody_dict["prawa ręka"] = "topór"
                     hero.attrib_dict.update(warrior_attr_dict)
+                    hero.dmg_list = [15,18]
                     hero.proffession = "Wojownik"
                     return hero
         elif input_char.upper() == "2":
@@ -105,7 +107,8 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
-                    hunter_attr_dict = {"siła": 2, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 2}
+                    hunter_attr_dict = {"siła": 3, "zwinność": 3, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
+                    hero.onbody_dict["prawa ręka"] = "miecz"
                     hero.attrib_dict.update(hunter_attr_dict)
                     hero.proffession = "Łowca"
                     return hero
@@ -121,7 +124,8 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
-                    ninja_attr_dict = {"siła": 1, "zwinność": 3, "percepcja": 3, "inteligencja": 3, "siła woli": 1}
+                    ninja_attr_dict = {"siła": 1, "zwinność": 5, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
+                    hero.onbody_dict["prawa ręka"] = "sztylet"
                     hero.attrib_dict.update(ninja_attr_dict)
                     hero.proffession = "Ninja"
                     return hero
@@ -133,7 +137,7 @@ def character_choice_screen(hero):
                 print("NIEZNAJOMY")
                 print("\nATRYBUTY:")
                 print("\nSIŁA : 1, ZWINNOŚĆ : 1, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 1\n\n\n")
-                print("To ekran tworzenia postaci. Dostaniesz do rozdysponowanie 6 punktów.")
+                print("To ekran tworzenia postaci. Dostaniesz do rozdysponowanie 8 punktów.")
                 print("Wciśnij 'y' żeby stworzyć swoją postać, wciśnij coś innego żeby wrócić.")
                 input_char = getch()
                 if input_char.upper() == "Y":
@@ -151,7 +155,7 @@ def create_character(hero):
     cognition = 1
     brainpower = 1
     willpower = 1
-    points = 6
+    points = 8
     while True:
         os.system("clear")
         if points == 0:
@@ -197,7 +201,7 @@ def create_character(hero):
     hero.attrib_dict.update(created_attr_dict)
     hero.proffession = klasa
     return hero
-        
+# hero.actualLife <= ###################################################
 
 def getch():
     """ Returns input without 'enter'. """
@@ -355,11 +359,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     if position == "M":
         mod_event.quest_event_thievish_bear(hero)
         input_char = getch()
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
         if hero.new_location == 2:
+            hero.location = hero.new_location
             set_map(hero, start_time, "Kraina_troli.txt")
         else:
             input_char = getch()
@@ -367,14 +373,17 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     elif position == "R":
         mod_event.quest_event_smashed_camp(hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
         mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "Z":
         mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "H":
@@ -389,6 +398,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         return difficulty_choice
     elif position == "+":
         mod_event.event_well_of_life(hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "?":
@@ -403,14 +413,24 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
         print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
     elif position == "W":
-        print("\n" * 9)
-        print("Trafiłeś do wioski Szwarzwald")
+        mod_event.event_quest(npc = "Sołtys", hero = hero)
+        input_char = getch()
+        os.system("clear")
+        print("\n" * 10)
     elif position == "G":
-        print("\n" * 9)
-        print("Trafiłeś do gaju Łotrzyków.")
+        mod_event.event_fight_spec_enemy(enemy = "Herszt bandytów", hero = hero)
+        input_char = getch()
+        os.system("clear")
+        print("\n" * 10)
     elif position == "T":
-        print("\n" * 9)
-        print("Most pilnowany przez trolla Silnorękiego")
+        mod_event.quest_event_strong_hand_troll(hero)
+        if hero.new_location == 3:
+            hero.location = hero.new_location
+            set_map(hero, start_time, "Dymiąca_góra.txt")
+        else:
+            input_char = getch()
+            os.system("clear")
+            print("\n" * 10)
     # 3rd level events:
     elif position == "P":
         print("\n" * 9)
@@ -610,9 +630,9 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         os.system("clear")
         print("\n" * 10)
     elif input_char.upper() == "Z":
+        mod_display.display_quest_log(hero)
         os.system("clear")
-        print("\n" * 9)
-        print("Tu powinien być dziennik")
+        print("\n" * 10)
     elif input_char.upper() == "P":
         os.system("clear")
         print("\n" * 9)
@@ -629,8 +649,8 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
         print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
         print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
-        print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole")
-        print("N = Dziadek NPC" + "\t" + "S = Szczyt rozpaczy")
+        print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole" + "\t\t" + "C - Chata pustelnika")
+        print("N = Dziadek NPC" + "\t\t\t" + "S = Szczyt rozpaczy")
         print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
                 + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
     elif input_char.upper() == "K":
