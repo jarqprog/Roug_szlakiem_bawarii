@@ -346,8 +346,13 @@ def quest_event_thievish_bear(hero = None):
     if npc.quest_list[0] in hero.quest_blocked_list:
         if npc.quest_condition not in hero.quest_condition_list:      
             event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+            if "liczydło" in hero.inventory_dict.keys():
+                hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
+
         else:
             event_quest(npc = "Złodziejski Miś", hero = hero)
+            if "liczydło" in hero.inventory_dict.keys():
+                hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
             mod_display.pause()
 
     else:

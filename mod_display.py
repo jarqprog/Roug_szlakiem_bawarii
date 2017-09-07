@@ -374,8 +374,10 @@ def display_event_quest(npc = None, hero = None):
 
 
 def display_next_level_promotion(hero = None):
-           
-    print("Gratulacje! Awansujesz na kolejny poziom doświadczenia!\n")
+    '''
+    display hero attributes for lvl promotion function
+    '''           
+
     number = 1
     for key, value in hero.attrib_dict.items():
         print(str(number).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
