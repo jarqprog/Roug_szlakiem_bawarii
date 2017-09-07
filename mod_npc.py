@@ -188,7 +188,7 @@ def npc_settings(name = None, loc = None, gen = None):
     thievish_bear_quest.inventory_dict = {"liczydło":1, "lina pomiarowa":1, "miodzik":-1}
     thievish_bear_quest.quest_list = [
         "Chcesz odzyskać fanty dla Leśniczego? Przynieś mi miodzika. Jeśli wrócisz z pustymi rękami, zaatakuję Cię! ",
-        "Proszę, oto rzeczy Leśniczego, no idź do niego i nie zawracaj mi głowy więcej.. "]
+        "Miodzik!!! Proszę, oto rzeczy Leśniczego, no idź do niego i nie zawracaj mi głowy więcej.. "]
 
 
     # Sołtys
