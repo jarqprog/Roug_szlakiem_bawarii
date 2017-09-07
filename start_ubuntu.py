@@ -426,6 +426,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
     elif position == "W":
         mod_event.event_quest(npc = "Sołtys", hero = hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "G":
