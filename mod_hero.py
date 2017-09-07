@@ -19,7 +19,6 @@ class Hero:
         self.inventory_dict = inventory_dict
         # contains active items that have influence on hero (wearing items):
         self.onbody_dict = onbody_dict
-
         self.maxLife = 40 # max life points (limit)
         self.actualLife = 40 # actual number of life points
         self.actualExp = 1 # actual number of exp points
@@ -74,11 +73,10 @@ def hero_settings():
     
     ################################ przykładowy bohater (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
-    hero.calendar_list = [0, "niedziela", "wieczór"]
+    hero.calendar_list = [0, "niedziela", "wieczór"] # start value of calendar list
     #hero.attack = attack_points_calc(hero)
     #hero.defend = defend_points_calc(hero)
-    hero.new_location = 1
-    hero.map_board = ""
+    hero.new_location = 1 # variable used in change location mechanic
     hero.gold = 2 # initial wealt in pouch
   
     return hero
@@ -135,7 +133,11 @@ def display_gold(hero = None):
 
     return (''.join((str(hero.gold),' szt. złota')))
 
+
 def display_location(hero = None):
+    '''
+    export hero location to display (used in display mod)
+    '''
     if hero.location == 1:
         return "Niezmierzony Las"
     elif hero.location == 2:
@@ -153,7 +155,6 @@ def display_damage(hero = None):
     '''
     hero.dmg_list
 
-
     return (''.join((str(hero.dmg_list[0]),'-',(str(hero.dmg_list[1])))))
 
 
@@ -165,6 +166,7 @@ def display_armour(hero = None):
 
     return (''.join((str(hero.act_armour),'/',(str(hero.max_armour)))))
 
+
 def display_armour(hero = None):
     '''
     used to display actual and max armour points
@@ -174,9 +176,10 @@ def display_armour(hero = None):
 
 
 def combat_attribute_default(hero = None):
-    '''set default value of combat_attribute'''
-
-
+    '''
+    set default value of combat_attribute: siła or zwinność - depends on weapon in hand
+    if no weapon: deaoult attribut is higher attribut
+    '''
     if hero.onbody_dict["prawa ręka"] == "":
         if hero.attrib_dict["siła"] >= hero.attrib_dict["zwinność"]:
             hero.combat_attribute = "siła"
@@ -198,10 +201,6 @@ def combat_attribute_default(hero = None):
         hero.combat_attribute = imported_item.combat_attribute
 
         return hero.combat_attribute
-        
-        '''
-        hero.combat_attribute = ("pobieram z przedmiotu", hero.onbody_dict["prawa ręka"])
-        '''
 
 
 def items_list_to_dict(items_to_add):
@@ -241,29 +240,15 @@ def inventory_update(hero, add_remove_items_dict):
     return hero
 
 
-def hero_on_map(hero = None):
-    '''
-    change hero coordinates while moving on the map
-    '''
-    pass
-
-
-def hero_creation():
-    clear_screen()
-    print("tworzenie bohatera - do zrobienia") # to ja bym zrobił
-
-
-
-
-
 def calendar(calendar_list = None):
+    '''
+    element of calendar mechanic - exports calendar elements to display
+    '''
     week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
    
     week_index = week_list.index(calendar_list[1])
     day_index = day_time_list.index(calendar_list[2])
-  
-
   
     if calendar_list[2] != day_time_list[3]:
         time_of_day = day_time_list[day_index+1]
@@ -289,6 +274,9 @@ def calendar(calendar_list = None):
 
 
 def quest(hero = None, npc = None):
+    '''
+    element of quest mechanic - block npc's statement, that have been said
+    '''
 
     if npc.quest_name not in hero.quest_info.keys():
         for element in npc.quest_list:
@@ -325,6 +313,7 @@ def next_level_promotion(hero = None):
         hero.actualLife = hero.maxLife # full life regenration
         mod_display.display_hero_chart(hero)
         while True:
+            mod_display.display_next_level_promotion(hero = hero)
             try:
                 if player_choice == '1':
                     hero.attrib_dict["siła"] += 1
@@ -354,20 +343,3 @@ def next_level_promotion(hero = None):
         mod_display.pause()
                 
     return hero
-
-
-
-
-
-
-
-
-
- 
-
-        
-
-
-
-    
-

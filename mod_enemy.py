@@ -97,8 +97,8 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     hobgoblin.maxdrop = 2
 
     # Banita
-    outlaw = Enemy(u"banita",25, 1, 2, "human", [1,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,6])
-    outlaw.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
+    outlaw = Enemy(u"banita",25, 1, 0, "human", [1,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,6])
+    outlaw.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     outlaw.speach_list = [u"Zostaw mnie!", "A masz!", "Co tam masz w sakiewce?", "Już ja powiem wszystko hersztowi!"]
     outlaw.treasure_dict = {u"srebro":random.randint(1,3)}
     outlaw.specials_list = [u"Kradnie i porywa", "Plaga krainy", "Słabowaty"]

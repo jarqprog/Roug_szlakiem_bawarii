@@ -305,6 +305,7 @@ def display_looted_items(add_remove_items_dict):
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
+    dot_loop()
 
 
 
@@ -341,7 +342,6 @@ def display_event_quest(npc = None, hero = None):
     '''
     random_speach = "".join('\n'+npc.name + " do Ciebie: " + str(npc.speach_list[random.randint(0,len(npc.speach_list)-1)]))
     print(random_speach)
-
     if npc.quest_name not in hero.quest_completed_list:
 
         for element in hero.quest_info[npc.quest_name]:
@@ -359,9 +359,9 @@ def display_event_quest(npc = None, hero = None):
 
                 else:             
                     info_to_display = element
-                
+
                 quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."                    
-                print('\n'+info_to_display), dot_loop()
+                print('\n'+info_to_display)
                 print("".join(quest_name_to_display))
                 if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
                     print("\r - wykonane.")
@@ -370,7 +370,7 @@ def display_event_quest(npc = None, hero = None):
                     display_looted_items(add_remove_items_dict)
                 
                 break
-    pause()
+
 
     return hero, npc
 

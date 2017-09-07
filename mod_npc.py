@@ -147,7 +147,7 @@ def npc_settings(name = None, loc = None, gen = None):
     ]
     
     redhood.quest_condition = "Babcia uratowana"
-    redhood.inventory_dict = {"diament":1}
+    redhood.inventory_dict = {"diament":1, "wilcza skóra":-1}
 
 
 

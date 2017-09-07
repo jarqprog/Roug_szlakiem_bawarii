@@ -43,17 +43,15 @@ def priority_test(enemy = None, hero = None):
 def win_fight(enemy = None, hero = None):
     print("Zwycięstwo,", enemy.name, "został pokonany! Sława i doświadczenie są Twoje, ...a może jeszcze jakiś łup bitewny?")
     if len(enemy.treasure_dict) > 0: # check if there are some treasures in enemy inventory
-        mod_display.dot_loop()
         mod_display.pause()
         print("\nTak!\n")
         add_remove_items_dict = enemy.treasure_dict
         mod_display.display_looted_items(add_remove_items_dict) # display treasures from enemy inventory
         mod_hero.inventory_update(hero, add_remove_items_dict)
-
+        mod_display.pause()
     mod_display.clear_screen()
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
-    time.sleep(.5)
-    mod_display.dot_loop()
+    time.sleep(.3)
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
     mod_display.display_hero_chart(hero=hero)
@@ -272,6 +270,7 @@ def event_quest(npc = None, hero = None):
     mod_hero.quest(hero = hero, npc = npc)
     mod_display.display_event_quest(hero = hero, npc = npc)
 
+
     return hero
 
 
@@ -332,6 +331,7 @@ def quest_event_smashed_camp(hero = None):
         hero.quest_condition_list.append(npc.quest_condition)
 
     event_quest(npc = "Obóz niesłusznie rozbitych", hero = hero)
+    mod_display.pause()
 
 
     return hero
@@ -346,13 +346,16 @@ def quest_event_thievish_bear(hero = None):
     if npc.quest_list[0] in hero.quest_blocked_list:
         if npc.quest_condition not in hero.quest_condition_list:      
             event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+        else:
+            event_quest(npc = "Złodziejski Miś", hero = hero)
+            mod_display.pause()
 
     else:
         event_quest(npc = "Złodziejski Miś", hero = hero)
+        mod_display.pause()
         if "liczydło" in hero.inventory_dict.keys():
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
-    
-    
+  
     return hero
 
 
@@ -437,7 +440,8 @@ def quest_event_hermit(hero = None):
         hero.quest_condition_list.append(npc.quest_condition)
 
     event_quest(npc = "Pustelnik", hero = hero)
-
+    mod_display.pause()
+    
     return hero
 
 
