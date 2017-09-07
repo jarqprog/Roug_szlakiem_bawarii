@@ -298,6 +298,7 @@ def event_question_mark(hero = None):
         add_remove_items_dict = {"srebro":random.randint(1,4)}
         mod_hero.inventory_update(hero, add_remove_items_dict)
         mod_display.display_looted_items(add_remove_items_dict)
+        mod_display.dot_loop()
 
     
     return hero
@@ -382,7 +383,7 @@ def event_well_of_life(hero = None):
     full life regeneration
     '''
 
-    print("\n\nZa cenę 10 srebra w pełni Cię uleczę.. ")
+    print("\n\nZa cenę 1 srebra w pełni Cię uleczę.. ")
     if hero.inventory_dict["srebro"] >= 1:
         
         while True:
