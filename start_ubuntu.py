@@ -93,7 +93,7 @@ def character_choice_screen(hero):
                     warrior_attr_dict = {"siła": 6, "zwinność": 2, "percepcja": 2, "inteligencja": 1, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "topór"
                     hero.attrib_dict.update(warrior_attr_dict)
-                    hero.dmg_list = [15,18]
+                    hero.dmg_list = [13,18]
                     hero.proffession = "Wojownik"
                     return hero
         elif input_char.upper() == "2":
@@ -111,7 +111,7 @@ def character_choice_screen(hero):
                     hunter_attr_dict = {"siła": 3, "zwinność": 3, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "włócznia"
                     hero.attrib_dict.update(hunter_attr_dict)
-                    hero.dmg_list = [3,52]
+                    hero.dmg_list = [3,35]
                     hero.proffession = "Łowca"
                     return hero
         elif input_char.upper() == "3":
@@ -129,7 +129,7 @@ def character_choice_screen(hero):
                     ninja_attr_dict = {"siła": 1, "zwinność": 5, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "sztylet"
                     hero.attrib_dict.update(ninja_attr_dict)
-                    hero.dmg_list = [1,45]
+                    hero.dmg_list = [2,15]
                     hero.proffession = "Ninja"
                     return hero
         elif input_char.upper() == "4":
@@ -203,10 +203,10 @@ def create_character(hero):
                             "inteligencja": brainpower, "siła woli": willpower}
     if strenght > agility:
         hero.onbody_dict["prawa ręka"] = "miecz"
-        hero.dmg_list = [10,35]
+        hero.dmg_list = [10,20]
     else:
         hero.onbody_dict["prawa ręka"] = "sztylet"
-        hero.dmg_list = [1,45]
+        hero.dmg_list = [2,15]
     hero.attrib_dict.update(created_attr_dict)
     hero.proffession = klasa
     return hero
@@ -369,7 +369,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     # 1st level events:
     if position == "M":
         mod_event.quest_event_thievish_bear(hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
@@ -385,7 +384,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     elif position == "R":
         mod_event.quest_event_smashed_camp(hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
@@ -410,12 +408,10 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         return difficulty_choice
     elif position == "+":
         mod_event.event_well_of_life(hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "?":
-        mod_event.event_fight(enemy=mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None),
-                              hero=hero)
+        mod_event.event_question_mark(hero = hero)
         os.system("clear")
         print("\n" * 10)
     # 2nd level events:
@@ -730,7 +726,7 @@ def main():
     starting_atributes = character_choice_screen(hero)
     controls()
     start_time = datetime.datetime.now()
-    hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą?: " + "\x1b[0m")
+    hero.name = input("\x1b[6;30;44m" + "\n\n\nJak Cię zwą? : " + "\x1b[0m")
     os.system("clear")
     set_map(starting_atributes, start_time, "Niezmierzony_las.txt")
 
