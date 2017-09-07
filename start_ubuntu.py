@@ -90,11 +90,12 @@ def character_choice_screen(hero):
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
-                    warrior_attr_dict = {"siła": 6, "zwinność": 2, "percepcja": 2, "inteligencja": 1, "siła woli": 2}
+                    warrior_attr_dict = {"siła": 6, "zwinność": 1, "percepcja": 1, "inteligencja": 1, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "topór"
                     hero.attrib_dict.update(warrior_attr_dict)
-                    hero.dmg_list = [13,18]
+                    hero.dmg_list = [1,2]
                     hero.proffession = "Wojownik"
+                    hero.actualLife = 1
                     return hero
         elif input_char.upper() == "2":
             os.system("clear")
@@ -369,6 +370,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     # 1st level events:
     if position == "M":
         mod_event.quest_event_thievish_bear(hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
@@ -384,6 +386,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     elif position == "R":
         mod_event.quest_event_smashed_camp(hero)
+        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
@@ -560,7 +563,7 @@ def loose_screen(hero, start_time):
     print("  (  '        '  )")
     print("   '.          .'")
     print("     '-......-'")
-    print("\t\tPRZEGRAŁEŚ!!!")
+    print("\t\tPO HEROICZNEJ WALCE ŚWIAT ZAPŁAKAŁ - GINIESZ !!!")
     input_char = getch()
     hall_of_fame(hero, start_time)
 
