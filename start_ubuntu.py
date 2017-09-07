@@ -302,7 +302,7 @@ def hot_warm_cold():
                 suggestions.append("COLD!")
         print(suggestions)
     print("\nNie zgadłeś! Odpowiedz to:", " ".join(correct_answer),
-          " .Ale dostaniesz 1 percepcji za dobre chęci. Wciśnij cokolwiek.")
+          ". Ale dostaniesz 1 percepcji za dobre chęci. Wciśnij cokolwiek.")
     input_char = getch()
     difficulty_choice = 0
     return difficulty_choice
@@ -375,7 +375,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "L":
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
         if hero.new_location == 2:
-            input_char = getch()
             hero.location = hero.new_location
             os.system("clear")
             set_map(hero, start_time, "Kraina_troli.txt")
@@ -388,7 +387,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     elif position == "D":
         mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "Z":
@@ -416,13 +414,15 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     # 2nd level events:
     elif position == "N":
+        os.system("clear")
         print("\n" * 7)
         print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
         print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
         print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
+        input_char = getch()
+        os.system("clear")
     elif position == "W":
         mod_event.event_quest(npc = "Sołtys", hero = hero)
-        input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "G":
@@ -433,7 +433,6 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "T":
         mod_event.quest_event_strong_hand_troll(hero)
         if hero.new_location == 3:
-            input_char = getch()
             hero.location = hero.new_location
             os.system("clear")
             set_map(hero, start_time, "Dymiąca_góra.txt")
@@ -450,25 +449,21 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "S":
         mod_event.quest_event_gate_keeper(hero = hero)
         if hero.new_location == 4:
-            input_char = getch()
             hero.location = hero.new_location
             os.system("clear")
             set_map(hero, start_time, "Nawiedzone_zamczysko.txt")
         else:
-            input_char = getch()
             os.system("clear")
             print("\n" * 10)
     elif position == "F":
         os.system("clear")
-        print("\n\n\n\nMyslałeś że będziesz jadł sobie fasole za darmo?? RACZEJ NIE !!!")
+        print("\n\n\n\nMyslałeś, że będziesz jadł sobie fasole za darmo?? RACZEJ NIE !!!")
         input_char = getch()
         os.system("clear")
         mod_event.event_fight_spec_enemy(enemy = "skurczybyk", hero = hero)
-        input_char = getch()
         os.system("clear")
     elif position == "C":
         mod_event.quest_event_hermit(hero = hero)
-        input_char = getch()
     # 4th level events:
     elif position == "B":
         hot_warm_cold_boss(hero = hero, start_time = start_time)
