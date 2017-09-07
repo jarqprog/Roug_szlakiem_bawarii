@@ -307,39 +307,41 @@ def next_level_promotion(hero = None):
     '''
     if hero.actualExp > ((50*hero.level)*2*hero.level):
         
-        player_choice = mod_display.display_next_level_promotion(hero = hero)
-        hero.level += 1
-        hero.maxLife += 30 # buff to max life
-        hero.actualLife = hero.maxLife # full life regenration
-        mod_display.display_hero_chart(hero)
         while True:
-            mod_display.display_next_level_promotion(hero = hero)
-            try:
-                if player_choice == '1':
-                    hero.attrib_dict["siła"] += 1
-                    print("Wzrosła siła i życie")
-                    break
-                elif player_choice == '2':
-                    hero.attrib_dict["zwinność"] += 1
-                    print("Wzrosła zwinność i życie")
-                    break
-                elif player_choice == '3':
-                    hero.attrib_dict["percepcja"] += 1
-                    print("Wzrosła percepcja i życie")
-                    break
-                elif player_choice == '4':
-                    hero.attrib_dict["inteligencja"] += 1
-                    print("Wzrosła inteligencja i życie")
-                    break
-                elif player_choice == '5':
-                    hero.attrib_dict["siła woli"] += 1
-                    print("Wzrosła siła woli i życie")
-                    break
-                else:
-                    player_choice = input("Wybierz liczbę od 1 do 5.. --> ")
-            except:
-                player_choice = input("Wybierz liczbę od 1 do 5.. --> ")
-    
-        mod_display.pause()
+            player_choice = mod_display.display_next_level_promotion(hero = hero)
+            hero.level += 1
+            hero.maxLife += 30 # buff to max life
+            hero.actualLife = hero.maxLife # full life regenration
+            mod_display.display_hero_chart(hero)
+
+            if player_choice == '1':
+                hero.attrib_dict["siła"] += 1
+                print("Wzrosła siła i życie")
+                mod_display.pause()
+                break
+            elif player_choice == '2':
+                hero.attrib_dict["zwinność"] += 1
+                print("Wzrosła zwinność i życie")
+                mod_display.pause()
+                break
+            elif player_choice == '3':
+                hero.attrib_dict["percepcja"] += 1
+                print("Wzrosła percepcja i życie")
+                mod_display.pause()
+                break
+            elif player_choice == '4':
+                hero.attrib_dict["inteligencja"] += 1
+                print("Wzrosła inteligencja i życie")
+                mod_display.pause()
+                break
+            elif player_choice == '5':
+                hero.attrib_dict["siła woli"] += 1
+                print("Wzrosła siła woli i życie")
+                mod_display.pause()
+                break
+            else:
+                print("Wybierz numer atrybutu, spróbuj jeszcze raz.. ")
+                mod_display.pause()
+                continue    
                 
     return hero
