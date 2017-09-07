@@ -28,7 +28,8 @@ def delay_print(s):
 def developers():
     """ Returns info about authors screen. """
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
-    delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n" + "\t" + "   PRZEDSTAWIAJĄ:")
+    delay_print("\n\n\n" + "\t" + "Słuchacze CODECOOL'a \n\n\nJarosław Kucharczyk i Łukasz Malko\n\n\n"
+                + "\t" + "   PRZEDSTAWIAJĄ:")
     input_char = getch()
     os.system("clear")
 
@@ -50,9 +51,9 @@ def plot():
     print("\n\n\n\n\n")
     delay_print("\x1b[6;30;43m" + "Dawno, dawno temu w Bawarii...Twój przyjaciel, pustelnik Mullog, został okradziony.\n"
                 + "\x1b[0m")
-    delay_print("\x1b[6;30;43m" + "Karzeł Oblib zwędził mu drogocenną obrączkę - prezent urodziowy od przyjaciela z młodości.\n"
+    delay_print("\x1b[6;30;43m" + "Karzeł Oblib zwędził mu drogocenną obrączkę-prezent urodziowy od przyjaciela z młodości."
                 + "\x1b[0m")
-    delay_print("\x1b[6;30;43m" + "Mullog usycha z żalu, błaga Cię o pomoc.\n" + "\x1b[0m")
+    delay_print("\n" + "\x1b[6;30;43m" + "Mullog usycha z żalu, błaga Cię o pomoc.\n" + "\x1b[0m")
     delay_print("\x1b[6;30;43m" + "Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n" + "\x1b[0m")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
@@ -110,6 +111,7 @@ def character_choice_screen(hero):
                     hunter_attr_dict = {"siła": 3, "zwinność": 3, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "miecz"
                     hero.attrib_dict.update(hunter_attr_dict)
+                    hero.dmg_list = [10,35]
                     hero.proffession = "Łowca"
                     return hero
         elif input_char.upper() == "3":
@@ -127,6 +129,7 @@ def character_choice_screen(hero):
                     ninja_attr_dict = {"siła": 1, "zwinność": 5, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "sztylet"
                     hero.attrib_dict.update(ninja_attr_dict)
+                    hero.dmg_list = [1,45]
                     hero.proffession = "Ninja"
                     return hero
         elif input_char.upper() == "4":
@@ -198,10 +201,15 @@ def create_character(hero):
     os.system("clear")
     created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
                             "inteligencja": brainpower, "siła woli": willpower}
+    if strenght > agility:
+        hero.onbody_dict["prawa ręka"] = "miecz"
+    else:
+        hero.onbody_dict["prawa ręka"] = "sztylet"
     hero.attrib_dict.update(created_attr_dict)
+    hero.dmg_list = [10,35]
     hero.proffession = klasa
     return hero
-# hero.actualLife <= ###################################################
+
 
 def getch():
     """ Returns input without 'enter'. """
@@ -220,7 +228,8 @@ def getch():
 
 def controls():
     """ Returns controls screen. """
-    print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W, S, A, D\nZaawansowane sterowanie jest pod mapką.")
+    print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
+    print("\nWalka polega na umiejętnych rzutach kostką, na które oprócz szczęscia decyduje inicjatywa.\n")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system("clear")
@@ -543,82 +552,94 @@ def set_map(hero, start_time, board):
     """ Prints map. """
     # General comment - lines above the map always = 10.
     print("\n" * 10)
-    with open(board, 'r') as myfile:
-        board = myfile.read()
-    board = list(board)
-    position_hor = 1
-    position_ver = 18
-    # 81 = additional parameter for board coordinates.
-    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-    movement(hero, start_time, board, position_hor, position_ver)
+    if hero.actualLife < 1:
+        loose_screen(hero, start_time)
+    else:
+        with open(board, 'r') as myfile:
+            board = myfile.read()
+        board = list(board)
+        position_hor = 1
+        position_ver = 18
+        # 81 = additional parameter for board coordinates.
+        board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+        movement(hero, start_time, board, position_hor, position_ver)
+
 
 def movement(hero, start_time, board, position_hor, position_ver):
     """ Returns input_char WSAD result. """
-    # Initiate non-empty variable for upper() compatibility.
-    input_char = "0"
-    event_result = None
-    mod_hero.hero_life_regeneration(hero)   #############################################################
-    while True:
-        if input_char.upper() in ["W", "S", "D", "A"]:
-            # Event_results for hot_and_cold mini-game.
-            if event_result == 0:
-                hero.attrib_dict["percepcja"] += 1
-            if event_result == 5:
-                hero.attrib_dict["percepcja"] += 4
-            if event_result == 10:
-                hero.attrib_dict["percepcja"] += 3
-            if event_result == 15:
-                hero.attrib_dict["percepcja"] += 2
-        # Event_results value reset.
+    if hero.actualLife < 1:
+        loose_screen(hero, start_time)
+    else:
+        # Life regenerates after every loop.
+        mod_hero.hero_life_regeneration(hero)
+        # Initiate non-empty variable for upper() compatibility.
+        input_char = "0"
         event_result = None
-        print("".join(board))
-        print("Wciśnij W, S, A, D - poruszanie się, 'e' - karta bohatera, 'z' - dziennik, 'p' - pomoc, ")
-        print("'g' - zapis gry, 'l' - legenda, 'k' - atrybuty lub '0' - wyjście z gry.")
-        print(" ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
-        print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
-        print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
-        print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
-        # If nothing else displayed above map - display calendar.
-        mod_display.display_calendar_location(hero)
-        input_char = getch()
-        if input_char.upper() == "W":
-            os.system("clear")
-            print("\n" * 10)
-            if board[position_hor + (position_ver - 1) * 81] != ".":
-                event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, position_hor, position_ver)
+        while True:
+            if input_char.upper() in ["W", "S", "D", "A"]:
+                # Event_results for hot_and_cold mini-game.
+                if event_result == 0:
+                    hero.attrib_dict["percepcja"] += 1
+                if event_result == 5:
+                    hero.attrib_dict["percepcja"] += 4
+                if event_result == 10:
+                    hero.attrib_dict["percepcja"] += 3
+                if event_result == 15:
+                    hero.attrib_dict["percepcja"] += 2
+            # Event_results value reset.
+            event_result = None
+            print("".join(board))
+            print("Wciśnij W, S, A, D - poruszanie się, 'E' - karta bohatera, 'Z' - dziennik")
+            print("'L' - legenda, 'K' - atrybuty lub '0' - wyjście z gry.")
+            print(" ___ _____      _   _  _____ ___ __  __        ___   ___      ___   ___ ___ ___ ")
+            print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
+            print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
+            print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
+            # If nothing else displayed above map - display calendar.
+            mod_display.display_calendar_location(hero)
+            input_char = getch()
+            if input_char.upper() == "W":
+                os.system("clear")
+                print("\n" * 10)
+                if board[position_hor + (position_ver - 1) * 81] != ".":
+                    event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, 
+                                               position_hor, position_ver)
+                else:
+                    board[position_hor + position_ver * 81] = "."
+                    position_ver -= 1
+                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+            elif input_char.upper() == "S":
+                os.system("clear")
+                print("\n" * 10)
+                if board[position_hor + (position_ver + 1) * 81] != ".":
+                    event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, 
+                                               position_hor, position_ver)
+                else:
+                    board[position_hor + position_ver * 81] = "."
+                    position_ver += 1
+                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+            elif input_char.upper() == "D":
+                os.system("clear")
+                print("\n" * 10)
+                if board[(position_hor + 1) + position_ver * 81] != ".":
+                    event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, 
+                                               position_hor, position_ver)
+                else:
+                    board[position_hor + position_ver * 81] = "."
+                    position_hor += 1
+                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
+            elif input_char.upper() == "A":
+                os.system("clear")
+                print("\n" * 10)
+                if board[(position_hor - 1) + position_ver * 81] != ".":
+                    event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, 
+                                               position_hor, position_ver)
+                else:
+                    board[position_hor + position_ver * 81] = "."
+                    position_hor -= 1
+                    board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
             else:
-                board[position_hor + position_ver * 81] = "."
-                position_ver -= 1
-                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == "S":
-            os.system("clear")
-            print("\n" * 10)
-            if board[position_hor + (position_ver + 1) * 81] != ".":
-                event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, position_hor, position_ver)
-            else:
-                board[position_hor + position_ver * 81] = "."
-                position_ver += 1
-                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == "D":
-            os.system("clear")
-            print("\n" * 10)
-            if board[(position_hor + 1) + position_ver * 81] != ".":
-                event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
-            else:
-                board[position_hor + position_ver * 81] = "."
-                position_hor += 1
-                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        elif input_char.upper() == "A":
-            os.system("clear")
-            print("\n" * 10)
-            if board[(position_hor - 1) + position_ver * 81] != ".":
-                event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, position_hor, position_ver)
-            else:
-                board[position_hor + position_ver * 81] = "."
-                position_hor -= 1
-                board[position_hor + position_ver * 81] = ("\x1b[6;30;42m" + "@" + "\x1b[0m")
-        else:
-            input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver)
+                input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver)
 
 
 def input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver):
