@@ -618,7 +618,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
             print("/ __|_  / |    /_\ | |/ /_ _| __|  \/  |      | _ ) /_\ \    / /_\ | _ \_ _|_ _|")
             print("\__ \/ /| |__ / _ \| ' < | || _|| |\/| |      | _ \/ _ \ \/\/ / _ \|   /| | | | ")
             print("|___/___|____/_/ \_\_|\_\___|___|_|  |_|      |___/_/ \_\_/\_/_/ \_\_|_\___|___|\n")
-            if input_char in ["W", "S", "D", "A"]:
+            if input_char.upper() in ["W", "S", "D", "A"]:
                 # If nothing else displayed above map - display calendar.
                 mod_display.display_calendar_location(hero)
             input_char = getch()
