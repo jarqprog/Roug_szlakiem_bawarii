@@ -85,19 +85,51 @@ def npc_settings(name = None, loc = None, gen = None):
     "Oblib.. nie wiem o nim.., ale kręcił się jakiś karzeł..", "uważaj na trolle!",
     "Moja wioska potrzebuje pomocy.." ]
 
+    villager21 = Npc("wieśniaczka ze Szwarzwaldu", [2])
+    villager.speach_list = ["Uważaj, niebezpiecznie tu!", "Przed nocą trzeba mi w dom..", "Żyto zgniło, bieda straszna..", "Dużo tu grzybów i trolli..", "bry, bry",
+    "Oblib.. nie wim.., ale kręcił się jakiś karzeł..", "Troll!! a, nie, to tylko drzewo.. ", "Okradli naszą wioskę", "Uważaj na rabusiów",
+    "Moja wioska potrzebuje pomocy.." ]
+
 
     villager3 = Npc("wieśniak Hans", [2])
     villager.speach_list = ["Jak się masz?", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
     "Oblib... tak, poszedł do Dymiącej góry..", "uważaj na wilki i gobliny",
-    "Uważaj, przejścia do Dymiącej góry pilnuje straszny Troll Silnorękiego!" ]
+    "Uważaj, przejścia do Dymiącej góry pilnuje straszny Troll Silnorękiego!"]
+
+    villager4 = Npc("mieszkaniec przysiółka", [2,3])
+    villager.speach_list = ["Oblib? Widziałek go wczoraj, idź do Strażnika bramy w Dymiącej Górze", "Mamy problem z rabusiami", "Skurczybyki dają się we znaki",
+    "Podobno Strażnik bramy pomoże temu, kto przyniesie pierścień skurczybyka.." ]
+
+    warrior = Npc("wojownik", [1,3])
+    warrior.speach_list = ["Ruch to zdrowie!", "Oblib? Był tu.. wstrętny karzeł..", "Dość bitew widziałem, spotkać by kobitę, ożenić się.."]
+
+    mountainman = Npc("Góral", [2,3])
+    mountainman.speach_list = ["Oblib.. coś słyszałem..", "Wiało tu wczoraj... ", "Uważaj na olbrzymy!", "Piękne i straszne nasze góry!", "bry, bry",
+    "Oblib... tak, poszedł do Dymiącej góry..", "uważaj na wilki i gobliny",
+    "Podobno Oblib zginął, idź do Pustelnika - on wiele wie.." ]
+
+    joulderadom = Npc("Joul z Radomia", [3])
+    mountainman.speach_list = ["Będąc w Bawarii, skosztuj kiełbasę!", "To mydło jest z pobiskiego zajazdy (czka)", "Miło Cię poznać..",
+    "Dobry miodzik mam, nikomu nie dam..", "Przed wyruszeniem w drogę należy zebrać drużynę..", "Hej, hoo!"]
+
+    oblibghost = Npc("Jakiś głos, czy to duch?", [3, 4])
+    oblibghost.speach_list = ["Byłem karłem, dziś niczym...", "Podstępny Czarownik zniknął mnie...", "Uuuuuuu...", "Na co mi to było.."]
+
+    oldtroll = Npc("Stary Troll wegetarianin", [3, 4])
+    oldtroll.speach_list = ["Ha, ho! Ja ci nic nie robić, nie mieć zebów!", "Jeść jagody, jeść borówki, nie pić wódki! ",
+    "Oblib, gdzie on? Nie wiedzieć, ale coś słyszeć.."]
+
+    oldhunter = Npc("Stary Łowca", [3, 4])
+    oldtroll.speach_list = ["Widziałeś Starego Trolla? Od rana go szukam..", "Oblib ponoć zaginął..", "Bry, bry!", "Bywaj!",
+    "Zimno kości łamie"]
+
 
 
 
     # npc_regular_list contains list with not quest npc to generate and export to main:
-    npc_regular_list = [
-    
-    villager, mushrooman, hans, gretchel, wrongly_smashed, villager1, villager2, villager3
-
+    npc_regular_list = [   
+    villager, mushrooman, hans, gretchel, wrongly_smashed, villager1, villager2, villager3, mountainman, joulderadom,
+    villager4, oblibghost, oldtroll, oldhunter, warrior
     ]
 
 ############################# QUEST NPC

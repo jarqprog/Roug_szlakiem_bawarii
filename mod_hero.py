@@ -30,9 +30,7 @@ class Hero:
         self.dmg_list = [1,4] # initial min and max damage
         self.attack = 0 # initial attack points
         self.defend = 0 # initial defend points
-        self.courage = 0 # initial courage points
-        self.attack = 0
-        self.defend = 0
+        self.courage = 0 # initial courage points - not used yet
         self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
         self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
@@ -58,7 +56,7 @@ class Hero:
         #self.new_location = 1
 
         
-# BOHATER - inicjacja zmiennych ##############################
+# HERO - import function ##############################
 
 def hero_settings():
     '''

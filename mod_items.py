@@ -63,12 +63,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
         then export to main 
     '''
 
-
-
- 
-    #name, level, genre, price, location, damage, special, attrib_dict, body_dict, info
-
-##### WEAPON ITEMS:
+##### WEAPON ITEMS (parameters not fully used yet - wip):
 
     # nóż (self, name, level, genre, price, location, item_info)
     knife = Items("nóż", 1, "weapon", 20, [1,2,3,4])
@@ -141,8 +136,8 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     armour_lether.body = "tors"
     armour_lether.item_info = "obrona +1"
 
-##### RINGS:
 
+##### RINGS:
     # ring (self, name, level, genre, price, location, item_info)
     ring_of_strenght = Items("pierścień siły", 4, "ring", 1200, [3,4])
     ring_of_strenght.item_info = "o tym pierścieniu krążą legendy, kto go założy - ten siłacz!"
@@ -208,10 +203,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
     dagger, axe, spear,
     helmet_pot, armour_lether, wolf_skin,
-
-    ring_of_strenght, ring_of_agility,
-    
-    
+    ring_of_strenght, ring_of_agility,  
     diament, ruby, jantar, heart_of_mountain,
     honey
     ]

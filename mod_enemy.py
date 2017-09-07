@@ -66,31 +66,39 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     # data in (...) are enemy:
     # name, life, level, xp4hero, genre, location (list), attrib_dict, treasure_dict, specials_list, speach_list
 
-    #   Wilk
-    wolf = Enemy(u"wilk",6, 1, 0, "animal", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,3])
-    wolf.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":3, "inteligencja":1, "siła woli":1}
+    #  Wilk
+    wolf = Enemy(u"wilk",20, 1, 1, "animal", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [1,3])
+    wolf.attrib_dict = {u"siła":1, "zwinność":3, "percepcja":3, "inteligencja":1, "siła woli":1}
     wolf.speach_list = [u"wrrrr", "auuuuuuuuuuuuu!"]
     wolf.specials_list = [u"szybki skubaniec!"]
     wolf.treasure_dict = {u"wilcza skóra":1}
     wolf.maxdrop = 0
 
-    #   Szczurołak
-    ratman = Enemy(u"szczurołak",3, 1, 0, "animal", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [1,2])
-    ratman.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":1, "inteligencja":1, "siła woli":1}
+    # Szczurołak
+    ratman = Enemy(u"szczurołak",12, 1, 1, "animal", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [1,2])
+    ratman.attrib_dict = {u"siła":1, "zwinność":3, "percepcja":3, "inteligencja":1, "siła woli":1}
     ratman.speach_list = [u"wrrrr", "(sapie)"]
     ratman.specials_list = [u"dość szybki jest!"]
     ratman.maxdrop = 0
 
     # Goblin
-    goblin = Enemy(u"goblin",10, 1, 1, "beast", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    goblin.attrib_dict = {u"siła":1, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
+    goblin = Enemy(u"goblin",22, 1, 2, "beast", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    goblin.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
     goblin.speach_list = [u"Ja ubić ludzia!", "Ty trup!"]
-    goblin.treasure_dict = {u"popsuta ryba":1}
+    goblin.treasure_dict = {u"ucho goblina":1}
     goblin.maxdrop = 2
 
+   # Hobgoblin
+    hobgoblin = Enemy(u"Hobgoblin",28, 1, 3, "beast", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [3,4])
+    hobgoblin.attrib_dict = {u"siła":4, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
+    hobgoblin.speach_list = [u"Ha! Ja ubić ludzia!", "Ty trup!", "Walka!", "Arghhh!", "Dyszy.."]
+    hobgoblin.specials_list = [u"Silny skubaniec.."]
+    hobgoblin.treasure_dict = {u"srebro":1}
+    hobgoblin.maxdrop = 2
+
     # Banita
-    outlaw = Enemy(u"banita",18, 1, 1, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    outlaw.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
+    outlaw = Enemy(u"banita",25, 1, 2, "human", [1,3], attrib_dict, treasure_dict, specials_list, speach_list, [1,6])
+    outlaw.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
     outlaw.speach_list = [u"Zostaw mnie!", "A masz!", "Co tam masz w sakiewce?", "Już ja powiem wszystko hersztowi!"]
     outlaw.treasure_dict = {u"srebro":random.randint(1,3)}
     outlaw.specials_list = [u"Kradnie i porywa", "Plaga krainy", "Słabowaty"]
@@ -98,9 +106,9 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
      # Skurczybyk
-    scoundrel = Enemy(u"skurczybyk",20, 3, 2, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,8])
-    scoundrel.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":3, "inteligencja":1, "siła woli":1}
-    scoundrel.treasure_dict = {u"srebro":random.randint(1,7), "pierścień skurczybyka":1}
+    scoundrel = Enemy(u"skurczybyk",30, 3, 2, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,8])
+    scoundrel.attrib_dict = {u"siła":2, "zwinność":4, "percepcja":3, "inteligencja":1, "siła woli":1}
+    scoundrel.treasure_dict = {u"srebro":random.randint(1,4), "pierścień skurczybyka":1}
     scoundrel.speach_list = [u"Co tam masz w sakiewce?", "Złoto albo śmierć!", "Kto zadziera ze skurczybykiem, ten frajer!"]
     scoundrel.specials_list = [u"Straszna menda", "Lepkie ręce"]
     scoundrel.maxdrop = 2
@@ -108,13 +116,13 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Miś
-    bear = Enemy(u"niedźwiedź",30, 2, 2, "animal", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
-    bear.attrib_dict = {u"siła":4, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":1}
+    bear = Enemy(u"niedźwiedź",32, 2, 5, "animal", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
+    bear.attrib_dict = {u"siła":4, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     bear.speach_list = [u"Mrrrrr!", "Wrrrrrr!", "Rgh!"]
 
 #   Wilkołak (semi strong opponent)
-    werewolf = Enemy(u"wilkołak", 30, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [1,10])
-    werewolf.attrib_dict = {u"siła":3,"zwinność":13, "percepcja":3, "inteligencja":1, "siła woli":1}
+    werewolf = Enemy(u"wilkołak", 37, 3, 3, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [1,10])
+    werewolf.attrib_dict = {u"siła":3,"zwinność":4, "percepcja":3, "inteligencja":1, "siła woli":1}
     werewolf.treasure_dict = {u"srebro":random.randint(1,5)}
     werewolf.speach_list = [u"wrrrr...", "yyyy...", "jeść..", "głód...", "auuuuu..."]
     werewolf.specials_list = [u"szybki i wściekły", "wiecznie głodny"]
@@ -122,23 +130,23 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Ogr (strong opponent)
-    ogr = Enemy(u"ogr", 50, 3, 2, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [5,10])
-    ogr.attrib_dict = {u"siła":4,"zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
-    ogr.treasure_dict = {u"srebro":random.randint(1,20)}
+    ogr = Enemy(u"ogr", 50, 3, 6, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [5,10])
+    ogr.attrib_dict = {u"siła":4,"zwinność":2, "percepcja":1, "inteligencja":1, "siła woli":1}
+    ogr.treasure_dict = {u"srebro":random.randint(1,10)}
     ogr.speach_list = [u"Czo to...", "yyyy...", "ja stracha ty..", "Wont mi stomd!", "<czka>"]
     ogr.specials_list = [u"Okrótna siła", "Głupi jak but", "Niezdara", "Zgniata czaszki"]
     ogr.maxdrop = 4
 
     #   Troll (strong opponent)
-    troll = Enemy(u"troll", 75, 3, 4, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [9,11])
+    troll = Enemy(u"troll", 75, 3, 7, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [9,11])
     troll.attrib_dict = {u"siła":5, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
-    troll.treasure_dict = {u"srebro":random.randint(1,90), "rubiny":random.randint(0,3)}
+    troll.treasure_dict = {u"srebro":random.randint(1,15), "rubiny":random.randint(0,3)}
     troll.speach_list = [u"U mnie głód! Ty smakowite!", "Ty grube!", "Ty ładne i smaczne!", "Argh!", "(warczy)"]
     troll.specials_list = [u"Kamienna skóra", "Niezdara", "Okrótna siła"]
     troll.maxdrop = 4
 
     #   Olbrzym górski
-    mountain_giant = Enemy(u"olbrzym górski", 70, 3, 4, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
+    mountain_giant = Enemy(u"olbrzym górski", 70, 3, 7, "beast", [3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [7,15])
     mountain_giant.attrib_dict = {u"siła":6, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
     mountain_giant.treasure_dict = {u"srebro":random.randint(1,100), "diamenty":random.randint(1,3), "olbrzymia maczuga": 1}
     mountain_giant.speach_list = [u"Ty chcieć mi odebrać błyszczące?!", "Twój czerep nada się na ząb!", "(straszny ryk)", "Gnieść, łupić!"]
@@ -150,8 +158,8 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     #################################### quest/special enemies: - special monsters has Capitalic in names (Zły Miś, Głupi Jaś) 
 
     #   Złodziejski miś (QUEST in lvl 1)
-    thievish_bear_quest = Enemy("Złodziejski Miś",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    thievish_bear_quest.attrib_dict = {"siła":4, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
+    thievish_bear_quest = Enemy("Złodziejski Miś",33, 2, 4, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    thievish_bear_quest.attrib_dict = {"siła":5, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
     thievish_bear_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
     thievish_bear_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
     thievish_bear_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
@@ -159,17 +167,17 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     thievish_bear_quest.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
 
     #   Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
-    wolf_special_quest = Enemy("Zły Wilk",1, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
-    wolf_special_quest.attrib_dict = {"siła":1, "zwinność":1, "percepcja":2, "inteligencja":1, "siła woli":2}
+    wolf_special_quest = Enemy("Zły Wilk",18, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    wolf_special_quest.attrib_dict = {"siła":2, "zwinność":4, "percepcja":2, "inteligencja":1, "siła woli":2}
     wolf_special_quest.treasure_dict = {"wilcza skóra":1}
     wolf_special_quest.speach_list = [u"Ty chcesz wyciągnąć Babcię? Po moim trupie!"]
     wolf_special_quest.specials_list = [u"Ten wilk mówi!", "Ma wypchany brzuch (zapewne Babcią!)"]
     wolf_special_quest.quest_condition = "Babcia uratowana"
-    wolf_special_quest.quest_info = "Babcia wyskoczyła z wilczego brzucha! Wróć do Czerwonego kapturka po nagrodę!"
+    wolf_special_quest.quest_info = "Babcia wyskoczyła z wilczego brzucha! Wróć do Czerwonego Kapturka po nagrodę!"
 
 
     #   Herszt bandytów (QUEST in lvl 1)
-    ringleader = Enemy("Herszt bandytów",25, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,5])
+    ringleader = Enemy("Herszt bandytów",40, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,5])
     ringleader.attrib_dict = {"siła":2, "zwinność":3, "percepcja":2, "inteligencja":2, "siła woli":2}
     ringleader.treasure_dict = {"zabytkowy obraz":1, "srebro":10, "sztylet zwinności":1}
     ringleader.speach_list = [u"No co, chodź na solo! ", "No dawaj mi tu! "]
@@ -179,8 +187,8 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Troll Silnoręki (QUEST in lvl 2)
-    troll_strong_hand = Enemy("Troll Silnoręki",75, 3, 4, "beast", [2], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
-    troll_strong_hand.attrib_dict = {u"siła":5, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":2}
+    troll_strong_hand = Enemy("Troll Silnoręki",75, 3, 11, "beast", [2], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
+    troll_strong_hand.attrib_dict = {u"siła":7, "zwinność":2, "percepcja":1, "inteligencja":1, "siła woli":2}
     troll_strong_hand.treasure_dict = {u"srebro":random.randint(1,20), "rubiny":random.randint(0,8)}
     troll_strong_hand.speach_list = [u"Chcesz pokonać przełęcz? Po moim trupie! ", "A masz! ", "Ja cie zjeść! ", "(przeraźliwy ryk) "]
     troll_strong_hand.specials_list = [u"Przeraźliwy! ", "Śmierć się zbliża! "]
@@ -194,12 +202,12 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 ############## list with all enemies - we use this in functions below (to summon enemy by name):
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
     # mogę po każdym przeciwniku robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    enemies_all_list = [wolf, ratman, goblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw,
+    enemies_all_list = [wolf, hobgoblin, ratman, goblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw,
     thievish_bear_quest, wolf_special_quest, ringleader, troll_strong_hand]
 
 ############## list with random enemies - we use this in functions below (to random enemy using filters),
     # quest monsters are excluded:
-    enemies_random_list = [wolf, ratman, goblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw
+    enemies_random_list = [wolf, ratman, goblin, hobgoblin, scoundrel, bear, ogr, troll, mountain_giant, werewolf, outlaw
     ]
     
     # if enemy name was specified, it will export enemy by given name:

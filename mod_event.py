@@ -52,12 +52,13 @@ def win_fight(enemy = None, hero = None):
 
     mod_display.clear_screen()
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
-    mod_display.pause()
+    mod_display.dot_loop()
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
     mod_display.display_hero_chart(hero=hero)
-    #mod_display.pause()
+
     return hero
+
 
 def rip(enemy = None, hero = None):
     print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
@@ -284,6 +285,27 @@ def event_npc(npc = None, hero = None):
     npc = mod_npc.npc_settingsnpc_settings(name = npc.name, loc = None, gen = None)
 
 
+def event_question_mark(hero = None):
+    '''
+    event == random event when hero on '?'
+    small chance to win silver, huge chance to fight with random enemy
+    '''
+    chance_factor = random.randint(1, 100)
+    if chance_factor < 10:
+        enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = hero.location, gen = None)
+        event_fight(enemy = enemy, hero = hero)
+
+    else:
+        print('\n\n'+hero.name+", udało Ci się! Zdobywasz:\n"), mod_display.dot_loop()
+        add_remove_items_dict = {"srebro":random.randint(1,4)}
+        mod_hero.inventory_update(hero, add_remove_items_dict)
+        mod_display.display_looted_items(add_remove_items_dict)
+
+    
+    return hero
+        
+        
+        
 
 def event_random_npc(hero = None):
     '''
@@ -329,9 +351,6 @@ def quest_event_thievish_bear(hero = None):
         if "liczydło" in hero.inventory_dict.keys():
             #if npc.quest_condition not in hero.quest_condition_list:
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
-
-            
-
 
     return hero
 

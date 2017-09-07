@@ -36,10 +36,8 @@ def display_varied_info():
     "Mam przeczucie, że coś się wydarzy...",
     "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
     "Oby nikt tu na mnie nie czyhał", "Trochę wieje", "Mam nadzieję, że zaliczę checkpoint..",
-
-    "Porada: sklep na mapce oznaczony jest literką 'S'", "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
-
-    ]
+    "Gdzie ten Oblib?", "Ech, Mullog zmarnieje bez obrączki!", "Co by tu zrobić?", "Mam złe przeczucie..",
+    "Porada: źródło życia na mapce oznaczone jest znakiem '+'", "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"]
 
     random_chanse = random.randint(1,10)
     if random_chanse > 7:
@@ -48,6 +46,7 @@ def display_varied_info():
         info_to_display = ''
 
     return print(info_to_display)
+
 
 def display_quest_log(hero = None):
     
@@ -273,6 +272,7 @@ def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
     for i in range(len(head_to_display_list2)): print(str(enem_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
     print("\n\n")
 
+
 def calendar(hero = None):
     '''
     display short info about day, day time using turn counter
@@ -324,6 +324,7 @@ def display_calendar_location(hero = None):
         print("")
  
     return calendar_list
+
 
 def display_NPC_random_speach(npc = None):
     '''
