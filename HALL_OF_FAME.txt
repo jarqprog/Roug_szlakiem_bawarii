@@ -1,8 +1,12 @@
-20        JAN MARIA ROKITA            0:04:51        ŁOWCA
-13        mm                          0:05:04        ŁOWCA
-11        fallus                      0:03:42        ŁOWCA
-11        0d                          0:06:20        ŁOWCA
-43        jo                          0:02:07        ŁOWCA
-18        ddd                         0:17:06        ŁOWCA
-11        ddd                         0:00:01        ŁOWCA
-11        dddddddddddddddddddd        0:00:14        ŁOWCA
+20        JAN MARIA ROKITA            0:04:51        Wojownik
+13        Pierogi z miensem           0:05:04        ŁOWCA
+56        fallus76                    0:03:42        Ninja
+11        NIE CHCE TU BYĆ             0:06:20        Ninja
+43        KURDE BABKA                 0:02:07        Elf
+18        rozum_i_godność_człowieka   8:17:06        Niedzwiadek
+11        WOLNOŚĆ DLA PIKUSIA         0:00:01        Magik
+13        Marian Pażdzioch            0:14:37        Wojownik
+40        KIKI                        0:00:06        Łowca
+13        KODOWANIE_TO_SZTUKA         0:04:48        Ninja
+15        Krzesztof Jeżyna            0:04:46        Ninja
+13        I HAVE USE FOR YOU          0:04:16        Łowca

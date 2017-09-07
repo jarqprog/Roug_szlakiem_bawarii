@@ -231,7 +231,7 @@ def controls():
     """ Returns controls screen. """
     print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
     print("\nWalka polega na umiejętnych rzutach kostką, na które oprócz szczęscia decyduje inicjatywa.\n")
-    print("\nW krainie w której obecnie przebywasz punkty życie regenerują się same po trochu z czasem.")
+    print("\nW krainie w której obecnie przebywasz punkty życie regenerują się same po trochu z czasem.\n")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system("clear")
@@ -447,17 +447,33 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     # 3rd level events:
     elif position == "P":
-        print("\n" * 9)
-        print("Trafiłeś NA PRZEŁĘCZ ZGUBY.")
+        os.system("clear")
+        print("\n\n\n\nDotarłeś do przełęczy zguby więc jak sama nazwa wskazuje - GINIESZ!!!")
+        input_char = getch()
+        os.system("clear")
+        loose_screen(hero, start_time)
     elif position == "S":
-        print("\n" * 9)
-        print("Trafiłeś NA STRAŻNIK PORTALU.")
+        mod_event.quest_event_gate_keeper(hero = hero)
+        if hero.new_location == 4:
+            input_char = getch()
+            hero.location = hero.new_location
+            os.system("clear")
+            set_map(hero, start_time, "Nawiedzone_zamczysko.txt")
+        else:
+            input_char = getch()
+            os.system("clear")
+            print("\n" * 10)
     elif position == "F":
-        print("\n" * 9)
-        print("Trafiłeś NA FASOLOWE POLE.")
+        os.system("clear")
+        print("\n\n\n\nMyslałeś że będziesz jadł sobie fasole za darmo?? RACZEJ NIE !!!")
+        input_char = getch()
+        os.system("clear")
+        mod_event.event_fight_spec_enemy(enemy = "skurczybyk", hero = hero)
+        input_char = getch()
+        os.system("clear")
     elif position == "C":
-        print("\n" * 9)
-        print("Trafiłeś NA CHATA PUSTELNIKA.")
+        mod_event.quest_event_hermit(hero = hero)
+        input_char = getch()
     # 4th level events:
     elif position == "B":
         hot_warm_cold_boss(hero = hero, start_time = start_time)
