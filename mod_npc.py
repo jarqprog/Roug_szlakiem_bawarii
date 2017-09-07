@@ -203,7 +203,7 @@ def npc_settings(name = None, loc = None, gen = None):
     
     portal_keeper.quest_condition = "Zdobyto pierścień skurczybyka"
     portal_keeper.inventory_dict = {"placek śliwkowy":2}
-    portal_keeper.quest_special_reward = ["portal 2"]
+    portal_keeper.quest_special_reward = ["portal 4"]
 
     # Pustelnik - przełęcz rozpaczy
     hermit = Npc("Pustelnik", [3])
