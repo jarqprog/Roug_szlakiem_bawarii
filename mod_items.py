@@ -9,27 +9,28 @@ import mod_hero, mod_display
 
 ################################ Hero's enemies class:
 class Items:
-   def __init__(self, name, level, genre, price, location, info_list):
+   def __init__(self, name, level, genre, price, location):
         # item name:
         self.name = name
         self.level = level # item level - stronger item = higher level (ex. level 4 = unique, powerful item)   
         self.genre = genre # item genre is for ex. armour/weapon/other/special(quest)
         self.price = price # price in buy/sell (concerns shops)
         self.location = location # list of maps levels, where it could be random generated (list element = lvl mapy, ex. [1,2])   
-        self.info_list = info_list # contains short info about item
+
 
         # buffs parametres = bonuses for hero's attributes, f. ex.:
         # buff_str = 2 means: hero's "siła" += 2, etc.
         # if buff has negativ value, it decrases value of attrib
         # default value of buff is 0:
-        self.buff_str = 0 # + "siła"
-        self.buff_agg = 0 # + "zwinność"
-        self.buff_per = 0 # + "percepcja"
-        self.buff_int = 0 # + "inteligencja"
-        self.buff_wil = 0 # + "siła woli"
-        self.buff_arm = 0 # + "pancerz (act_armour)"
-        self.buff_min_dmg = 0 # + "min dmg"
-        self.buff_max_dmg = 0 # + "max dmg"
+        self.item_info = ''# short info about item
+        self.buff_str = '' # + "siła"
+        self.buff_agg = '' # + "zwinność"
+        self.buff_per = '' # + "percepcja"
+        self.buff_int = '' # + "inteligencja"
+        self.buff_wil = '' # + "siła woli"
+        self.buff_arm = '' # + "pancerz (act_armour)"
+        self.buff_min_dmg = '' # + "min dmg"
+        self.buff_max_dmg = '' # + "max dmg"
         # we may add life and other bonuses from items to hero
 
         # body: default empty = ""
@@ -63,33 +64,35 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     '''
 
 
-    info_list = []
 
  
-    #name, level, genre, price, location, damage, special, attrib_dict, body_dict, info_list
+    #name, level, genre, price, location, damage, special, attrib_dict, body_dict, info
 
 ##### WEAPON ITEMS:
 
-    # nóż (self, name, level, genre, price, location, info_list)
-    knife = Items("nóż", 1, "weapon", 20, [1,2,3,4], info_list)
+    # nóż (self, name, level, genre, price, location, item_info)
+    knife = Items("nóż", 1, "weapon", 20, [1,2,3,4])
     knife.buff_min_dmg = 0 # + "min dmg"
     knife.buff_max_dmg = 1 # + "max dmg"
     knife.combat_attribute = "zwinność"
     knife.body = "prawa ręka"
+    knife.item_info = "obrażenia (max+3), zwinność"
 
-    # nóż (self, name, level, genre, price, location, info_list)
-    dagger = Items("sztylet", 2, "weapon", 120, [1,2,3,4], info_list)
-    dagger.buff_min_dmg = 1 # + "min dmg"
-    dagger.buff_max_dmg = 2 # + "max dmg"
+    # nóż (self, name, level, genre, price, location, item_info)
+    dagger = Items("sztylet", 2, "weapon", 120, [1,2,3,4])
+    dagger.buff_min_dmg = 0 # + "min dmg"
+    dagger.buff_max_dmg = 5 # + "max dmg"
     dagger.combat_attribute = "zwinność"
     dagger.body = "prawa ręka"
+    dagger.item_info = "obrażenia (max+5), zwinność"
 
 
-    club = Items("maczuga", 1, "weapon", 20, [1,2,3,4], info_list)
+    club = Items("maczuga", 1, "weapon", 20, [1,2,3,4])
     club.buff_min_dmg = 1 # + "min dmg"
     club.buff_max_dmg = 1 # + "max dmg"
     club.combat_attribute = "siła"
     club.body = "prawa ręka"
+    club.item_info = "obrażenia (min+1, max+1), siła"
 
 
     '''
@@ -105,79 +108,101 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     self.combat_attribute = ""
     '''
 
-    # miecz (self, name, level, genre, price, location, info_list)
-    sword = Items("miecz", 2, "weapon", 100, [1,2,3,4], info_list)
-    sword.buff_min_dmg = 1 # + "min dmg"
-    sword.buff_max_dmg = 2 # + "max dmg"
+    # miecz (self, name, level, genre, price, location, item_info)
+    sword = Items("miecz", 2, "weapon", 100, [1,2,3,4])
+    sword.buff_min_dmg = 2 # + "min dmg"
+    sword.buff_max_dmg = 4 # + "max dmg"
     sword.combat_attribute = "siła"
     sword.body = "prawa ręka"
+    sword.item_info = "obrażenia (min+2, max+4), siła"
+
+    axe = Items("topór", 2, "weapon", 100, [1,2,3,4])
+    axe.buff_min_dmg = 3 # + "min dmg"
+    axe.buff_max_dmg = 2 # + "max dmg"
+    axe.combat_attribute = "siła"
+    axe.body = "prawa ręka"
+    axe.item_info = "obrażenia (min+3, max+2), siła"
 
 
 ##### ARMOUR ITEMS:
 
-    # hełm (self, name, level, genre, price, location, info_list)
-    helmet = Items("hełm", 1, "armour", 200, [1,2,3,4], info_list)
+    # hełm (self, name, level, genre, price, location, item_info)
+    helmet = Items("hełm", 1, "armour", 200, [1,2,3,4])
     helmet.buff_arm = 1 # + "pancerz (act_armour)"
     helmet.body = "głowa"
+    helmet.item_info = "obrona +1, siła"
+    helmet.combat_attribute = "siła"
 
-    # hełm garnczkowy +1 obrony (self, name, level, genre, price, location, info_list)
-    helmet_pot = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4], info_list)
+
+    # hełm garnczkowy +1 obrony (self, name, level, genre, price, location, item_info)
+    helmet_pot = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4])
     helmet_pot.buff_arm = 2 # + "pancerz (act_armour)"
     helmet_pot.body = "głowa"
+    helmet_pot.item_info = "obrona +2, siła"
+    helmet_pot.combat_attribute = "siła"
 
-    # zbroja skórzana (self, name, level, genre, price, location, info_list)
-    armour_lether = Items("zbroja skórzana", 1, "armour", 200, [1,2,3,4], info_list)
-    info_list = ["lekki i niedrogi typ pancerza, zapewnia dość dobrą osłonę ciała"]
+    # zbroja skórzana (self, name, level, genre, price, location, item_info)
+    armour_lether = Items("zbroja skórzana", 1, "armour", 200, [1,2,3,4])
     armour_lether.buff_arm = 1
     armour_lether.body = "tors"
+    armour_lether.item_info = "obrona +1"
 
 ##### RINGS:
 
-    # ring (self, name, level, genre, price, location, info_list)
-    ring_of_strenght = Items("pierścień siły", 5, "ring", 1200, [3,4], info_list)
-    info_list = ["o tym pierścieniu krążą legendy, kto go założy - ten siłacz!", "wspaniała rzecz"]
+    # ring (self, name, level, genre, price, location, item_info)
+    ring_of_strenght = Items("pierścień siły", 4, "ring", 1200, [3,4])
+    ring_of_strenght.item_info = "o tym pierścieniu krążą legendy, kto go założy - ten siłacz!"
     ring_of_strenght.buff_str = 1
     ring_of_strenght.body = "palec"
+    ring_of_strenght.item_info = "siła +1"
+
+    ring_of_agility = Items("pierścień zwinności", 4, "ring", 1200, [3,4])
+    ring_of_agility.item_info = "o tym pierścieniu krążą legendy, kto go założy - ten siłacz!"
+    ring_of_agility.buff_agg = 1
+    ring_of_agility.body = "palec"
+    ring_of_agility.item_info = "zwinność +1"
 
 
-##### JEWELS: (self, name, level, genre, price, location, info_list)
+##### JEWELS: (self, name, level, genre, price, location, item_info)
 
     
-    heart_of_mountain = Items("serce góry", 6, "jewels", 1500, [3,4], info_list) 
-    heart_of_mountain.info_list = ["nie do wiary, kupię za to dwie wioski! To bogactwo!!!"]
-    diament = Items("diament", 4, "jewels", 500, [3,4], info_list)
-    diament.info_list = ["diament! To bogactwo!!!"]
-    ruby = Items("rubin", 3, "jewels", 200, [2,3,4], info_list)
-    ruby.info_list = ["to bogactwo!!!"]
-    jantar = Items("jantar", 2, "jewels", 200, [1,2,3,4], info_list)
-    jantar.info_list = ["Jantar Lechitów! To majątek!"]
+    heart_of_mountain = Items("serce góry", 6, "jewels", 1500, [3,4]) 
+    heart_of_mountain.item_info = "nie do wiary, kupię za to dwie wioski! To bogactwo!!!"
+    diament = Items("diament", 4, "jewels", 500, [3,4])
+    diament.item_info = "diament! To bogactwo!!!"
+    ruby = Items("rubin", 3, "jewels", 200, [2,3,4])
+    ruby.item_info = "to bogactwo!!!"
+    jantar = Items("jantar", 2, "jewels", 200, [1,2,3,4])
+    jantar.item_info = "Jantar Lechitów! To majątek!"
 
 
 
-##### OTHER ITEMS: (self, name, level, genre, price, location, info_list)
+##### OTHER ITEMS: (self, name, level, genre, price, location, item_info)
     # tunika
-    tunic = Items("tunika", 1, "other", 20, [1,2], info_list)
-    tunic.info_list = ["tanie i przewiewne okrycie ciała, pochodzi z krain południowych"]
+    tunic = Items("tunika", 1, "other", 20, [1,2])
+    tunic.item_info = "tanie i przewiewne okrycie ciała, pochodzi z krain południowych"
     tunic.body = "tors"
 
-    wolf_skin = Items("wilcza skóra", 1, "other", 7, [1,2], info_list)
-    wolf_skin.info_list = ["może to sprzedam?"]
+    wolf_skin = Items("wilcza skóra", 1, "other", 7, [1,2])
+    wolf_skin.item_info = "może to sprzedam?"
 
-    stale_fish = Items(u"popsuta ryba", 1, "other", 0, [0], info_list)
-    stale_fish.info_list = [u"może to sprzedam?"]
+    stale_fish = Items(u"popsuta ryba", 1, "other", 0, [1])
+    stale_fish.item_info = "może to sprzedam?"
 
 
 
 
 ##### QUEST ITEMS:    
 
-    placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2], info_list)
-    placek_sliwkowy.info_list = ["pyszności!"]
-    wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 0, [1], info_list)
-    placek_sliwkowy.info_list = ["pyszności!"]
+    placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2])
+    placek_sliwkowy.item_info = "pyszności!"
+    wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 1, [1] )
+    wolek_zbozowy.item_info = "co to za robak?!"
     # quest z misiem lvl 1
-    honey = Items("miodzik", 1, "quest", 1, [1], info_list)
-    placek_sliwkowy.info_list = ["pyszności"]
+    honey = Items("miodzik", 1, "quest", 1, [1])
+    placek_sliwkowy.item_info = "pyszności"
+    mada_faka_ring = Items("pierścień łotrzyka", 2, "quest", 50, [2,3])
+    mada_faka_ring.item_info = "coś mi się o uszy obiło, że lepiej zachować"
 
 
 
@@ -190,7 +215,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     dagger,
     helmet_pot, armour_lether, wolf_skin,
 
-    ring_of_strenght,
+    ring_of_strenght, ring_of_agility,
     
     
     diament, ruby, jantar, heart_of_mountain,
@@ -264,10 +289,21 @@ def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, her
         return hero
 
 
+def item_dict_generator(hero = None, level = None):
+    '''
+    generate items dict: key = item, value = item specs.. ex. {knife:damage+2, agility}
+    '''
+    items_gen_dict = {}
+    item_already_gen = []
+    item_to_generate = random.randint(5,9)
+    while len(items_gen_dict.keys()) < item_to_generate:
+        level = random.randint(1,4)
+        item = items_settings(name = None, loc = None, lvl = level, gen = None, hero = None, all = None)
+        if item.name not in item_already_gen:
+            item_already_gen.append(item.name)
+            item_parametres = []
+            item_parametres.append([item.name, item.price, item.item_info])
+            items_gen_dict[item] = item_parametres
+            
+    return items_gen_dict
 
-    """ dodaj: 
-    pierścień skurczybyka
-    nóż
-
-
-    """

@@ -61,10 +61,11 @@ def win_fight(enemy = None, hero = None):
 
 def rip(enemy = None, hero = None):
     print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
+    mod_display.pause()
     mod_display.display_hero_chart(hero = hero)
     mod_display.pause()
     mod_display.clear_screen()
-    mod_display.game_over(hero = hero)
+
 
 def counterattack(enemy = None, hero = None, attacker = None, attack = None):
     '''
@@ -199,14 +200,15 @@ def event_fight_spec_enemy(enemy = None, hero = None):
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
-                rip(enemy = enemy, hero = hero)
+                hero.actualLife = 1
+                rip(enemy, hero)
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:
                 enemy.actualLife = 0
                 hero.quest_condition_list.append(enemy.quest_condition)
                 if enemy.quest_info: print(enemy.quest_info)
-                win_fight(enemy = enemy, hero = hero)
+                win_fight(enemy, hero)
                 combat_end = 1
                 break
             elif attacker_change == 1:
@@ -270,8 +272,6 @@ def event_quest(npc = None, hero = None):
     npc = mod_npc.npc_settings(name = npc, loc = None, gen = None)
     mod_hero.quest(hero = hero, npc = npc)
     mod_display.display_event_quest(hero = hero, npc = npc)
-
-        
 
     return hero
 
@@ -382,10 +382,6 @@ def quest_event_strong_hand_troll(hero = None):
         event_quest(npc = "Troll Silnoręki", hero = hero)
         mod_display.pause()
 
-
-            
-
-
     return hero
 
 
@@ -394,8 +390,8 @@ def event_well_of_life(hero = None):
     full life regeneration
     '''
 
-    print("\n\nZa cenę 50 sztuk złota w pełni Cię uleczę.. ")
-    if hero.gold >= 50:
+    print("\n\nZa cenę 10 srebra w pełni Cię uleczę.. ")
+    if hero.inventory_dict["srebro"] >= 10:
         
         while True:
             player_choice = input("Jeśli chcesz skorzystać, wpisz 't', jeśli nie, wpisz 'n' i zatwierdź <enter> -->")
@@ -405,21 +401,23 @@ def event_well_of_life(hero = None):
                     if player_choice == 't':
                         print("Uzupełniono życie!")
                         hero.actualLife = hero.maxLife
-                        hero.gold -= 50
+                        hero.inventory_dict["srebro"] -= 10
                         mod_display.pause()
                     elif player_choice == 'n':
                         print("Bywaj zatem!")
                         mod_display.pause()
                     break
-                        
-
-
+            
             except:
                 continue
 
     else:
-        print("Niestety brakuje Ci złota")
         mod_display.pause()
 
     return hero
+
+
+
+
+
 

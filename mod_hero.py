@@ -113,21 +113,6 @@ def amour_max_calc(hero = None):
     return hero.max_armour
 
 
-def amour_act_calc(hero = None): ######################### TEMP!
-    ''' calculates actual armour points '''
-    '''
-    mod_items.items_settings()
-    try:
-        for item in hero.onbody_dict.values():
-            if item in 
-            
-    except Exception as e:
-        raise e
-    hero.max_armour = 2*hero.attrib_dict["siła"]
-    
-    return hero.max_armour
-    '''
-
 def display_exp(hero = None):
     '''
     display actual exp and exp needed to achive next level
@@ -366,27 +351,6 @@ def hero_life_regeneration(hero = None):
               
     return hero
 
-"""
-def portal_to_next_location(hero = None):  
-    '''
-    #check if it's time to teleport hero to new location, if True: teleport hero
-    '''
-    if hero.location != hero.new_location:
-        hero.location = hero.new_location
-        '''
-        if hero.new_location == 2:
-            hero.map_board = "Kraina_troli.txt"
-        elif hero.new_location == 3:
-            hero.map_board = "Dymiąca_góra.txt"
-        elif hero.new_location == 4:
-            hero.map_board = "Nawiedzone_zamczysko.txt"
-        
-        '''
-
-
-
-    return hero.location
-"""
 
 
 

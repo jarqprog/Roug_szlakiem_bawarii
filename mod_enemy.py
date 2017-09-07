@@ -89,7 +89,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     goblin.maxdrop = 2
 
      # Skurczybyk
-    skurczybyk = Enemy(u"skurczybyk",13, 2, 1, "human", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
+    skurczybyk = Enemy(u"skurczybyk",13, 2, 1, "human", [2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
     skurczybyk.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     skurczybyk.speach_list = [u"Ah, co tam masz w sakiewce?", "Złoto albo śmierć!"]
     skurczybyk.treasure_dict = {u"jantar":random.randint(1,3), "pierścień skurczybyka":1, "nóż":1} # ring for optional quest

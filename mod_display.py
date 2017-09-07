@@ -3,7 +3,7 @@
 import os, math
 import random, time
 import mod_hero 
-import mod_enemy, mod_npc, mod_event
+import mod_enemy, mod_npc, mod_event, mod_items
 
 
 def clear_screen():
@@ -18,13 +18,14 @@ def dot_loop():
         print(i, end='', flush=True)
         time.sleep(.2)
 
+
 def pause():
     '''
     stop game action (for ex. in the middle of fight)
     '''
     pause = 0 # reset pause variable
     pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",) # temporary - we need here glitch
-    if pause == str("q") and ("Q"): exit()
+
 
 def display_varied_info():
     '''
@@ -35,8 +36,6 @@ def display_varied_info():
     "Mam przeczucie, że coś się wydarzy...",
     "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
     "Oby nikt tu na mnie nie czyhał", "Trochę wieje", "Mam nadzieję, że zaliczę checkpoint..",
-
-
 
     "Porada: sklep na mapce oznaczony jest literką 'S'", "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
 
@@ -205,37 +204,6 @@ def display_hero_chart(hero = None):
     # stopka tabeli
     print("-"*(sum_longest_arg+printing_var_head_bottom))
 
-def intro():
-    """display title, player choose between new game / load game / credits / HOF"""
-    intro_choice = ''
-    while True:
-        clear_screen() # to zamienimy funkcją systemową (na razie nie działa pod windowsem, więc zostawiam tak..)
-        # to poniżej proponuję zrobić funkcją, by z pliku tekstowego pobierał ten tekst:
-        print(u"\n"*2,"***Szkakiem Bawarii***") # tu powinna być załadowana grafika strony tytułowej
-        print(u"\n"*5,"""
-        wciśnij:\n
-        \t"n" by stworzyć nową grę
-        \t"w" by wczytać grę zapisaną grę
-        \t"a" by wyświetlić informację o autorach
-        \t"g" by zobaczyć Galerię sław
-        \t"k" by kontynuować.. 
-        """)
-        intro_choice = input("...")
-        print(intro_choice)
-        if intro_choice == "N" or intro_choice == "n":
-            hero_creation()
-            break
-        elif intro_choice == "W" or intro_choice == "w":
-            load_game()
-            break
-        elif intro_choice == "A" or intro_choice == "a":
-            credits_display()
-            break
-        elif intro_choice == "G" or intro_choice == "g":
-            hof_display()
-            break
-        elif intro_choice == "K" or intro_choice == "k": #tymczasowo, do testów
-            break
 
 def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
     '''
@@ -327,42 +295,6 @@ def calendar(hero = None):
     
     return print("Dzień", str(day)+",", day_time+", jesteś w krainie:", mod_hero.display_location(hero = hero)+".")
 
-    
-
-
-
-def credits_display():
-    clear_screen()
-
-    print('''
-    
-    SZLAKIEM BAWARII
-
-    Autorzy:
-
-    Łukasz Malko
-    Jarosław Kucharczyk
-
-    
-    ''')
-
-    pause()
-
-
-
-def hof_display(): #ładuje z pliku tekstowego hof.txt
-    clear_screen()
-    print("Galeria sław (HOF) - do zrobienia")
-
-
-
-
-def game_over(hero = None): # todo!!!!!!!!!!!!!!!!!!
-    
-    print("game over")
-    pause()
-
-
 
 def display_looted_items(add_remove_items_dict):
     '''
@@ -373,7 +305,7 @@ def display_looted_items(add_remove_items_dict):
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
-    pause()
+
 
 def display_calendar_location(hero = None):
     '''
@@ -436,7 +368,6 @@ def display_event_quest(npc = None, hero = None):
                     display_looted_items(add_remove_items_dict)
                 
                 break
-
 
     return hero, npc
 
