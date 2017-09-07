@@ -158,7 +158,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     #################################### quest/special enemies: - special monsters has Capitalic in names (Zły Miś, Głupi Jaś) 
 
     #   Złodziejski miś (QUEST in lvl 1)
-    thievish_bear_quest = Enemy("Złodziejski Miś",33, 2, 4, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,4])
+    thievish_bear_quest = Enemy("Złodziejski Miś",33, 2, 4, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [3,6])
     thievish_bear_quest.attrib_dict = {"siła":5, "zwinność":1, "percepcja":1, "inteligencja":2, "siła woli":2}
     thievish_bear_quest.treasure_dict = {"liczydło":1, "lina pomiarowa":1}
     thievish_bear_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]

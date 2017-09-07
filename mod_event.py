@@ -140,6 +140,7 @@ def fight(enemy = None, hero = None, attacker = None):
         attacker_change = 1
         attack = int(attack_result+attacker.attack)
         counterattack(enemy = enemy, hero = hero, attacker = attacker, attack = attack)
+
         return attacker_change
 
     else:
@@ -154,7 +155,9 @@ def fight(enemy = None, hero = None, attacker = None):
             defender.actualLife = 0
             combat_end = 1
             time.sleep(0.3)
+
             return combat_end
+
 
 def event_fight_spec_enemy(enemy = None, hero = None):
     '''
@@ -191,19 +194,22 @@ def event_fight_spec_enemy(enemy = None, hero = None):
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
-                hero.actualLife = 1
+                hero.actualLife = 0
                 combat_end = 1
                 break
+                
             elif enemy.actualLife < 1:
                 enemy.actualLife = 0
                 hero.quest_condition_list.append(enemy.quest_condition)
                 if enemy.quest_info: print(enemy.quest_info)
                 win_fight(enemy, hero)
-                combat_end = 1
+                combat_end = 1              
                 break
+
             elif attacker_change == 1:
                 break
 
+    return hero 
 
 
 def event_fight(enemy = None, hero = None):
@@ -242,11 +248,14 @@ def event_fight(enemy = None, hero = None):
             mod_display.clear_screen()
             if hero.actualLife < 1:
                 combat_end = 1
-                break
+                hero.actualLife = 0
+                break    
+            
             elif enemy.actualLife < 1:
                 win_fight(enemy = enemy, hero = hero)
                 combat_end = 1
                 break
+
             elif attacker_change == 1:
                 break
     
