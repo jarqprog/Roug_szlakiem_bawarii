@@ -60,14 +60,6 @@ def win_fight(enemy = None, hero = None):
     return hero
 
 
-def rip(enemy = None, hero = None):
-    print("Po heroicznej walce świat zapłakał,", enemy.name, "zabił bohatera o imieniu", hero.name+". RIP,", hero.name+"!")
-    mod_display.pause()
-    mod_display.display_hero_chart(hero = hero)
-    mod_display.pause()
-    mod_display.clear_screen()
-
-
 def counterattack(enemy = None, hero = None, attacker = None, attack = None):
     '''
     part of the fight mechanic (part of fight function) 
@@ -200,7 +192,6 @@ def event_fight_spec_enemy(enemy = None, hero = None):
             mod_display.clear_screen()
             if hero.actualLife < 1:
                 hero.actualLife = 1
-                rip(enemy, hero)
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:
@@ -250,7 +241,6 @@ def event_fight(enemy = None, hero = None):
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
-                rip(enemy = enemy, hero = hero)
                 combat_end = 1
                 break
             elif enemy.actualLife < 1:
@@ -414,7 +404,6 @@ def quest_event_gate_keeper(hero = None):
     '''
     lvl 3 quest: gate keeper
     '''
-
     npc = mod_npc.npc_settings(name = "Strażnik portalu", loc = None, gen = None)
     if npc.quest_list[0] in hero.quest_blocked_list:
         pass
