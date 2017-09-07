@@ -336,9 +336,11 @@ def next_level_promotion(hero = None):
         elif player_choice == 4:
             hero.attrib_dict["inteligencja"] += 1
             print("Wzrosła inteligencja i życie")
-        else:
+        elif player_choice == 5:
             hero.attrib_dict["siła woli"] += 1
             print("Wzrosła siła woli i życie")
+        else:
+            print("Wybierz liczbę od 1 do 5.. --> ")
     
         mod_display.pause()
                 
