@@ -20,8 +20,8 @@ class Hero:
         # contains active items that have influence on hero (wearing items):
         self.onbody_dict = onbody_dict
 
-        self.maxLife = 30 # max life points (limit)
-        self.actualLife = 1 # actual number of life points
+        self.maxLife = 40 # max life points (limit)
+        self.actualLife = 40 # actual number of life points
         self.actualExp = 1 # actual number of exp points
         self.location = 1 # actual map level
         self.map_position = 0 # hero map position
@@ -66,7 +66,7 @@ def hero_settings():
     attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {"srebro":3} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    inventory_dict = {"srebro":5} #placki będzie można sprzedać albo nakarmić głodnego (quest)
 
     ################################ show active items on Hero:
 
@@ -345,14 +345,6 @@ def next_level_promotion(hero = None):
     return hero
 
 
-def hero_life_regeneration(hero = None):
-    '''
-    regenerate hero life point after each turn 
-    '''
-    hero.actualLife += hero.life_recovery
-    if hero.actualLife > hero.maxLife: hero.actualLife = hero.maxLife
-              
-    return hero
 
 
 

@@ -89,8 +89,8 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     goblin.maxdrop = 2
 
    # Hobgoblin
-    hobgoblin = Enemy(u"Hobgoblin",28, 1, 3, "beast", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [3,4])
-    hobgoblin.attrib_dict = {u"siła":4, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
+    hobgoblin = Enemy(u"Hobgoblin",25, 1, 3, "beast", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [3,4])
+    hobgoblin.attrib_dict = {u"siła":4, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     hobgoblin.speach_list = [u"Ha! Ja ubić ludzia!", "Ty trup!", "Walka!", "Arghhh!", "Dyszy.."]
     hobgoblin.specials_list = [u"Silny skubaniec.."]
     hobgoblin.treasure_dict = {u"srebro":1}

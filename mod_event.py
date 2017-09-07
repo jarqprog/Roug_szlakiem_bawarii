@@ -146,8 +146,6 @@ def fight(enemy = None, hero = None, attacker = None):
         print('\n'+defender.name, "obronił się!")
         mod_display.pause()
         attacker_change = 1
-        #attacker = priority_test(enemy = enemy, hero = hero)
-        #if float(defend_result+defender.defend) > (float(attack_result+attacker.attack)*1.2):
         attack = int(attack_result+attacker.attack)
         counterattack(enemy = enemy, hero = hero, attacker = attacker, attack = attack)
         return attacker_change
@@ -385,7 +383,7 @@ def event_well_of_life(hero = None):
     '''
 
     print("\n\nZa cenę 10 srebra w pełni Cię uleczę.. ")
-    if hero.inventory_dict["srebro"] >= 10:
+    if hero.inventory_dict["srebro"] >= 1:
         
         while True:
             player_choice = input("Jeśli chcesz skorzystać, wpisz 't', jeśli nie, wpisz 'n' i zatwierdź <enter> -->")
@@ -395,7 +393,7 @@ def event_well_of_life(hero = None):
                     if player_choice == 't':
                         print("Uzupełniono życie!")
                         hero.actualLife = hero.maxLife
-                        hero.inventory_dict["srebro"] -= 10
+                        hero.inventory_dict["srebro"] -= 1
                         mod_display.pause()
                     elif player_choice == 'n':
                         print("Bywaj zatem!")

@@ -305,7 +305,7 @@ def display_looted_items(add_remove_items_dict):
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
-    pause()
+
 
 
 def display_calendar_location(hero = None):
