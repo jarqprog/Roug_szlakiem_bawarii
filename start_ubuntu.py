@@ -376,9 +376,11 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         mod_event.event_quest(npc = "Leśniczy", hero = hero)
         if hero.new_location == 2:
             hero.location = hero.new_location
+            input_char = getch()
             os.system("clear")
             set_map(hero, start_time, "Kraina_troli.txt")
         else:
+            input_char = getch()
             os.system("clear")
             print("\n" * 10)
     elif position == "R":
