@@ -85,7 +85,7 @@ def character_choice_screen(hero):
                 print(picture)
                 print("WOJOWNIK")
                 print("ATRYBUTY:")
-                print("SIŁA : 5, ZWINNOŚĆ : 2, PERCEPCJA: 1, INTELIGENCJA : 1, SIŁA WOLI : 2")
+                print("SIŁA : 6, ZWINNOŚĆ : 2, PERCEPCJA: 2, INTELIGENCJA : 1, SIŁA WOLI : 2")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == "Y":
@@ -103,15 +103,15 @@ def character_choice_screen(hero):
                 print(picture)
                 print("ŁOWCA")
                 print("ATRYBUTY:")
-                print("SIŁA : 2, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 1, SIŁA WOLI : 2")
+                print("SIŁA : 3, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 2, SIŁA WOLI : 2")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == "Y":
                     os.system("clear")
                     hunter_attr_dict = {"siła": 3, "zwinność": 3, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
-                    hero.onbody_dict["prawa ręka"] = "miecz"
+                    hero.onbody_dict["prawa ręka"] = "włócznia"
                     hero.attrib_dict.update(hunter_attr_dict)
-                    hero.dmg_list = [10,35]
+                    hero.dmg_list = [3,52]
                     hero.proffession = "Łowca"
                     return hero
         elif input_char.upper() == "3":
@@ -121,7 +121,7 @@ def character_choice_screen(hero):
                 print(picture)
                 print("NINJA")
                 print("ATRYBUTY:")
-                print("SIŁA : 1, ZWINNOŚĆ : 3, PERCEPCJA: 3, INTELIGENCJA : 3, SIŁA WOLI : 1")
+                print("SIŁA : 1, ZWINNOŚĆ : 5, PERCEPCJA: 3, INTELIGENCJA : 2, SIŁA WOLI : 2")
                 print("Wciśnij 'y' żeby wybrac tego bohatera, wciśnij coś innego żeby wrócić")
                 input_char = getch()
                 if input_char.upper() == "Y":
@@ -203,10 +203,11 @@ def create_character(hero):
                             "inteligencja": brainpower, "siła woli": willpower}
     if strenght > agility:
         hero.onbody_dict["prawa ręka"] = "miecz"
+        hero.dmg_list = [10,35]
     else:
         hero.onbody_dict["prawa ręka"] = "sztylet"
+        hero.dmg_list = [1,45]
     hero.attrib_dict.update(created_attr_dict)
-    hero.dmg_list = [10,35]
     hero.proffession = klasa
     return hero
 
@@ -552,7 +553,7 @@ def set_map(hero, start_time, board):
     """ Prints map. """
     # General comment - lines above the map always = 10.
     print("\n" * 10)
-    if hero.actualLife < 1:
+    if int(hero.actualLife) < 1:
         loose_screen(hero, start_time)
     else:
         with open(board, 'r') as myfile:
@@ -567,7 +568,7 @@ def set_map(hero, start_time, board):
 
 def movement(hero, start_time, board, position_hor, position_ver):
     """ Returns input_char WSAD result. """
-    if hero.actualLife < 1:
+    if int(hero.actualLife) < 1:
         loose_screen(hero, start_time)
     else:
         # Life regenerates after every loop.
@@ -665,7 +666,7 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
     elif input_char.upper() == "L":
         os.system("clear")
         print("Legenda:\n\n")
-        print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "B = Dom Babci")
+        print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "D = Dom Babci")
         print("R = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
         print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
         print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
