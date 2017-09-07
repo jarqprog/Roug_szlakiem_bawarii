@@ -231,7 +231,7 @@ def getch():
 
 def controls():
     """ Returns controls screen. """
-    print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UZYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
+    print("\n\nHOW-TO-PLAY-SCREEN\nPORUSZASZ SIĘ PO MAPIE UŻYWAJĄC W,S,A,D\nZaawansowane sterowanie jest pod mapką.")
     print("\nWalka polega na umiejętnych rzutach kostką, na które oprócz szczęscia decyduje inicjatywa.\n")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
@@ -432,6 +432,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "G":
         mod_event.event_fight_spec_enemy(enemy = "Herszt bandytów", hero = hero)
         input_char = getch()
+        position = "."
         os.system("clear")
         print("\n" * 10)
     elif position == "T":
