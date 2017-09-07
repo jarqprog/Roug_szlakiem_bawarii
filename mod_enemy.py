@@ -116,9 +116,10 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Miś
-    bear = Enemy(u"niedźwiedź",32, 2, 5, "animal", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [3,7])
+    bear = Enemy(u"niedźwiedź",28, 2, 5, "animal", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
     bear.attrib_dict = {u"siła":4, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     bear.speach_list = [u"Mrrrrr!", "Wrrrrrr!", "Rgh!"]
+    bear.speach_list = [u"wrrrr...", "yyyy...", "jeść..", "głód...", "auuuuu..."]
 
 #   Wilkołak (semi strong opponent)
     werewolf = Enemy(u"wilkołak", 37, 3, 3, "beast", [2, 3, 4], attrib_dict, treasure_dict, specials_list, speach_list, [1,10])

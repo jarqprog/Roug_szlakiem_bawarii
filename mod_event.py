@@ -52,7 +52,7 @@ def win_fight(enemy = None, hero = None):
 
     mod_display.clear_screen()
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
-    time.sleep()
+    time.sleep(.5)
     mod_display.dot_loop()
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
@@ -210,7 +210,7 @@ def event_fight_spec_enemy(enemy = None, hero = None):
             elif attacker_change == 1:
                 break
 
-    return hero 
+    return hero
 
 
 def event_fight(enemy = None, hero = None):
