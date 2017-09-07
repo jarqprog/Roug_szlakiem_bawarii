@@ -165,7 +165,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     thievish_bear_quest.speach_list = [u"Ten gupi myśliwy Cię przysłał?"]
     thievish_bear_quest.specials_list = [u"Ten miś mówi!", "Na szyi ma linę, a pod ogonem liczydło"]
     thievish_bear_quest.quest_condition = "Zdobyto narzędzia pomiarowe"
-    thievish_bear_quest.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
+    thievish_bear_quest.quest_info = "Zdobyto narzędzia pomiarowe, idź do Leśniczego po nagrodę"
 
     #   Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
     wolf_special_quest = Enemy("Zły Wilk",18, 1, 0, "quest" , [1], attrib_dict, treasure_dict, specials_list, speach_list, [2,5])
@@ -178,7 +178,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Herszt bandytów (QUEST in lvl 1)
-    ringleader = Enemy("Herszt bandytów",30, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [1,5])
+    ringleader = Enemy("Herszt bandytów",40, 2, 2, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [3,5])
     ringleader.attrib_dict = {"siła":2, "zwinność":3, "percepcja":2, "inteligencja":2, "siła woli":2}
     ringleader.treasure_dict = {"zabytkowy obraz":1, "srebro":10, "sztylet zwinności":1}
     ringleader.speach_list = [u"No co, chodź na solo! ", "No dawaj mi tu! "]

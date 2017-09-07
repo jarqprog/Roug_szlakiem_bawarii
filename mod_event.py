@@ -291,7 +291,7 @@ def event_question_mark(hero = None):
     mod_display.pause()
     chance_factor = random.randint(1, 100)
     if chance_factor < 85:
-        enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = hero.location, gen = None)
+        enemy = mod_enemy.enemy_settings(name = None, loc = hero.location, lvl = None, gen = None)
         event_fight(enemy = enemy, hero = hero)
 
     else:
@@ -368,20 +368,27 @@ def quest_event_strong_hand_troll(hero = None):
     '''
     bad quest strong_hand_troll
     '''
-    try:
-        if hero.inventory_dict["rubiny"] == 3 :
-            hero.quest_condition_list.append("Zdobyto rubiny")
-    except:
-        None
 
+    try:
+        hero.inventory_dict["rubiny"] >= 3
+
+        if hero.inventory_dict["rubiny"] >= 3:
+            hero.quest_condition_list.append("Zdobyto rubiny")
+            condition = 1
+    except:
+        condition = 0
+            
 
     npc = mod_npc.npc_settings(name = "Troll Silnoręki", loc = None, gen = None)
     if npc.quest_list[0] in hero.quest_blocked_list:
-        if npc.quest_condition not in hero.quest_condition_list:      
+        if condition == 1 :      
+            event_quest(npc = "Troll Silnoręki", hero = hero)
+            mod_display.pause()
+        else:
             event_fight_spec_enemy(enemy = "Troll Silnoręki", hero = hero)
-
+            
     else:
-        event_quest(npc = "Troll Silnoręki", hero = hero)
+        event_quest(npc = "Troll Silnoręki", hero = hero)       
         mod_display.pause()
 
     return hero
