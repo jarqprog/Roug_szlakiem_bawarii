@@ -370,6 +370,7 @@ def display_event_quest(npc = None, hero = None):
                     display_looted_items(add_remove_items_dict)
                 
                 break
+    pause()
 
     return hero, npc
 

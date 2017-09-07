@@ -32,7 +32,7 @@ class Hero:
         self.defend = 0 # initial defend points
         self.courage = 0 # initial courage points - not used yet
         self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
-        self.act_armour = 1 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
+        self.act_armour = 2 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
         self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
         self.life_recovery = 1 # define replenish life level after each turn
         self.calendar_list = [0, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)

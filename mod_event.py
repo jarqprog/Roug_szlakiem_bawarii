@@ -44,7 +44,7 @@ def win_fight(enemy = None, hero = None):
     print("Zwycięstwo,", enemy.name, "został pokonany! Sława i doświadczenie są Twoje, ...a może jeszcze jakiś łup bitewny?")
     if len(enemy.treasure_dict) > 0: # check if there are some treasures in enemy inventory
         mod_display.dot_loop()
-        time.sleep(1)
+        mod_display.pause()
         print("\nTak!\n")
         add_remove_items_dict = enemy.treasure_dict
         mod_display.display_looted_items(add_remove_items_dict) # display treasures from enemy inventory
@@ -52,6 +52,7 @@ def win_fight(enemy = None, hero = None):
 
     mod_display.clear_screen()
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
+    time.sleep()
     mod_display.dot_loop()
     # and some random generated items:
     mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
@@ -287,6 +288,8 @@ def event_question_mark(hero = None):
     event == random event when hero on '?'
     small chance to win silver, huge chance to fight with random enemy
     '''
+    print("\n\nOtwierasz puszczkę Pandory.. Czy Ci się udało?..\n")
+    mod_display.pause()
     chance_factor = random.randint(1, 100)
     if chance_factor < 85:
         enemy = mod_enemy.enemy_settings(name = None, loc = None, lvl = hero.location, gen = None)
@@ -298,6 +301,7 @@ def event_question_mark(hero = None):
         mod_hero.inventory_update(hero, add_remove_items_dict)
         mod_display.display_looted_items(add_remove_items_dict)
         mod_display.dot_loop()
+        mod_display.pause()
 
     
     return hero
@@ -345,10 +349,10 @@ def quest_event_thievish_bear(hero = None):
 
     else:
         event_quest(npc = "Złodziejski Miś", hero = hero)
-        #mod_display.pause()
         if "liczydło" in hero.inventory_dict.keys():
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
-
+    
+    
     return hero
 
 
@@ -356,8 +360,6 @@ def quest_event_strong_hand_troll(hero = None):
     '''
     bad quest strong_hand_troll
     '''
-
-
     try:
         if hero.inventory_dict["rubiny"] == 3 :
             hero.quest_condition_list.append("Zdobyto rubiny")
@@ -372,7 +374,7 @@ def quest_event_strong_hand_troll(hero = None):
 
     else:
         event_quest(npc = "Troll Silnoręki", hero = hero)
-        #mod_display.pause()
+        mod_display.pause()
 
     return hero
 
@@ -381,7 +383,6 @@ def event_well_of_life(hero = None):
     '''
     full life regeneration
     '''
-
     print("\n\nZa cenę 1 srebra w pełni Cię uleczę.. ")
     if hero.inventory_dict["srebro"] >= 1:
         
