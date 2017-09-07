@@ -196,7 +196,7 @@ def npc_settings(name = None, loc = None, gen = None):
     portal_keeper.xp_reward = 1000
     portal_keeper.quest_name = "pierścień skurczybyka"
     portal_keeper.quest_list = [
-        "Chcesz przejść przez bramę? Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę.. ",
+        "Czarownik? Tak, jego siedziba jest za portalem. Chcesz przejść? Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę.. ",
         
         "Nie doceniałem Cię - wspaniale, otwieram portal - przejdź proszę! Uważaj jeno na podstępnego czarownika! Masz też coś na drogę.. "    
     ]
@@ -204,13 +204,26 @@ def npc_settings(name = None, loc = None, gen = None):
     portal_keeper.quest_condition = "Zdobyto pierścień skurczybyka"
     portal_keeper.inventory_dict = {"placek śliwkowy":2}
     portal_keeper.quest_special_reward = ["portal 2"]
+
+    # Pustelnik - przełęcz rozpaczy
+    hermit = Npc("Pustelnik", [3])
+    hermit.speach_list = ["Witaj w mojej pustelni..", "Oblib.. tak, posłuchaj...", "Od wieku żyję tu w samotni..",
+    "Uważaj, to straszna kraina..", "Idź do Strażnika portalu, porozmawiaj z nim.. "]
+    hermit.xp_reward = 10
+    hermit.quest_name = "Oblib.."
+    hermit.quest_condition = "Oblib"
+    hermit.inventory_dict = {"srebro":1}
+    hermit.quest_list = [
+        "Tak, karzeł Oblib.. Niestety zginął. Obrączka? Zabił go czarownik, ale to potężna i straszna kreatura.. Idź do Strażnika portalu, on zna drogę..", 
+        "I jak, byłeś u Strażnika portalu?.. "]
     
 
 
 
 
     # npc_quest_list contains list with  QUEST npc to generate and export to main:
-    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor, troll_strong_hand, portal_keeper
+    npc_quest_list = [redhood, forester, wrongly_smashed_camp, thievish_bear_quest, mayor,
+    troll_strong_hand, portal_keeper, hermit
 
     ]
 

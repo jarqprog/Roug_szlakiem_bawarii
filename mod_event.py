@@ -409,8 +409,18 @@ def quest_event_gate_keeper(hero = None):
         if "pierścień skurczybyka" in hero.inventory_dict.keys():
             hero.quest_condition_list.append("Zdobyto pierścień skurczybyka")
 
-            
+    return hero
 
+
+def quest_event_hermit(hero = None):
+    '''
+    hermit quest
+    '''
+    npc = mod_npc.npc_settings(name = "Pustelnik", loc = None, gen = None)
+    if npc.quest_condition not in hero.quest_condition_list:
+        hero.quest_condition_list.append(npc.quest_condition)
+
+    event_quest(npc = "Pustelnik", hero = hero)
 
     return hero
 
