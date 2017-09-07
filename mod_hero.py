@@ -68,8 +68,8 @@ def hero_settings():
     attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {} #placki będzie można sprzedać albo nakarmić głodnego (quest)
-
+    inventory_dict = {"srebro":3} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    
     ################################ show active items on Hero:
 
     onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
