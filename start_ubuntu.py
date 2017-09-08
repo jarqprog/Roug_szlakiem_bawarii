@@ -49,12 +49,12 @@ def title_screen():
 def plot():
     """ Returns plot screen."""
     print("\n\n\n\n\n")
-    delay_print("\x1b[6;30;43m" + "Dawno, dawno temu w Bawarii...Twój przyjaciel, pustelnik Mullog, został okradziony.\n"
+    delay_print("\x1b[6;30;43m" + "Dawno, dawno temu w Bawarii..Twój przyjaciel, pustelnik Mullog, został okradziony.\n"
                 + "\x1b[0m")
-    delay_print("\x1b[6;30;43m" + "Karzeł Oblib zwędził mu drogocenną obrączkę-prezent urodziowy od przyjaciela z młodości."
+    delay_print("\x1b[6;30;43m" + "Karzeł Oblib zwędził mu obrączkę-prezent urodziowy od przyjaciela z młodości."
                 + "\x1b[0m")
     delay_print("\n" + "\x1b[6;30;43m" + "Mullog usycha z żalu, błaga Cię o pomoc.\n" + "\x1b[0m")
-    delay_print("\x1b[6;30;43m" + "Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'...\n" + "\x1b[0m")
+    delay_print("\x1b[6;30;43m" + "Wyruszasz zatem, a trop Obliba doprowadza Cię do 'Doliny Łotrzyków'..\n" + "\x1b[0m")
     print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
     input_char = getch()
     os.system("clear")
@@ -93,7 +93,7 @@ def character_choice_screen(hero):
                     warrior_attr_dict = {"siła": 6, "zwinność": 2, "percepcja": 2, "inteligencja": 1, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "topór"
                     hero.attrib_dict.update(warrior_attr_dict)
-                    hero.dmg_list = [14,18]
+                    hero.dmg_list = [14, 18]
                     hero.act_armour = 4
                     hero.proffession = "Wojownik"
                     return hero
@@ -112,7 +112,7 @@ def character_choice_screen(hero):
                     hunter_attr_dict = {"siła": 3, "zwinność": 3, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "włócznia"
                     hero.attrib_dict.update(hunter_attr_dict)
-                    hero.dmg_list = [3,35]
+                    hero.dmg_list = [3, 35]
                     hero.act_armour = 2
                     hero.proffession = "Łowca"
                     return hero
@@ -131,7 +131,7 @@ def character_choice_screen(hero):
                     ninja_attr_dict = {"siła": 1, "zwinność": 5, "percepcja": 3, "inteligencja": 2, "siła woli": 2}
                     hero.onbody_dict["prawa ręka"] = "sztylet"
                     hero.attrib_dict.update(ninja_attr_dict)
-                    hero.dmg_list = [2,15]
+                    hero.dmg_list = [2, 15]
                     hero.proffession = "Ninja"
                     return hero
         elif input_char.upper() == "4":
@@ -202,13 +202,13 @@ def create_character(hero):
     input_char = getch()
     os.system("clear")
     created_attr_dict = {"siła": strenght, "zwinność": agility, "percepcja": cognition,
-                            "inteligencja": brainpower, "siła woli": willpower}
+                         "inteligencja": brainpower, "siła woli": willpower}
     if strenght > agility:
         hero.onbody_dict["prawa ręka"] = "miecz"
-        hero.dmg_list = [10,20]
+        hero.dmg_list = [10, 20]
     else:
         hero.onbody_dict["prawa ręka"] = "sztylet"
-        hero.dmg_list = [2,15]
+        hero.dmg_list = [2, 15]
     hero.attrib_dict.update(created_attr_dict)
     hero.proffession = klasa
     return hero
@@ -373,7 +373,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
-        mod_event.event_quest(npc = "Leśniczy", hero = hero)
+        mod_event.event_quest(npc="Leśniczy", hero=hero)
         if hero.new_location == 2:
             hero.location = hero.new_location
             input_char = getch()
@@ -388,13 +388,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
-        mod_event.event_quest(npc = "Czerwony Kapturek", hero = hero)
+        mod_event.event_quest(npc="Czerwony Kapturek", hero=hero)
         input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "Z":
         if "Babcia uratowana" not in hero.quest_condition_list:
-            mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
+            mod_event.event_fight_spec_enemy(enemy="Zły Wilk", hero=hero)
             hero.quest_condition_list.append("Babcia uratowana")
             input_char = getch()
         os.system("clear")
@@ -414,7 +414,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "?":
-        mod_event.event_question_mark(hero = hero)
+        mod_event.event_question_mark(hero=hero)
         os.system("clear")
         print("\n" * 10)
     # 2nd level events:
@@ -427,13 +427,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         input_char = getch()
         os.system("clear")
     elif position == "W":
-        mod_event.event_quest(npc = "Sołtys", hero = hero)
+        mod_event.event_quest(npc="Sołtys", hero=hero)
         input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "G":
         if "Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. " not in hero.quest_condition_list:
-            mod_event.event_fight_spec_enemy(enemy = "Herszt bandytów", hero = hero)
+            mod_event.event_fight_spec_enemy(enemy="Herszt bandytów", hero=hero)
             hero.quest_condition_list.append("Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. ")
             input_char = getch()
         os.system("clear")
@@ -457,7 +457,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "S":
         if "pierścień skurczybyka" in hero.inventory_dict.keys():
             hero.new_location = 4
-        mod_event.quest_event_gate_keeper(hero = hero)
+        mod_event.quest_event_gate_keeper(hero=hero)
         input_char = getch()
         if hero.new_location == 4:
             hero.location = hero.new_location
@@ -471,13 +471,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n\n\n\nMyslałeś, że będziesz jadł sobie fasole za darmo?? RACZEJ NIE !!!")
         input_char = getch()
         os.system("clear")
-        mod_event.event_fight_spec_enemy(enemy = "skurczybyk", hero = hero)
+        mod_event.event_fight_spec_enemy(enemy="skurczybyk", hero=hero)
         os.system("clear")
     elif position == "C":
-        mod_event.quest_event_hermit(hero = hero)
+        mod_event.quest_event_hermit(hero=hero)
     # 4th level events:
     elif position == "B":
-        hot_warm_cold_boss(hero = hero, start_time = start_time)
+        hot_warm_cold_boss(hero=hero, start_time=start_time)
     # For all maps:
     else:
         os.system("clear")
@@ -509,11 +509,11 @@ def hall_of_fame(hero, start_time):
     for k, v in hero.attrib_dict.items():
         print(k, ":", v)
     print("\nCZAS GRY: ", game_time, "\nSUMA ATRYBUTÓW: ", sum_of_attributes,
-            "\nKLASA: ", hero.proffession)
+          "\nKLASA: ", hero.proffession)
     # Add final results to Hall of Fame.
     with open("HALL_OF_FAME.txt", "a", encoding='utf-8') as HALL_OF_FAME:
         user_score = [str(sum_of_attributes), str(user_name), str(game_time),
-                        str(hero.proffession)]
+                      str(hero.proffession)]
         user_score = "        ".join(user_score)
         HALL_OF_FAME.write(str(user_score) + "\n")
         print("\x1b[6;31;47m" + "Wciśnij cokolwiek." + "\x1b[0m")
@@ -606,7 +606,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
         event_result = None
         if int(hero.actualLife) < 1:
             loose_screen(hero, start_time)
-        mod_hero.next_level_promotion(hero = hero)
+        mod_hero.next_level_promotion(hero=hero)
         if input_char.upper() not in ["L", "K"]:
             os.system("clear")
             print("\n" * 10)
@@ -625,8 +625,8 @@ def movement(hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
             if board[position_hor + (position_ver - 1) * 81] != ".":
-                event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board, 
-                                            position_hor, position_ver)
+                event_result = game_events(board[position_hor + (position_ver - 1) * 81], hero, start_time, board,
+                                           position_hor, position_ver)
             else:
                 board[position_hor + position_ver * 81] = "."
                 position_ver -= 1
@@ -635,8 +635,8 @@ def movement(hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
             if board[position_hor + (position_ver + 1) * 81] != ".":
-                event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board, 
-                                            position_hor, position_ver)
+                event_result = game_events(board[position_hor + (position_ver + 1) * 81], hero, start_time, board,
+                                           position_hor, position_ver)
             else:
                 board[position_hor + position_ver * 81] = "."
                 position_ver += 1
@@ -645,8 +645,8 @@ def movement(hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
             if board[(position_hor + 1) + position_ver * 81] != ".":
-                event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board, 
-                                            position_hor, position_ver)
+                event_result = game_events(board[(position_hor + 1) + position_ver * 81], hero, start_time, board,
+                                           position_hor, position_ver)
             else:
                 board[position_hor + position_ver * 81] = "."
                 position_hor += 1
@@ -655,8 +655,8 @@ def movement(hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
             if board[(position_hor - 1) + position_ver * 81] != ".":
-                event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board, 
-                                            position_hor, position_ver)
+                event_result = game_events(board[(position_hor - 1) + position_ver * 81], hero, start_time, board,
+                                           position_hor, position_ver)
             else:
                 board[position_hor + position_ver * 81] = "."
                 position_hor -= 1
@@ -688,7 +688,7 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole" + "\t\t" + "C - Chata pustelnika")
         print("N = Dziadek NPC" + "\t\t\t" + "S = Strażnik portalu.")
         print("H = Zimno/ciepła niespodzianka Mariana. Prowadzą do zmian w percepcji."
-                + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
+              + "P̶o̶t̶r̶a̶k̶t̶u̶j̶ ̶t̶o̶ ̶j̶a̶k̶o̶ ̶t̶r̶e̶n̶i̶n̶g̶ ̶p̶r̶z̶e̶d̶ ̶b̶o̶s̶s̶e̶m̶. Baw się dobrze!")
     elif input_char.upper() == "K":
         os.system("clear")
         print("\n" * 4)
