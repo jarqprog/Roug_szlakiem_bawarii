@@ -7,20 +7,20 @@ import random
 ################################ Hero's enemies class:
 class Enemy:
    def __init__(self, name, actualLife, level, act_armour, genre, location, attrib_dict, treasure_dict, specials_list, speach_list, dmg_list):
-        self.name = name
-        self.actualLife = actualLife
-        self.level = level
+        self.name = name # enemy name
+        self.actualLife = actualLife # enemylife points
+        self.level = level # enemy exp level
         self.act_armour = act_armour # armour points - buffs enemy defend
-        self.genre = genre
-        self.location = location
-        self.attrib_dict = attrib_dict
-        self.treasure_dict = treasure_dict
-        self.specials_list = specials_list
-        self.speach_list = speach_list
-        self.dmg_list = dmg_list
+        self.genre = genre # enemy genre (beast/animal/quest, etc..)
+        self.location = location # specified enemy location (game level)
+        self.attrib_dict = attrib_dict # dict with enemy attributes
+        self.treasure_dict = treasure_dict # default enemy's treasure (not randomly generated)
+        self.specials_list = specials_list # short info about enemy to display
+        self.speach_list = speach_list # randomly generated statment to display
+        self.dmg_list = dmg_list # min and max monster damage
         self.attack = 0 # initial attack points
         self.defend = 0 # initial defend points
-        self.courage = 0 # initial courage points  TODO
+        self.courage = 0 # initial courage points  TODO - wip
 
         # maxdrop determines what is max item drop from monster
         #...(f.ex. 3 = hero may recieve max 3 items (pieces) from dead monster )
@@ -38,7 +38,7 @@ class Enemy:
         # combat_attribute_default(enemy = None) int his mod
         self.combat_attribute = None
 
-
+        # variables used in quests - to manage quest mechanic:
         self.quest_condition = ""
         self.quest_info = ""
 
@@ -57,6 +57,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
         genre (gen, ex. gen = "animal": it will choose between enemies with genre = "animal")
         then export to main 
     '''
+############################# REGULAR enemy (not quest) - randomly imported in random fight events
 
     attrib_dict = {} # pusty słownik dla atrybutów przeciwników
     treasure_dict = {} # pusty słownik z miejscem na przedmioty u przeciwników (można to wykorzystać m.in. do "losowania łupu")
@@ -67,7 +68,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     # name, life, level, xp4hero, genre, location (list), attrib_dict, treasure_dict, specials_list, speach_list
 
     #  Wilk
-    wolf = Enemy(u"wilk",20, 1, 1, "animal", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [1,3])
+    wolf = Enemy(u"wilk",20, 1, 1, "animal", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [1,3])
     wolf.attrib_dict = {u"siła":1, "zwinność":3, "percepcja":3, "inteligencja":1, "siła woli":1}
     wolf.speach_list = [u"wrrrr", "auuuuuuuuuuuuu!"]
     wolf.specials_list = [u"szybki skubaniec!"]
@@ -82,7 +83,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     ratman.maxdrop = 0
 
     # Goblin
-    goblin = Enemy(u"goblin",22, 1, 2, "beast", [1,2,3,4], attrib_dict, treasure_dict, specials_list, speach_list, [2,7])
+    goblin = Enemy(u"goblin",22, 1, 2, "beast", [1,2], attrib_dict, treasure_dict, specials_list, speach_list, [2,7])
     goblin.attrib_dict = {u"siła":2, "zwinność":3, "percepcja":2, "inteligencja":1, "siła woli":1}
     goblin.speach_list = [u"Ja ubić ludzia!", "Ty trup!"]
     goblin.treasure_dict = {u"ucho goblina":1}
@@ -97,7 +98,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     hobgoblin.maxdrop = 2
 
     # Banita
-    outlaw = Enemy(u"banita",25, 1, 0, "human", [1,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,6])
+    outlaw = Enemy(u"banita",25, 1, 0, "human", [1,2,3], attrib_dict, treasure_dict, specials_list, speach_list, [2,6])
     outlaw.attrib_dict = {u"siła":2, "zwinność":2, "percepcja":2, "inteligencja":1, "siła woli":1}
     outlaw.speach_list = [u"Zostaw mnie!", "A masz!", "Co tam masz w sakiewce?", "Już ja powiem wszystko hersztowi!"]
     outlaw.treasure_dict = {u"srebro":random.randint(1,3)}
@@ -156,7 +157,7 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
 
-    #################################### quest/special enemies: - special monsters has Capitalic in names (Zły Miś, Głupi Jaś) 
+    #################################### quest/special enemies: (not randomly generate)
 
     #   Złodziejski miś (QUEST in lvl 1)
     thievish_bear_quest = Enemy("Złodziejski Miś",33, 2, 4, "quest" , [2], attrib_dict, treasure_dict, specials_list, speach_list, [3,6])

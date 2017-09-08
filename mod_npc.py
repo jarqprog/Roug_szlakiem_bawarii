@@ -41,7 +41,7 @@ def npc_settings(name = None, loc = None, gen = None):
 
 
 
-############################# REGULAR NPC
+############################# REGULAR NPC (not quest) - randomly used in calendar function (rumors, short statements)
     # data in (...) are npc:
     # name, life, level, xp4hero, genre, location (list), attrib_dict, treasure_dict, specials_list, speach_list
 
@@ -52,8 +52,8 @@ def npc_settings(name = None, loc = None, gen = None):
     "podobno leśniczego okradli" ]
     villager.map_symbol = "V"
 
-    villager1 = Npc("garbaty wieśniak", [1]) ############ to do
-    villager.speach_list = ["Cieżkie życie!", "Dużo roboty", "Stara mnie pogoniła", "Ide po cebule", "bry, bry",
+    villager1 = Npc("garbaty wieśniak", [1])
+    villager.speach_list = ["Cieżkie życie!", "Dużo roboty", "Stara mnie pogoniła",
     "słyszałem o niedźwiedziu, który kradnie rzeczy", "uważaj na wilki i gobliny",
     "podobno leśniczego okradli" ]
 
@@ -73,13 +73,10 @@ def npc_settings(name = None, loc = None, gen = None):
     gretchel.speach_list = ["ładna jestem, co nie? Nie?! Twoja strata!", "(tupie nóżką)", "(puszcza oko)",
     "słyszałam o leśniczym, który potrzebuje pomocy..", "podobno dziewczynka w kapturze ma problem z babcią",
     "dużo tu szczurołaków"]
-
     
     wrongly_smashed = Npc("Niesłusznie rozbity", [1])
     wrongly_smashed.speach_list = ["Serwus, chodź do naszego obozu, mamy dobry miodzik", "Lecę, mamy dziś spotkanie! ", "Lepiej nam się ostatnio wiedzie! "]
 
-
-    #   wieśniak (name, location_list, inventory_dict, speach_list)
     villager2 = Npc("wieśniak ze Szwarzwaldu", [2])
     villager.speach_list = ["Uważaj, niebezpiecznie tu!", "Przed nocą trzeba mi w dom..", "Stara mnie pogoniła", "Dużo tu grzybów i trolli..", "bry, bry",
     "Oblib.. nie wiem o nim.., ale kręcił się jakiś karzeł..", "uważaj na trolle!",
@@ -100,7 +97,7 @@ def npc_settings(name = None, loc = None, gen = None):
     villager.speach_list = ["Oblib? Widziałek go wczoraj, idź do Strażnika bramy w Dymiącej Górze", "Mamy problem z rabusiami", "Skurczybyki dają się we znaki",
     "Podobno Strażnik bramy pomoże temu, kto przyniesie pierścień skurczybyka.." ]
 
-    warrior = Npc("wojownik", [1,3])
+    warrior = Npc("wojownik", [1,2,3])
     warrior.speach_list = ["Ruch to zdrowie!", "Oblib? Był tu.. wstrętny karzeł..", "Dość bitew widziałem, spotkać by kobitę, ożenić się.."]
 
     mountainman = Npc("Góral", [2,3])
@@ -132,7 +129,7 @@ def npc_settings(name = None, loc = None, gen = None):
     villager4, oblibghost, oldtroll, oldhunter, warrior
     ]
 
-############################# QUEST NPC
+############################# QUEST NPC - not randomly generated:
 
     # Czerowny Kapturek
     redhood = Npc("Czerwony Kapturek", [1])

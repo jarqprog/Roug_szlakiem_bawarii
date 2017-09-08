@@ -104,7 +104,7 @@ def exp_nextlvl(hero = None):
 
 def amour_max_calc(hero = None):
     ''' calculates max armour points '''
-    hero.max_armour = hero.attrib_dict["siła"]
+    hero.max_armour = hero.attrib_dict["siła"]*3
     
     return hero.max_armour
 
