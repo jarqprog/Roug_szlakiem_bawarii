@@ -1,5 +1,5 @@
 20        JAN MARIA ROKITA            0:04:51        Wojownik
-13        Pierogi z miensem           0:05:04        ŁOWCA
+57        Pierogi z miensem           0:05:04        ŁOWCA
 56        fallus76                    0:03:42        Ninja
 11        NIE CHCE TU BYĆ             0:06:20        Ninja
 43        KURDE BABKA                 0:02:07        Elf
@@ -7,7 +7,10 @@
 11        WOLNOŚĆ DLA PIKUSIA         0:00:01        Magik
 13        Marian Pażdzioch            0:14:37        Wojownik
 40        KIKI                        0:00:06        Łowca
-13        KODOWANIE_TO_SZTUKA         0:04:48        Ninja
+55        KODOWANIE_TO_SZTUKA         0:66:48        Ninja
 15        Krzesztof Jeżyna            0:04:46        Ninja
 13        I HAVE USE FOR YOU          0:04:16        Łowca
-13        Sebastian                   0:10:19        Łowca
+13        Chce mi sie spac            0:10:19        Łowca
+11        KURDE BABKA                 0:00:48        Wojownik
+13        jajco                       0:04:05        Ninja
+17        Dlaczego mnie nienawidzisz  0:20:03        Łowca
