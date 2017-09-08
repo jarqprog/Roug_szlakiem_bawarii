@@ -7,3 +7,8 @@ Planning: SzlakiemBawarii-planning.ods
 
 
 Play game: start_ubuntu.py
+
+
+
+
+Trailer: trailer
