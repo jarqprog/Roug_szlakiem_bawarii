@@ -228,7 +228,7 @@ def npc_settings(name = None, loc = None, gen = None):
     portal_keeper.xp_reward = 1000
     portal_keeper.quest_name = "pierścień skurczybyka"
     portal_keeper.quest_list = [
-        "Czarownik? Tak, jego siedziba jest za portalem. Chcesz przejść? Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę.. ",
+        "Czarownik? Tak, jego siedziba jest za portalem. Chcesz przejść? Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę.. Uwaga, wkrótce zniknę! ",
         
         "Nie doceniałem Cię - wspaniale, otwieram portal - przejdź proszę! Uważaj jeno na podstępnego czarownika! Masz też coś na drogę.. "    
     ]
