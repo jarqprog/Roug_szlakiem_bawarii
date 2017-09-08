@@ -323,7 +323,7 @@ def hot_warm_cold_boss(hero, start_time):
         correct_answer.append(i)
     # Give instructions to player.
     print("\nW końcu jestes godny zmierzenia się z moją szaradą !!!")
-    print("\nPomyślałem o 3 cyfrowej liczbie. Zgadnij! ALBO GIŃ HAHAHAHAHA !!!!")
+    print("\nPomyślałem o 3 cyfrowej liczbie (tak, wliczam zero). Zgadnij! ALBO GIŃ HAHAHAHAHA !!!!")
     print("\nMasz 15 prób!!!")
     print("Pamietaj:")
     print("Jak mówie", " " * 5, "to znaczy, że:\n")
@@ -393,8 +393,10 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "Z":
-        mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
-        input_char = getch()
+        if "Babcia uratowana" not in hero.quest_condition_list:
+            mod_event.event_fight_spec_enemy(enemy = "Zły Wilk", hero = hero)
+            hero.quest_condition_list.append("Babcia uratowana")
+            input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "H":
@@ -430,9 +432,10 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "G":
-        mod_event.event_fight_spec_enemy(enemy = "Herszt bandytów", hero = hero)
-        input_char = getch()
-        position = "."
+        if "Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. " not in hero.quest_condition_list:
+            mod_event.event_fight_spec_enemy(enemy = "Herszt bandytów", hero = hero)
+            hero.quest_condition_list.append("Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. ")
+            input_char = getch()
         os.system("clear")
         print("\n" * 10)
     elif position == "T":
@@ -452,7 +455,10 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         loose_screen(hero, start_time)
     elif position == "S":
+        if "pierścień skurczybyka" in hero.inventory_dict.keys():
+            hero.new_location = 4
         mod_event.quest_event_gate_keeper(hero = hero)
+        input_char = getch()
         if hero.new_location == 4:
             hero.location = hero.new_location
             os.system("clear")
@@ -544,7 +550,7 @@ def win_screen(hero, start_time):
     print("  (  '-......-'  )")
     print("   '.          .'")
     print("     '-......-'")
-    print(" \t\t Odzyskałeś obrączke !!! WYGRAŁEŚ!!!")
+    print(" \t\t Odzyskałeś obrączkę!!! WYGRAŁEŚ!!!")
     input_char = getch()
     hall_of_fame(hero, start_time)
 
