@@ -18,6 +18,13 @@ def dot_loop():
         print(i, end='', flush=True)
         time.sleep(.2)
 
+def display_hyphen_multiply(multiplier=None):
+    '''
+    display multiplied hyphen (-----------------)
+    '''
+    print('-' * multiplier)
+
+
 
 def pause():
     '''
@@ -55,15 +62,14 @@ def display_varied_info():
 
 
 def display_quest_log(hero=None):
-    
-    print_multiplayer = 42 # variable used in pronting below (multiply '-')
+
     clear_screen()
 
     print('\n'+hero.name+", zadania do wykonania:\n")
     if len(hero.quest_info) > 0:
         for quest_name in hero.quest_info.keys():
             if quest_name not in hero.quest_completed_list:
-                print('-' * print_multiplayer)
+                display_hyphen_multiply(multiplier = 42)
                 print(quest_name+':')
                 for npc_statment in hero.quest_info[quest_name]:
                     print(npc_statment,'\n')
@@ -72,7 +78,7 @@ def display_quest_log(hero=None):
         print("\n\nzadania wykonane:\n")
         for quest_name in hero.quest_info.keys():
                 if quest_name in hero.quest_completed_list:
-                    print('-' * print_multiplayer)
+                    display_hyphen_multiply(multiplier = 42)
                     print(quest_name+':')
                     for npc_statment in hero.quest_info[quest_name]:
                         print(npc_statment,'\n')
@@ -140,7 +146,6 @@ def display_hero_chart(hero=None):
     
     sum_longest_arg = int(long_att_key+long_att_val+long_inv_key+long_inv_val
     +long_onbody_key+long_onbody_val+long_other_key+long_other_val)
-    
     # ta część kodu rysuje tabelę:
     # to print in head: hero name, profession, level (exp level)
     printing_var = 0 #helps correctly print hero chart
@@ -158,7 +163,7 @@ def display_hero_chart(hero=None):
     print(u'\n',h00,"-",h01, h02, 'poziom doświadczenia','\n') # hero name, profession, level
     print(h1,h2,h3,h4) # head: attribs, items in bag, others spec (attack, defend, life, exp..)
     printing_var_head_bottom = 5 #helps correctly print hero chart
-    print("-"*(sum_longest_arg+printing_var_head_bottom))
+    display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
 
     for i in range(int(total_number_of_items)) :
         
@@ -196,8 +201,8 @@ def display_hero_chart(hero=None):
             int(len(other_key_list)) >= i         
             if int(len(other_key_list)) >= i:
                 iother = int(i)
-                otherKeyPrt = str(other_key_list[ionbody])+':'
-                otherValuePrt = str(other_value_list[ionbody])
+                otherKeyPrt = str(other_key_list[iother])+':'
+                otherValuePrt = str(other_value_list[iother])
         except:
             otherKeyPrt = ""
             otherValuePrt = ""
@@ -215,7 +220,7 @@ def display_hero_chart(hero=None):
         # body of table:
         print(u'',p1,p2,p3,p4,p5,p6,p7,p8)
     # footer of table:
-    print("-"*(sum_longest_arg+printing_var_head_bottom))
+    display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
 
 
 def display_shop(hero=None):
@@ -287,9 +292,9 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     clear_screen()
     mod_hero.attack_points_calc(hero)
     mod_hero.defend_points_calc(hero)
-    mod_enemy.enemy_info(enemy = enemy)
+    mod_enemy.enemy_info(enemy=enemy)
     # check what is main enemy attribut in combat
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
 
     enemy_dmg = "".join([str(enemy.dmg_list[0]),"-", str(enemy.dmg_list[1])]) # used below in enemy_to_display_list
     printing_var = 2 # variable that helps in printing (used below)
@@ -315,6 +320,12 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     # search for longest of the longest elements in lists:
     longest_arg = max(list((int(x)) for x in (long_head,long_hero,long_enem)))
 
+    # this part of code helps display_hyphen_multiply function (display ----- in proper lenght):
+    printing_var_add = 4 # variable used in printing below
+    # search for sum of lenght of element in all lists:
+    all_lists = [head_to_display_list1 + hero_to_display_list1 + enem_to_display_list1]
+    longest_of_all_lists = max(len(str(x)) for x in all_lists) + printing_var + printing_var_add
+    
     # attacker is first to display:
     if attacker == hero:
         defender = enemy
@@ -333,8 +344,9 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     # for ex.:
     # display_enemy(enemy = enemy_settings(name = None, loc = hero.location, lvl = None, gen = None))
 
-    # prints info about enemy and hero/enemy stats:
+    # prints info about enemy and hero/enemy stats (table form):
     print("\nstatystki:".rjust(longest_arg))
+    display_hyphen_multiply(multiplier=longest_of_all_lists) # display ------
     for i in range(len(head_to_display_list1)): print(str(head_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
     print("\r")
     for i in range(len(head_to_display_list1)): print(str(hero_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
@@ -346,7 +358,8 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     for i in range(len(head_to_display_list2)): print(str(hero_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
     print("\r")
     for i in range(len(head_to_display_list2)): print(str(enem_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
-    print("\n\n")
+    print("")
+    display_hyphen_multiply(multiplier=longest_of_all_lists) # display ------
 
 
 def calendar(hero=None):
@@ -372,12 +385,15 @@ def calendar(hero=None):
     return print("Dzień", str(day)+",", day_time+", jesteś w krainie:", mod_hero.display_location(hero = hero)+".")
 
 
+
 def display_looted_items(add_remove_items_dict):
     '''
     displays looted/buyed items (from "add_remove_items_dict")
     '''
     total_number_of_items = 0
-    print("\nDodano do torby:\n")
+    print("\nDodano do torby:")
+    multiplier = 30 # variable used in proper pronting ------:
+    display_hyphen_multiply(multiplier)
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
         total_number_of_items += int(add_remove_items_dict[item])
@@ -391,10 +407,12 @@ def display_calendar_location(hero=None):
     location = mod_hero.display_location(hero)
     mod_hero.calendar(calendar_list)
     print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1] +", "+ hero.calendar_list[2] +". Miejsce:", location)
+    multiplier = 90 # variable used in proper pronting ------:
+    display_hyphen_multiply(multiplier)
     display_varied_info()
     chance_to_random_npc_meet = random.randint(1,100)
     if chance_to_random_npc_meet > 80:
-        mod_event.event_random_npc(hero = hero)
+        mod_event.event_random_npc(hero=hero)
     else:
         print("")
  
@@ -458,6 +476,7 @@ def display_next_level_promotion(hero=None):
         number += 1
     
     player_choice = input("\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
+    display_hyphen_multiply(multiplier=82)
     while True:
         try: 
             int(player_choice) in range(1, 5)

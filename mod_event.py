@@ -16,7 +16,7 @@ def priority_test(enemy = None, hero = None):
     hero_test_stats = (int(hero.attrib_dict["zwinność"])+int(hero.attrib_dict["percepcja"])+
     int(hero.attrib_dict["inteligencja"]))
     enem_test_stats = (int(enemy.attrib_dict["zwinność"])+int(enemy.attrib_dict["percepcja"])+int(enemy.attrib_dict["inteligencja"]))
-    print("Kto uzyskał inicjatywę? (test inicjatywy)\n")
+    print("\nKto uzyskał inicjatywę? (test inicjatywy)\n")
     while True:
         test_var1 = hero_test_stats + enem_test_stats
         test_var2 = random.randint(1,test_var1)      
@@ -40,7 +40,7 @@ def priority_test(enemy = None, hero = None):
     return attacker
 
 
-def win_fight(enemy = None, hero = None):
+def win_fight(enemy=None, hero=None):
     print("Zwycięstwo,", enemy.name, "został pokonany! Sława i doświadczenie są Twoje, ...a może jeszcze jakiś łup bitewny?")
     if len(enemy.treasure_dict) > 0: # check if there are some treasures in enemy inventory
         mod_display.pause()
@@ -53,17 +53,17 @@ def win_fight(enemy = None, hero = None):
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
     time.sleep(.3)
     # and some random generated items:
-    mod_items.treasure_generator(maxloops = enemy.maxdrop, maxitem_lvl = enemy.maxdrop_lvl, item_gen = None, hero = hero)
+    mod_items.treasure_generator(maxloops=enemy.maxdrop, maxitem_lvl=enemy.maxdrop_lvl, item_gen=None, hero=hero)
     mod_display.display_hero_chart(hero=hero)
 
     return hero
 
 
-def counterattack(enemy = None, hero = None, attacker = None, attack = None):
+def counterattack(enemy=None, hero=None, attacker=None, attack=None):
     '''
     part of the fight mechanic (part of fight function) 
     '''
-    mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
+    mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=attacker)
     #attacker = priority_test(enemy = enemy, hero = hero) 
     # define attacker and defender:
     if attacker == hero: defender = enemy
@@ -118,7 +118,7 @@ def fight(enemy = None, hero = None, attacker = None):
 
     attack_result = 0
     defend_result = 0
-    print(attacker.name, "atakuje: rzuca",attacker.attrib_dict[str(attacker.combat_attribute)],"razy kością K4:")
+    print('\n'+attacker.name, "atakuje: rzuca",attacker.attrib_dict[str(attacker.combat_attribute)],"razy kością K4:")
     for i in range(int(attacker.attrib_dict[str(attacker.combat_attribute)])):
         attack_var = random.randint(1,4)
         print((str(attack_var)),"      ", sep='', end='', flush=True), time.sleep(0.3)
