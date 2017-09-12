@@ -266,7 +266,7 @@ def combat_attribute_default(enemy = None):
 def enemy_info(enemy = None):    
     '''display shot info about enemy (imported from enemy specials_list and speach_list)'''
     if len(enemy.speach_list) > 0:
-        print(enemy.name,"do Ciebie:",'"'+ random.choice(enemy.speach_list), '\n')
+        print(enemy.name,"do Ciebie:",'"'+ random.choice(enemy.speach_list)+'"\n')
     if len(enemy.specials_list) > 0:
         print(enemy.name,"ma właściwość:", random.choice(enemy.specials_list))
 
