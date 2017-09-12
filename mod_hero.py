@@ -65,17 +65,15 @@ def hero_settings():
     attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {"srebro":5} #placki będzie można sprzedać albo nakarmić głodnego (quest)
+    inventory_dict = {"srebro":5}
 
     ################################ show active items on Hero:
 
     onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
     
-    ################################ przykładowy bohater (odpalenie funkcji hero_crea )
+    ################################ start specs (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
     hero.calendar_list = [0, "niedziela", "wieczór"] # start value of calendar list
-    #hero.attack = attack_points_calc(hero)
-    #hero.defend = defend_points_calc(hero)
     hero.new_location = 1 # variable used in change location mechanic
     hero.gold = 2 # initial wealt in pouch
   

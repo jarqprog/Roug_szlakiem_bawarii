@@ -182,7 +182,6 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
 
 
 ##### QUEST ITEMS:    
-
     placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2])
     placek_sliwkowy.item_info = "pyszności!"
     wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 1, [1] )
@@ -272,6 +271,7 @@ def treasure_generator(maxloops = None, maxitem_lvl = None, item_gen = None, her
         mod_display.display_hero_chart(hero = hero)
         mod_display.display_looted_items(add_remove_items_dict)
         mod_display.pause()
+
         return hero
 
 

@@ -23,9 +23,12 @@ def pause():
     '''
     stop game action (for ex. in the middle of fight)
     '''
-    pause = 0 # reset pause variable
-    pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",) # temporary - we need here glitch
 
+    if os.name == 'nt': # if windows
+        pause = input("\n\n" + "Wciśnij enter żeby kontynuować" + "\n",) # temporary - we need here glitch
+    
+    else: # if linux
+        pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",)
 
 def display_varied_info():
     '''
@@ -37,40 +40,49 @@ def display_varied_info():
     "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
     "Oby nikt tu na mnie nie czyhał", "Trochę wieje", "Mam nadzieję, że zaliczę checkpoint..",
     "Gdzie ten Oblib?", "Ech, Mullog zmarnieje bez obrączki!", "Co by tu zrobić?", "Mam złe przeczucie..",
-    "Porada: źródło życia na mapce oznaczone jest znakiem '+'", "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"]
+    "Porada: źródło życia na mapce oznaczone jest znakiem '+'",
+    "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
+    
+    ]
 
     random_chanse = random.randint(1,10)
     if random_chanse > 7:
-        info_to_display = info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
+        info_to_display = random.choice(info_to_display_list) # randomly display element of list #info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
     else:
         info_to_display = ''
 
     return print(info_to_display)
 
 
-def display_quest_log(hero = None):
+def display_quest_log(hero=None):
     
+    print_multiplayer = 42 # variable used in pronting below (multiply '-')
     clear_screen()
-    print('\n\x1b[6;31;47m'+hero.name+", zadania do wykonania:\x1b[0m\n")
+
+    print('\n'+hero.name+", zadania do wykonania:\n")
     if len(hero.quest_info) > 0:
         for quest_name in hero.quest_info.keys():
             if quest_name not in hero.quest_completed_list:
-                print(' \x1b[6;30;44m'+quest_name+':\x1b[0m')
+                print('-' * print_multiplayer)
+                print(quest_name+':')
                 for npc_statment in hero.quest_info[quest_name]:
                     print(npc_statment,'\n')
+
     if len(hero.quest_completed_list) > 0:
-        print("\n\n\x1b[6;31;47m, zadania wykonane:\x1b[0m\n")
+        print("\n\nzadania wykonane:\n")
         for quest_name in hero.quest_info.keys():
                 if quest_name in hero.quest_completed_list:
-                    print(' \x1b[6;30;44m'+quest_name+':\x1b[0m')
+                    print('-' * print_multiplayer)
+                    print(quest_name+':')
                     for npc_statment in hero.quest_info[quest_name]:
                         print(npc_statment,'\n')
+        
 
     dot_loop()
     pause()
 
 
-def display_hero_chart(hero = None):
+def display_hero_chart(hero=None):
     """display hero's chart - attributes, inventory items, wearing items"""
     clear_screen() # czyści ekran
     #################### ATTRIBUTES ############################
@@ -94,7 +106,7 @@ def display_hero_chart(hero = None):
 
 
     #################### OTHERS: life, exp, gold, location ############################
-    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak", "obrona", "obrażenia", "pancerz" ]
+    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak", "obrona", "obrażenia", "pancerz"]
     # other_value_list element from functions:
     other_value_list = [mod_hero.display_life(hero = hero),
     mod_hero.display_exp(hero = hero),
@@ -130,10 +142,11 @@ def display_hero_chart(hero = None):
     +long_onbody_key+long_onbody_val+long_other_key+long_other_val)
     
     # ta część kodu rysuje tabelę:
-    # zmienne do nagłówka: attrib_additional_dict = ,"doświadczenie":24, "poziom doświadczenia":1, "złoto":2 }
+    # to print in head: hero name, profession, level (exp level)
     printing_var = 0 #helps correctly print hero chart
     h00 = hero.name.ljust(printing_var)
     h01 = hero.proffession.ljust(printing_var)
+    h02 = str(hero.level).ljust(printing_var)
 
     printing_var = 2 #helps correctly print hero chart
     h1 = 'atrybuty:'.rjust(long_att_key+printing_var)
@@ -142,22 +155,24 @@ def display_hero_chart(hero = None):
     printing_var = 1
     h3 = 'na sobie:'.rjust(long_inv_val+long_onbody_key+printing_var)
     h4 = 'pozostałe:'.rjust(long_onbody_val+long_other_key+printing_var)
-    print(u'\n',h00,"-",h01,'\n')
-    print(h1,h2,h3,h4)
+    print(u'\n',h00,"-",h01, h02, 'poziom doświadczenia','\n') # hero name, profession, level
+    print(h1,h2,h3,h4) # head: attribs, items in bag, others spec (attack, defend, life, exp..)
     printing_var_head_bottom = 5 #helps correctly print hero chart
     print("-"*(sum_longest_arg+printing_var_head_bottom))
 
     for i in range(int(total_number_of_items)) :
         
         # printing attributes (siła, zwinność...):
+        # (if one of the columns is shorter, program will print empty string, to not copy same thing):
         try:
-            int(len(attrib_regular_key_list)) >= i         
+            # if quantity of line to print (len) is less then 'i' in loop, program will generate empty string:
+            int(len(attrib_regular_key_list)) >= i 
             if int(len(attrib_regular_key_list)) >= i:
                 iattrib = int(i)
                 attribKeyPrt = str(attrib_regular_key_list[iattrib])+':'
                 attribValuePrt = str(attrib_regular_value_list[iattrib])
         except:
-            attribKeyPrt = ""
+            attribKeyPrt = "" # empty string
             attribValuePrt = ""
         try:
             int(len(inventory_key_list)) >= i         
@@ -186,25 +201,86 @@ def display_hero_chart(hero = None):
         except:
             otherKeyPrt = ""
             otherValuePrt = ""
-    # zmienne przeznaczone do druku poniżej, wprowadzone dla czyletności linii z 'print'
-        p1 = attribKeyPrt.rjust(long_att_key)
-        p2 = attribValuePrt.ljust(long_att_val)
-        p3 = inventoryKeyPrt.rjust(long_inv_key)
-        p4 = inventoryValuePrt.ljust(long_inv_val)
-        p5 = onbodyKeyPrt.rjust(long_onbody_key)
-        p6 = onbodyValuePrt.ljust(long_onbody_val)
-        p7 = otherKeyPrt.rjust(long_other_key)
-        p8 = otherValuePrt.ljust(long_other_val)
 
+    # variables used to display table:
+        p1 = attribKeyPrt.rjust(long_att_key) # attrib name
+        p2 = attribValuePrt.ljust(long_att_val) # attrib value
+        p3 = inventoryKeyPrt.rjust(long_inv_key) # item in inventory - name
+        p4 = inventoryValuePrt.ljust(long_inv_val) # item in inventory - quantity
+        p5 = onbodyKeyPrt.rjust(long_onbody_key) # body part
+        p6 = onbodyValuePrt.ljust(long_onbody_val) # item on body
+        p7 = otherKeyPrt.rjust(long_other_key) # other spec name
+        p8 = otherValuePrt.ljust(long_other_val) # other spec value
 
-
-        # wnętrze tabeli
+        # body of table:
         print(u'',p1,p2,p3,p4,p5,p6,p7,p8)
-    # stopka tabeli
+    # footer of table:
     print("-"*(sum_longest_arg+printing_var_head_bottom))
 
 
-def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
+def display_shop(hero=None):
+    '''
+    display event shop
+    '''
+    clear_screen()
+    items_to_buy = mod_items.item_dict_generator(hero, level = None)
+    while True:
+        print(hero.name,", witaj w moim sklepie. Oto mój asortyment:")       
+        items_to_buy_list = []
+        number_to_print = 1
+        for item in items_to_buy.keys():
+            items_to_buy_list.append(item.name)     
+            print(str(number_to_print)+':', item.name+", cena:", str(item.price)+", info:", item.item_info)
+            number_to_print += 1
+
+        print("\nPosiadane złoto:",str(hero.gold)+"\n")
+        print("Posiadane rzeczy w Twojej torbie:")
+
+        number_to_print = 1
+        for item_name in hero.inventory_dict.keys():
+            item = mod_items.items_settings(name = item_name, loc = None, lvl = None, gen = None, hero = None, all = None)        
+            print(str(number_to_print)+':', item.name+", cena:", str(item.price)+", info:", item.item_info+
+            ", ilość:", hero.inventory_dict[item_name])
+            number_to_print += 1
+
+        print(items_to_buy_list)
+        choice_sell_buy = input("\nJeśli chcesz kupić, wybierz 1, jeśli sprzedać, wybierz 2 (i zatwierdź <enter>): --> ")
+        while True:
+            try:
+                choice_sell_buy == '1' or choice_sell_buy == '2'
+                break
+            except:
+                choice_sell_buy = input("Wybierz 1 (kup) lub 2 (sprzedaj) i potwierdź <enter> --> ")
+        
+        if choice_sell_buy == '1':
+            choice_buy_item = input("\nWybierz numer przedmiotu do zakupu i zatwierdź <enter>: --> ")
+            while True:
+                try:
+                    if int(choice_buy_item) <= len(items_to_buy_list):
+                        break
+                    else:
+                        choice_buy_item = input("\nNie ma takiego przedmiotu, wybierz ponownie numer i zatwierdź <enter>: --> ")
+                    
+                    
+
+                except:
+                    choice_buy_item = input("\nNie ma takiego przedmiotu, wybierz ponownie numer i zatwierdź <enter>: --> ")
+            
+
+            '''
+            while True:
+                try:
+                    choice_sell_buy == '1' or choice_sell_buy == '2'
+                    break
+                except:
+                    choice_sell_buy = input("Wybierz 1 (kup) lub 2 (sprzedaj) i potwierdź <enter> --> ")
+            '''
+
+
+
+
+
+def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     '''
     display basic info about enemy compared to hero's stats 
     '''
@@ -273,7 +349,7 @@ def display_enemy_vs_hero(enemy = None, hero = None, attacker = None):
     print("\n\n")
 
 
-def calendar(hero = None):
+def calendar(hero=None):
     '''
     display short info about day, day time using turn counter
     '''
@@ -307,7 +383,7 @@ def display_looted_items(add_remove_items_dict):
         total_number_of_items += int(add_remove_items_dict[item])
 
 
-def display_calendar_location(hero = None):
+def display_calendar_location(hero=None):
     '''
     display short info about day, day time, location, weather info, eventually random npc statement
     '''
@@ -325,16 +401,15 @@ def display_calendar_location(hero = None):
     return calendar_list
 
 
-def display_NPC_random_speach(npc = None):
+def display_NPC_random_speach(npc=None):
     '''
     display short random npc speach (decorational element)
     '''
-    speach_index = random.randint(0, len(npc.speach_list)-1)
-    speach_to_display = npc.speach_list[speach_index]
-    print("Napotkany", npc.name, "do Ciebie:", "\x1b[6;30;44m"+speach_to_display + "..."+ "\x1b[0m" )
+    speach_to_display = random.choice(npc.speach_list)
+    print("Napotkany", npc.name, "do Ciebie:", speach_to_display + "...")
 
 
-def display_event_quest(npc = None, hero = None):
+def display_event_quest(npc=None, hero=None):
     '''
     display quest info, dialogs, info about quest result
     '''
@@ -369,11 +444,10 @@ def display_event_quest(npc = None, hero = None):
                 
                 break
 
-
     return hero, npc
 
 
-def display_next_level_promotion(hero = None):
+def display_next_level_promotion(hero=None):
     '''
     display hero attributes for lvl promotion function
     '''           

@@ -197,10 +197,6 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     
     #troll_strong_hand.quest_info = "Zdobyłeś narzędzia pomiarowe, idź do Leśniczego po nagrodę"
 
-
-
-
-
 ############## list with all enemies - we use this in functions below (to summon enemy by name):
     # na razie potrzeba ręcznie dopisywać każdego przeciwnika, ale to raczej nie problem
     # mogę po każdym przeciwniku robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
@@ -270,9 +266,9 @@ def combat_attribute_default(enemy = None):
 def enemy_info(enemy = None):    
     '''display shot info about enemy (imported from enemy specials_list and speach_list)'''
     if len(enemy.speach_list) > 0:
-        print(enemy.name,"do Ciebie:",'"'+"\x1b[6;30;44m"+enemy.speach_list[random.randint(0, len(enemy.speach_list)-1)]+ "\x1b[0m"+'"'+'\n')
+        print(enemy.name,"do Ciebie:",'"'+ random.choice(enemy.speach_list), '\n')
     if len(enemy.specials_list) > 0:
-        print(enemy.name,"ma właściwość:",enemy.specials_list[random.randint(0, len(enemy.specials_list)-1)])
+        print(enemy.name,"ma właściwość:", random.choice(enemy.specials_list))
 
 
 

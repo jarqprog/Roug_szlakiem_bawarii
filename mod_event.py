@@ -274,15 +274,15 @@ def event_quest(npc = None, hero = None):
     return hero
 
 
-def event_npc(npc = None, hero = None):
+def event_npc(npc=None,hero=None):
     '''
     event == meet specified (by name) NPC
     '''
     # summon npc by name:
-    npc = mod_npc.npc_settingsnpc_settings(name = npc.name, loc = None, gen = None)
+    npc = mod_npc.npc_settings(name=npc.name, loc=None, gen=None)
 
 
-def event_question_mark(hero = None):
+def event_question_mark(hero=None):
     '''
     event == random event when hero on '?'
     small chance to win silver, huge chance to fight with random enemy
@@ -291,7 +291,7 @@ def event_question_mark(hero = None):
     mod_display.pause()
     chance_factor = random.randint(1, 100)
     if chance_factor < 85:
-        enemy = mod_enemy.enemy_settings(name = None, loc = hero.location, lvl = None, gen = None)
+        enemy = mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None)
         event_fight(enemy = enemy, hero = hero)
 
     else:
@@ -321,16 +321,16 @@ def event_random_npc(hero = None):
         pass
 
 
-def quest_event_smashed_camp(hero = None):
+def quest_event_smashed_camp(hero=None):
     '''
     smashed camp quest
     '''
 
-    npc = mod_npc.npc_settings(name = "Obóz niesłusznie rozbitych", loc = None, gen = None)
+    npc = mod_npc.npc_settings(name="Obóz niesłusznie rozbitych", loc=None, gen=None)
     if npc.quest_condition not in hero.quest_condition_list:
         hero.quest_condition_list.append(npc.quest_condition)
 
-    event_quest(npc = "Obóz niesłusznie rozbitych", hero = hero)
+    event_quest(npc = "Obóz niesłusznie rozbitych", hero=hero)
     mod_display.pause()
 
 
@@ -342,21 +342,21 @@ def quest_event_thievish_bear(hero = None):
     bad quest thievish_bear_quest
     '''
 
-    npc = mod_npc.npc_settings(name = "Złodziejski Miś", loc = None, gen = None)
+    npc = mod_npc.npc_settings(name="Złodziejski Miś", loc=None, gen=None)
     if npc.quest_list[0] in hero.quest_blocked_list:
         if npc.quest_condition not in hero.quest_condition_list:      
-            event_fight_spec_enemy(enemy = "Złodziejski Miś", hero = hero)
+            event_fight_spec_enemy(enemy="Złodziejski Miś", hero=hero)
             if "liczydło" in hero.inventory_dict.keys():
                 hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
 
         else:
-            event_quest(npc = "Złodziejski Miś", hero = hero)
+            event_quest(npc="Złodziejski Miś", hero=hero)
             if "liczydło" in hero.inventory_dict.keys():
                 hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
             mod_display.pause()
 
     else:
-        event_quest(npc = "Złodziejski Miś", hero = hero)
+        event_quest(npc="Złodziejski Miś", hero=hero)
         mod_display.pause()
         if "liczydło" in hero.inventory_dict.keys():
             hero.quest_condition_list.append("Zdobyto narzędzia pomiarowe")
@@ -364,7 +364,7 @@ def quest_event_thievish_bear(hero = None):
     return hero
 
 
-def quest_event_strong_hand_troll(hero = None):
+def quest_event_strong_hand_troll(hero=None):
     '''
     bad quest strong_hand_troll
     '''
@@ -379,22 +379,22 @@ def quest_event_strong_hand_troll(hero = None):
         condition = 0
             
 
-    npc = mod_npc.npc_settings(name = "Troll Silnoręki", loc = None, gen = None)
+    npc = mod_npc.npc_settings(name="Troll Silnoręki", loc=None, gen=None)
     if npc.quest_list[0] in hero.quest_blocked_list:
         if condition == 1 :      
-            event_quest(npc = "Troll Silnoręki", hero = hero)
+            event_quest(npc="Troll Silnoręki", hero=hero)
             mod_display.pause()
         else:
-            event_fight_spec_enemy(enemy = "Troll Silnoręki", hero = hero)
+            event_fight_spec_enemy(enemy="Troll Silnoręki", hero=hero)
             
     else:
-        event_quest(npc = "Troll Silnoręki", hero = hero)       
+        event_quest(npc="Troll Silnoręki", hero=hero)       
         mod_display.pause()
 
     return hero
 
 
-def event_well_of_life(hero = None):
+def event_well_of_life(hero=None):
     '''
     full life regeneration
     '''
@@ -425,17 +425,17 @@ def event_well_of_life(hero = None):
     return hero
 
 
-def quest_event_gate_keeper(hero = None):
+def quest_event_gate_keeper(hero=None):
     '''
     lvl 3 quest: gate keeper
     '''
-    npc = mod_npc.npc_settings(name = "Strażnik portalu", loc = None, gen = None)
+    npc = mod_npc.npc_settings(name="Strażnik portalu", loc=None, gen=None)
     if npc.quest_list[0] in hero.quest_blocked_list:
         pass
 
 
     else:
-        event_quest(npc = "Strażnik portalu", hero = hero)
+        event_quest(npc="Strażnik portalu", hero=hero)
         mod_display.pause()
         if "pierścień skurczybyka" in hero.inventory_dict.keys():
             hero.quest_condition_list.append("Zdobyto pierścień skurczybyka")
@@ -443,18 +443,31 @@ def quest_event_gate_keeper(hero = None):
     return hero
 
 
-def quest_event_hermit(hero = None):
+def quest_event_hermit(hero=None):
     '''
     hermit quest
     '''
-    npc = mod_npc.npc_settings(name = "Pustelnik", loc = None, gen = None)
+    npc = mod_npc.npc_settings(name="Pustelnik", loc=None, gen=None)
     if npc.quest_condition not in hero.quest_condition_list:
         hero.quest_condition_list.append(npc.quest_condition)
 
-    event_quest(npc = "Pustelnik", hero = hero)
+    event_quest(npc="Pustelnik", hero=hero)
     mod_display.pause()
     
     return hero
+
+
+def event_shop(hero=None):
+    '''
+    start shop event: generate shop assortment, display it
+    '''
+    mod_items.item_dict_generator(hero=None, level=None)
+
+    mod_display.display_shop(hero)
+
+    return hero
+
+
 
 
 
