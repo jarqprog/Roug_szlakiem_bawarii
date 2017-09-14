@@ -228,27 +228,76 @@ def display_shop(hero=None):
     display event shop
     '''
     clear_screen()
-    items_to_buy = mod_items.item_dict_generator(hero, level = None)
+    items_to_buy = mod_items.item_dict_generator(hero, level = None) # shop items to buy (dict type)
+
+    items_to_buy_list = [item.name for item in items_to_buy.keys()] # shop item names to buy (list type)
+    items_to_sell_list = [item for item in hero.inventory_dict.keys()] # hero item names to sell (list type)
+    # check lenght of longest item name
+    all_list = items_to_buy_list + items_to_sell_list
+    printing_var = 5 # variable used in printing below
+    longest_word = (max(len(x) for x in all_list))+printing_var # # set lenght of longest item name
+    multiplier = 90 # variable used in proper printing ------ ('display_hyphen_multiply' function):
+
     while True:
         print(hero.name,", witaj w moim sklepie. Oto mój asortyment:")       
+        display_hyphen_multiply(multiplier)
         items_to_buy_list = []
-        number_to_print = 1
-        for item in items_to_buy.keys():
-            items_to_buy_list.append(item.name)     
-            print(str(number_to_print)+':', item.name+", cena:", str(item.price)+", info:", item.item_info)
-            number_to_print += 1
+        # display shop assortment:
+        for number, item in enumerate(items_to_buy.keys()):
+            items_to_buy_list.append(item.name)
+
+            # variable used in printing below:
+            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
+            el_to_pr_2 = item.name # item name
+            el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
+            el_to_pr_4 = str(item.price)
+            printing_var = 12
+            el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
+            el_to_pr_6 = str(item.item_info)
+
+            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+
+
+        print("\nPosiadane rzeczy w Twojej torbie:")
+        display_hyphen_multiply(multiplier)
+        # display items in hero inventory:
+        printing_var = 7
+        for number, item_name in enumerate(hero.inventory_dict.keys()):
+            # set item data:
+            item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)  
+            # variable used in printing below:
+            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
+            el_to_pr_2 = item.name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
+            el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
+            el_to_pr_4 = str(item.price)
+            printing_var = 12
+            el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
+            el_to_pr_6 = str(item.item_info)
+
+            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+
 
         print("\nPosiadane złoto:",str(hero.gold)+"\n")
-        print("Posiadane rzeczy w Twojej torbie:")
 
-        number_to_print = 1
-        for item_name in hero.inventory_dict.keys():
-            item = mod_items.items_settings(name = item_name, loc = None, lvl = None, gen = None, hero = None, all = None)        
-            print(str(number_to_print)+':', item.name+", cena:", str(item.price)+", info:", item.item_info+
-            ", ilość:", hero.inventory_dict[item_name])
-            number_to_print += 1
+        expression = 'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
+        condition = ('1', '2')
+        user_choice = user_choice_input(condition, expression)
+        if user_choice == '1':
+            expression = 'wybierz numer przedmiotu do zakupu i zatwierdź <enter>: --> '
+            condition = str((range(len(items_to_buy_list))))
+            user_choice = user_choice_input(condition, expression)
 
-        print(items_to_buy_list)
+
+        else:
+            expression = 'wybierz numer przedmiotu do sprzedania i zatwierdź <enter>: --> '
+            condition = str((range(len(hero.inventory_dict))))
+            user_choice = user_choice_input(condition, expression)
+        
+
+
+        break
+
+        '''
         choice_sell_buy = input("\nJeśli chcesz kupić, wybierz 1, jeśli sprzedać, wybierz 2 (i zatwierdź <enter>): --> ")
         while True:
             try:
@@ -270,9 +319,7 @@ def display_shop(hero=None):
 
                 except:
                     choice_buy_item = input("\nNie ma takiego przedmiotu, wybierz ponownie numer i zatwierdź <enter>: --> ")
-            
-
-            '''
+  
             while True:
                 try:
                     choice_sell_buy == '1' or choice_sell_buy == '2'
@@ -281,9 +328,26 @@ def display_shop(hero=None):
                     choice_sell_buy = input("Wybierz 1 (kup) lub 2 (sprzedaj) i potwierdź <enter> --> ")
             '''
 
+def user_choice_input(condition=None, expression=None):
+    '''
+    helper function: take input from user 
+    display expression, for ex. 'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
+    work in loop - if condition is true, for ex.: condition = ('1', '2')
+    ---> break loop and return input
+    '''
+    user_choice = input(expression)
+    while True:
+        try:
+            if user_choice in condition:
+                break
+            else:
+                user_choice = input(expression)
 
+        except:
+            print(expression)
 
-
+    return user_choice
+        
 
 def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     '''
@@ -424,7 +488,7 @@ def display_NPC_random_speach(npc=None):
     display short random npc speach (decorational element)
     '''
     speach_to_display = random.choice(npc.speach_list)
-    print("Napotkany", npc.name, "do Ciebie:", speach_to_display + "...")
+    print("Napotkany", npc.name, "do Ciebie:", speach_to_display + "...\r\r")
 
 
 def display_event_quest(npc=None, hero=None):
