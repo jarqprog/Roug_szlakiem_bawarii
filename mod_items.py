@@ -132,7 +132,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     helmet_pot.combat_attribute = "siła"
 
     # zbroja skórzana (self, name, level, genre, price, location, item_info)
-    armour_lether = Items("zbroja skórzana", 1, "armour", 200, [1,2,3,4])
+    armour_lether = Items("zbroja skórzana", 1, "armour", 20000, [1,2,3,4])
     armour_lether.buff_arm = 1
     armour_lether.body = "tors"
     armour_lether.item_info = "obrona +1"

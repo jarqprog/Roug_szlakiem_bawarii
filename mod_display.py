@@ -1,6 +1,6 @@
 ﻿# mod_varied_info - custom mod, contains list of short messages to random display in main:
 
-import os, math
+import os, math, sys
 import random, time
 import mod_hero 
 import mod_enemy, mod_npc, mod_event, mod_items
@@ -223,13 +223,11 @@ def display_hero_chart(hero=None):
     display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
 
 
-def display_shop(hero=None):
+def display_shop(hero, items_to_buy):
     '''
     display event shop
     '''
     clear_screen()
-    items_to_buy = mod_items.item_dict_generator(hero, level = None) # shop items to buy (dict type)
-
     items_to_buy_list = [item.name for item in items_to_buy.keys()] # shop item names to buy (list type)
     items_to_sell_list = [item for item in hero.inventory_dict.keys()] # hero item names to sell (list type)
     # check lenght of longest item name
@@ -237,116 +235,125 @@ def display_shop(hero=None):
     printing_var = 5 # variable used in printing below
     longest_word = (max(len(x) for x in all_list))+printing_var # # set lenght of longest item name
     multiplier = 90 # variable used in proper printing ------ ('display_hyphen_multiply' function):
+    print(hero.name+", witaj w moim sklepie.") 
+    for number, item in enumerate(items_to_buy):
+        # variable used in printing below:
+        el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
+        el_to_pr_2 = item.name # item name
+        el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
+        el_to_pr_4 = str(item.price)
+        printing_var = 12
+        el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
+        el_to_pr_6 = str(item.item_info)
+        print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
 
-    while True:
-        print(hero.name,", witaj w moim sklepie. Oto mój asortyment:")       
-        display_hyphen_multiply(multiplier)
-        items_to_buy_list = []
-        # display shop assortment:
-        for number, item in enumerate(items_to_buy.keys()):
-            items_to_buy_list.append(item.name)
+    print("\nPosiadane rzeczy w Twojej torbie:")
+    display_hyphen_multiply(multiplier)
+    # display items in hero inventory:
+    for number, item_name in enumerate(hero.inventory_dict.keys()):
+        # set item data:
+        item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)  
+        # variable used in printing below:
+        el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
+        el_to_pr_2 = item.name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
+        el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
+        el_to_pr_4 = str(item.price)
+        printing_var = 12
+        el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
+        el_to_pr_6 = str(item.item_info)
 
-            # variable used in printing below:
-            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
-            el_to_pr_2 = item.name # item name
-            el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-            el_to_pr_4 = str(item.price)
-            printing_var = 12
-            el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-            el_to_pr_6 = str(item.item_info)
+        print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
 
-            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+    print("\nPosiadane złoto:",str(hero.gold)+"\n\n")
 
-
-        print("\nPosiadane rzeczy w Twojej torbie:")
-        display_hyphen_multiply(multiplier)
-        # display items in hero inventory:
-        printing_var = 7
-        for number, item_name in enumerate(hero.inventory_dict.keys()):
-            # set item data:
-            item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)  
-            # variable used in printing below:
-            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
-            el_to_pr_2 = item.name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
-            el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-            el_to_pr_4 = str(item.price)
-            printing_var = 12
-            el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-            el_to_pr_6 = str(item.item_info)
-
-            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+    return items_to_buy
 
 
-        print("\nPosiadane złoto:",str(hero.gold)+"\n")
-
-        expression = 'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
-        condition = ('1', '2')
+def display_player_choice_shop(hero, items_to_buy):
+    '''
+    player choice system while selling or buying in shop
+    '''
+    #mod_items.item_dict_generator(hero, level=None)
+    #print(items_to_buy)
+    exp_start = ' <-- wybierz ' # first element in expression (constant)
+    exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant)
+    exp_middle = "'1' - zakup, '2' - sprzedaż" # custom element in expression
+    expression = exp_start + exp_middle + exp_end
+    condition = ('1', '2', 'w')
+    user_choice = user_choice_input(condition, expression)
+    if user_choice == 'w':
+        return user_choice
+    elif user_choice == '1':
+        exp_var = str(len(items_to_buy)) # specify range of player choice (number of items):
+        exp_middle = "numer przedmiotu do zakupu (1-" +exp_var+ ")" # changed only this element of expression
+        expression = exp_start + exp_middle + exp_end
+        condition = [str(number+1) for number in range(len(items_to_buy))] # item number in range items_to_buy dict
         user_choice = user_choice_input(condition, expression)
-        if user_choice == '1':
-            expression = 'wybierz numer przedmiotu do zakupu i zatwierdź <enter>: --> '
-            condition = str((range(len(items_to_buy_list))))
-            user_choice = user_choice_input(condition, expression)
-
-
-        else:
-            expression = 'wybierz numer przedmiotu do sprzedania i zatwierdź <enter>: --> '
-            condition = str((range(len(hero.inventory_dict))))
-            user_choice = user_choice_input(condition, expression)
         
-
-
-        break
+        #print('wybrano:', item.name+', cena:', item.price+', Twoje złoto:', str(hero.gold)+', czy potwierdzasz?')
+        expression = "TAK: wpisz 't' i zatwierdź <enter>, NIE: wpisz 'n' <enter>"
+        condition = ('t', 'n')
+        user_choice = user_choice_input(condition, expression)
+        if user_choice.upper() == 'T':
+            hero.gold -= item.price
+            print(hero.gold)
+            add_remove_items_dict = {item.name:1}
+            inventory_update(hero, add_remove_items_dict)
 
         '''
-        choice_sell_buy = input("\nJeśli chcesz kupić, wybierz 1, jeśli sprzedać, wybierz 2 (i zatwierdź <enter>): --> ")
-        while True:
-            try:
-                choice_sell_buy == '1' or choice_sell_buy == '2'
-                break
-            except:
-                choice_sell_buy = input("Wybierz 1 (kup) lub 2 (sprzedaj) i potwierdź <enter> --> ")
+        name = items_to_buy_list[int(user_choice)]
+        item = mod_items.items_settings(name=name, loc=None, lvl=None, gen=None, hero=None, all=None)  
+        condition = ('t','n')
+            
+        print(item.name+' kosztuje '+item.price+' sztuk złota. Czy potwierdzasz?\r')
+        expression = " \rTAK: wpisz 't' i zatwierdź <enter>, NIE: <enter>"
+        user_choice = user_choice_input(condition, expression)
+        hero.gold -= item.price
+        print(hero.gold)
+        inventory_update(hero, add_remove_items_dict)
+        '''
+
+    else:
+        expression = 'wybierz numer przedmiotu do sprzedania i zatwierdź <enter>: --> '
+        condition = str(range(len(hero.inventory_dict)))
+        user_choice = user_choice_input(condition, expression)
         
-        if choice_sell_buy == '1':
-            choice_buy_item = input("\nWybierz numer przedmiotu do zakupu i zatwierdź <enter>: --> ")
-            while True:
-                try:
-                    if int(choice_buy_item) <= len(items_to_buy_list):
-                        break
-                    else:
-                        choice_buy_item = input("\nNie ma takiego przedmiotu, wybierz ponownie numer i zatwierdź <enter>: --> ")
-                    
-                    
 
-                except:
-                    choice_buy_item = input("\nNie ma takiego przedmiotu, wybierz ponownie numer i zatwierdź <enter>: --> ")
-  
-            while True:
-                try:
-                    choice_sell_buy == '1' or choice_sell_buy == '2'
-                    break
-                except:
-                    choice_sell_buy = input("Wybierz 1 (kup) lub 2 (sprzedaj) i potwierdź <enter> --> ")
-            '''
 
-def user_choice_input(condition=None, expression=None):
+
+def user_choice_input(condition, expression):
     '''
     helper function: take input from user 
     display expression, for ex. 'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
+    condition should be tuple or list
     work in loop - if condition is true, for ex.: condition = ('1', '2')
     ---> break loop and return input
     '''
-    user_choice = input(expression)
+    user_choice = ''
+    # changed na Ania
     while True:
+        sys.stdout.write("\033[F") # Cursor up one line
+        user_choice = input('\t'+expression+'\r')
+
         try:
             if user_choice in condition:
-                break
-            else:
-                user_choice = input(expression)
+                return user_choice
 
         except:
-            print(expression)
+            continue
 
-    return user_choice
+'''
+def user_choice_input(condition, expression):
+    user_choice = ''
+    while True:
+         user_choice = input(expression)
+        try:
+            if user_choice in condition:
+                return user_choice
+        except:
+            print('Tu coś mądrego :P')
+'''
+
         
 
 def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):

@@ -457,20 +457,17 @@ def quest_event_hermit(hero=None):
     return hero
 
 
-def event_shop(hero=None):
+def event_shop(hero):
     '''
-    start shop event: generate shop assortment, display it
+    shop event - display shop, selling and buying
     '''
-    mod_items.item_dict_generator(hero=None, level=None)
+    items_to_buy = mod_items.item_dict_generator(hero, level=None) # shop items to buy (dict type)
+    #while True:
+    user_choice = ''
+    while user_choice != 'w':
+        items_to_buy = mod_display.display_shop(hero, items_to_buy)
+        user_choice = mod_display.display_player_choice_shop(hero, items_to_buy)
+        #mod_display.pause()
 
-    mod_display.display_shop(hero)
 
     return hero
-
-
-
-
-
-
-
-
