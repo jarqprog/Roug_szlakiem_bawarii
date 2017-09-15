@@ -462,12 +462,20 @@ def event_shop(hero):
     shop event - display shop, selling and buying
     '''
     items_to_buy = mod_items.item_dict_generator(hero, level=None) # shop items to buy (dict type)
-    #while True:
     user_choice = ''
-    while user_choice != 'w':
+    while user_choice != 'W':
         items_to_buy = mod_display.display_shop(hero, items_to_buy)
         user_choice = mod_display.display_player_choice_shop(hero, items_to_buy)
-        #mod_display.pause()
 
-
+        if user_choice == 'W':
+            break
+        elif user_choice == '1':
+            user_choice = mod_display.shop_hero_buy(hero, items_to_buy)
+            if user_choice == 'W':
+                break
+        
+        else:
+            user_choice = mod_display.shop_hero_sell(hero)
+    
+    print('') # empty line (for estetic reason)
     return hero

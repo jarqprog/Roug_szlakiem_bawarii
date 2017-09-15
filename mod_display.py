@@ -1,10 +1,26 @@
 ﻿# mod_varied_info - custom mod, contains list of short messages to random display in main:
 
-import os, math, sys
+import os, math
 import random, time
 import mod_hero 
 import mod_enemy, mod_npc, mod_event, mod_items
 
+import sys
+
+
+try:
+    from msvcrt import getwch as getch
+except ImportError:
+    def getch():
+        import tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -30,13 +46,16 @@ def pause():
     '''
     stop game action (for ex. in the middle of fight)
     '''
+    print('wciśnij dowolny klawisz, by kontynuować.. ')
+    char = getch()
 
+    '''
     if os.name == 'nt': # if windows
         pause = input("\n\n" + "Wciśnij enter żeby kontynuować" + "\n",) # temporary - we need here glitch
     
     else: # if linux
         pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",)
-
+    '''
 def display_varied_info():
     '''
     function with a list of short messages (mainly to increse playability). It random generates message to display from list:
@@ -228,23 +247,23 @@ def display_shop(hero, items_to_buy):
     display event shop
     '''
     clear_screen()
-    items_to_buy_list = [item.name for item in items_to_buy.keys()] # shop item names to buy (list type)
+    items_to_buy_list = [item[0] for item in items_to_buy.values()] # shop item names to buy (list type)
     items_to_sell_list = [item for item in hero.inventory_dict.keys()] # hero item names to sell (list type)
     # check lenght of longest item name
     all_list = items_to_buy_list + items_to_sell_list
-    printing_var = 5 # variable used in printing below
+    printing_var = 8 # variable used in printing below
     longest_word = (max(len(x) for x in all_list))+printing_var # # set lenght of longest item name
     multiplier = 90 # variable used in proper printing ------ ('display_hyphen_multiply' function):
-    print(hero.name+", witaj w moim sklepie.") 
-    for number, item in enumerate(items_to_buy):
+    print(hero.name+", witaj w moim sklepie.\nOto moje towary:\n")
+    for item in items_to_buy.keys():
         # variable used in printing below:
-        el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
-        el_to_pr_2 = item.name # item name
+        el_to_pr_1 = item+':' # el_to_pr_1 means 'element to print'
+        el_to_pr_2 = items_to_buy[item][0] # item name
         el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-        el_to_pr_4 = str(item.price)
+        el_to_pr_4 = str(int(int(items_to_buy[item][1])*1.1)) # item price + 10% (string -> float -> integer)
         printing_var = 12
         el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-        el_to_pr_6 = str(item.item_info)
+        el_to_pr_6 = items_to_buy[item][2] # item info
         print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
 
     print("\nPosiadane rzeczy w Twojej torbie:")
@@ -273,53 +292,99 @@ def display_player_choice_shop(hero, items_to_buy):
     '''
     player choice system while selling or buying in shop
     '''
-    #mod_items.item_dict_generator(hero, level=None)
-    #print(items_to_buy)
     exp_start = ' <-- wybierz ' # first element in expression (constant)
     exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant)
     exp_middle = "'1' - zakup, '2' - sprzedaż" # custom element in expression
     expression = exp_start + exp_middle + exp_end
-    condition = ('1', '2', 'w')
+    condition = ('1', '2', 'W')
     user_choice = user_choice_input(condition, expression)
-    if user_choice == 'w':
-        return user_choice
-    elif user_choice == '1':
-        exp_var = str(len(items_to_buy)) # specify range of player choice (number of items):
-        exp_middle = "numer przedmiotu do zakupu (1-" +exp_var+ ")" # changed only this element of expression
-        expression = exp_start + exp_middle + exp_end
-        condition = [str(number+1) for number in range(len(items_to_buy))] # item number in range items_to_buy dict
-        user_choice = user_choice_input(condition, expression)
-        
-        #print('wybrano:', item.name+', cena:', item.price+', Twoje złoto:', str(hero.gold)+', czy potwierdzasz?')
-        expression = "TAK: wpisz 't' i zatwierdź <enter>, NIE: wpisz 'n' <enter>"
-        condition = ('t', 'n')
-        user_choice = user_choice_input(condition, expression)
-        if user_choice.upper() == 'T':
-            hero.gold -= item.price
-            print(hero.gold)
-            add_remove_items_dict = {item.name:1}
-            inventory_update(hero, add_remove_items_dict)
+   
+    return user_choice
 
-        '''
-        name = items_to_buy_list[int(user_choice)]
-        item = mod_items.items_settings(name=name, loc=None, lvl=None, gen=None, hero=None, all=None)  
-        condition = ('t','n')
-            
-        print(item.name+' kosztuje '+item.price+' sztuk złota. Czy potwierdzasz?\r')
-        expression = " \rTAK: wpisz 't' i zatwierdź <enter>, NIE: <enter>"
-        user_choice = user_choice_input(condition, expression)
-        hero.gold -= item.price
-        print(hero.gold)
-        inventory_update(hero, add_remove_items_dict)
-        '''
-
+          
+    '''
     else:
         expression = 'wybierz numer przedmiotu do sprzedania i zatwierdź <enter>: --> '
         condition = str(range(len(hero.inventory_dict)))
         user_choice = user_choice_input(condition, expression)
+    '''
         
 
+def shop_hero_buy(hero, items_to_buy):
+    '''
+    buy item in shop 
+    '''
+    exp_start = ' <-- wybierz ' # first element in expression (constant)
+    exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant) 
+    exp_var = str(len(items_to_buy)) # specify range of player choice (number of items):
+    exp_middle = "numer przedmiotu do zakupu (1-" +exp_var+ ")" # changed only this element of expression
+    expression = exp_start + exp_middle + exp_end
+    condition = [str(number+1) for number in range(len(items_to_buy))]+['W'] # item number in range items_to_buy dict or 'W' (exit)
+    user_choice = user_choice_input(condition, expression)
+    if user_choice == 'W':
+        
+        return user_choice # break shop loop
 
+
+    item_number = user_choice # item (key) in items_to_buy dict
+    item_name = items_to_buy[item_number][0] # index in list (value in dict items_to_buy)
+    price = int(int(items_to_buy[item_number][1])*1.1) # item price increased by 10%
+    if hero.gold < price: # if hero has not enough gold 
+        print('\nNie posiadasz wystarczającej ilości złota.\n'), pause()
+        
+        return user_choice # back to loop
+
+
+    else: # if hero has enough gold
+        print('\nwybrano:', item_name +', cena:', str(price) +
+        ', Twoje złoto:', str(hero.gold)+', czy potwierdzasz?\n\n')
+    
+        exp_middle = "'t' - tak, 'n' - nie" # changed only this element of expression
+        expression = exp_start + exp_middle + exp_end
+        condition = ('T', 'N', 'W')
+        user_choice = user_choice_input(condition, expression)
+        if user_choice == 'N':
+            
+            return user_choice
+
+
+        elif user_choice == 'T':
+            hero.gold -= int(price) # subtract price 
+
+            add_remove_items_dict = {item_name:1} # add item to hero inventory
+            mod_hero.inventory_update(hero, add_remove_items_dict)
+            display_looted_items(add_remove_items_dict)
+            
+            pause()
+
+            return hero
+
+
+        else:
+            user_choice = 'W' # exit from shop
+
+            return user_choice
+
+
+def shop_hero_sell(hero):
+    '''
+    sell item in shop
+    '''
+    exp_start = ' <-- wybierz ' # first element in expression (constant)
+    exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant) 
+    exp_var = str(len(hero.inventory_dict.keys())) # specify range of player choice (number of items):
+    exp_middle = "numer przedmiotu do zakupu (1-" +exp_var+ ")" # changed only this element of expression
+    expression = exp_start + exp_middle + exp_end
+    condition = [str(number+1) for number in range(len(hero.inventory_dict.keys()))]+['W'] # item number in range items_to_buy dict or 'W' (exit)
+    user_choice = user_choice_input(condition, expression)
+    if user_choice == 'W':
+        
+        return user_choice # break shop loop
+
+    else:
+        print('eureka!')
+
+        
 
 def user_choice_input(condition, expression):
     '''
@@ -331,29 +396,21 @@ def user_choice_input(condition, expression):
     '''
     user_choice = ''
     # changed na Ania
+
     while True:
-        sys.stdout.write("\033[F") # Cursor up one line
-        user_choice = input('\t'+expression+'\r')
+
+        if os.name != 'nt': # if not windows
+            sys.stdout.write("\033[F") # Cursor up one line
+        
+        user_choice = (input('\t'+expression+'\r')).upper()
 
         try:
             if user_choice in condition:
-                return user_choice
+                
+                return user_choice.upper()
 
         except:
             continue
-
-'''
-def user_choice_input(condition, expression):
-    user_choice = ''
-    while True:
-         user_choice = input(expression)
-        try:
-            if user_choice in condition:
-                return user_choice
-        except:
-            print('Tu coś mądrego :P')
-'''
-
         
 
 def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
@@ -461,13 +518,11 @@ def display_looted_items(add_remove_items_dict):
     '''
     displays looted/buyed items (from "add_remove_items_dict")
     '''
-    total_number_of_items = 0
     print("\nDodano do torby:")
-    multiplier = 30 # variable used in proper pronting ------:
+    multiplier = 30 # variable used in proper printing ------:
     display_hyphen_multiply(multiplier)
     for item in add_remove_items_dict:
         print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
-        total_number_of_items += int(add_remove_items_dict[item])
 
 
 def display_calendar_location(hero=None):

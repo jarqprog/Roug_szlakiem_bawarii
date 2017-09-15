@@ -283,19 +283,22 @@ def treasure_generator(maxloops=None, maxitem_lvl=None, item_gen=None, hero=None
 
 def item_dict_generator(hero=None, level=None):
     '''
-    generate items dict: key = item, value = item specs.. ex. {knife:damage+2, agility}
+    generate items dict: key = item number, value = list of item specs (name, price, info).. ex. {'1': ['knife','100','damage+2, agility']...}
     '''
     items_gen_dict = {}
     item_already_gen = []
     item_to_generate = random.randint(5,9)
+    count = 1
     while len(items_gen_dict.keys()) < item_to_generate:
         level = random.randint(1,4)
         item = items_settings(name = None, loc = None, lvl = level, gen = None, hero = None, all = None)
         if item.name not in item_already_gen:
             item_already_gen.append(item.name)
             item_parametres = []
-            item_parametres.append([item.name, item.price, item.item_info])
-            items_gen_dict[item] = item_parametres
+            item_parametres += [item.name, str(item.price), item.item_info]
+            items_gen_dict[str(count)] = item_parametres
+            count += 1
+            # result is dict with numbers (keys) and list od object attributes (values)
             
     return items_gen_dict
 
