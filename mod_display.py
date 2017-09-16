@@ -587,14 +587,13 @@ def display_calendar_location(hero=None):
     location = mod_hero.display_location(hero)
     mod_hero.calendar(calendar_list)
     print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1] +", "+ hero.calendar_list[2] +". Miejsce:", location)
-    multiplier = 90 # variable used in proper pronting ------:
+    multiplier = 81 # variable used in proper pronting ------:
     display_hyphen_multiply(multiplier)
-    display_varied_info()
     chance_to_random_npc_meet = random.randint(1,100)
-    if chance_to_random_npc_meet > 80:
-        mod_event.event_random_npc(hero=hero)
+    if chance_to_random_npc_meet <= 80: # usually display only weather info
+        display_varied_info()
     else:
-        print("")
+        mod_event.event_random_npc(hero=hero) # sometimes info about friendly NPC thah hero has met 
  
     return calendar_list
 
