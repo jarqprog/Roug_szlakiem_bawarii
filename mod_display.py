@@ -336,7 +336,7 @@ def shop_hero_buy(hero, items_to_buy):
 
 
     else: # if hero has enough gold
-        print('\nwybrano:', item_name +', cena:', str(price) +
+        print('\nWybrano:', item_name +', cena:', str(price) +
         ', Twoje złoto:', str(hero.gold)+', czy potwierdzasz?\n\n')
     
         exp_middle = "'t' - tak, 'n' - nie" # changed only this element of expression
@@ -354,6 +354,7 @@ def shop_hero_buy(hero, items_to_buy):
             add_remove_items_dict = {item_name:1} # add item to hero inventory
             mod_hero.inventory_update(hero, add_remove_items_dict)
             display_looted_items(add_remove_items_dict)
+            print('Twoja sakwa jest lżejsza, wydałeś', price, 'sztuk złota!\n')
             
             pause()
 
@@ -373,7 +374,7 @@ def shop_hero_sell(hero):
     exp_start = ' <-- wybierz ' # first element in expression (constant)
     exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant) 
     exp_var = str(len(hero.inventory_dict.keys())) # specify range of player choice (number of items):
-    exp_middle = "numer przedmiotu do zakupu (1-" +exp_var+ ")" # changed only this element of expression
+    exp_middle = "numer przedmiotu do sprzedaży (1-" +exp_var+ ")" # changed only this element of expression
     expression = exp_start + exp_middle + exp_end
     condition = [str(number+1) for number in range(len(hero.inventory_dict.keys()))]+['W'] # item number in range items_to_buy dict or 'W' (exit)
     user_choice = user_choice_input(condition, expression)
@@ -382,9 +383,62 @@ def shop_hero_sell(hero):
         return user_choice # break shop loop
 
     else:
-        print('eureka!')
+        # make dict with hero items (key is number, value is list with item attributes: name, price, quantity):
+        items_to_sell = mod_items.generate_hero_items_to_sell_dict(hero)
+        item_name = items_to_sell[user_choice][0]
+        item_price = int(items_to_sell[user_choice][1])
+        item_quantity = int(items_to_sell[user_choice][2]) # quantity of specified item (user_choice) in hero inventory 
+        if item_quantity == 1:
+            quantity = '1' # used in printing at the end of function
+            gold_earned = item_price
+            
 
-        
+        else: # quantity of specified item in hero inventory > 1..
+            print('\nJaką ilość chcesz sprzedać?\n')
+
+            exp_var = str(item_quantity) # quanitity of item limit
+            exp_middle = "z przedziału (1-" +exp_var+ ")" # changed only this element of expression
+            expression = exp_start + exp_middle + exp_end
+            # condition is list of item number in range quanitity of item limit or 'W' (exit):
+            condition = [str(number+1) for number in range(item_quantity)]+['W']
+            user_choice = user_choice_input(condition, expression)
+
+            if user_choice == 'W': # exit
+                
+                return user_choice # break shop loop
+
+
+            else:
+                quantity = user_choice
+                gold_earned = item_price * int(user_choice)
+            
+
+        print('\nWybrano:', item_name +', ilość:', quantity + ', otrzymasz:', str(gold_earned),
+        'sztuk złota. Czy powierdzasz?\n\n')
+        exp_middle = "'t' - tak, 'n' - nie"
+        expression = exp_start + exp_middle + exp_end
+        condition = ('T', 'N', 'W')
+        user_choice = user_choice_input(condition, expression)
+        if user_choice == 'W':
+            
+            return user_choice # break shop loop
+
+
+        elif user_choice == 'N':
+            
+            return user_choice # back to begining
+
+
+        else: # selling is confirmed
+            hero.gold += gold_earned
+            add_remove_items_dict = {item_name: -(int(quantity))} # remove item to hero inventory
+            mod_hero.inventory_update(hero, add_remove_items_dict)
+            display_looted_items(add_remove_items_dict)
+            print('Twoja sakwa jest cięższa, przybyło', str(gold_earned), 'sztuk złota!\n')
+            pause()
+            
+            return hero
+
 
 def user_choice_input(condition, expression):
     '''
@@ -518,7 +572,7 @@ def display_looted_items(add_remove_items_dict):
     '''
     displays looted/buyed items (from "add_remove_items_dict")
     '''
-    print("\nDodano do torby:")
+    print("\nW torbie:")
     multiplier = 30 # variable used in proper printing ------:
     display_hyphen_multiply(multiplier)
     for item in add_remove_items_dict:

@@ -132,7 +132,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     helmet_pot.combat_attribute = "siła"
 
     # zbroja skórzana (self, name, level, genre, price, location, item_info)
-    armour_lether = Items("zbroja skórzana", 1, "armour", 20000, [1,2,3,4])
+    armour_lether = Items("zbroja skórzana", 1, "armour", 300, [1,2,3,4])
     armour_lether.buff_arm = 1
     armour_lether.body = "tors"
     armour_lether.item_info = "obrona +1"
@@ -286,19 +286,39 @@ def item_dict_generator(hero=None, level=None):
     generate items dict: key = item number, value = list of item specs (name, price, info).. ex. {'1': ['knife','100','damage+2, agility']...}
     '''
     items_gen_dict = {}
-    item_already_gen = []
-    item_to_generate = random.randint(5,9)
+    item_already_gen = [] # block items, that already are in shop assortment
+    item_to_generate = random.randint(5,9) # specify how many items can be in shop assortment
     count = 1
     while len(items_gen_dict.keys()) < item_to_generate:
-        level = random.randint(1,4)
-        item = items_settings(name = None, loc = None, lvl = level, gen = None, hero = None, all = None)
-        if item.name not in item_already_gen:
+        level = random.randint(1,4) # specify how high level items can be added to sell assortment
+        # import item attributes by name of item from mod_items:
+        item = items_settings(name=None, loc=None, lvl=level, gen=None, hero=None, all=None)
+        if item.name not in item_already_gen: # blocker
             item_already_gen.append(item.name)
-            item_parametres = []
+            item_parametres = [] # list with item attributes (future dict values)
             item_parametres += [item.name, str(item.price), item.item_info]
             items_gen_dict[str(count)] = item_parametres
             count += 1
             # result is dict with numbers (keys) and list od object attributes (values)
             
     return items_gen_dict
+
+
+def generate_hero_items_to_sell_dict(hero):
+    '''
+    generate items dict from hero inventory, used in shop sell function
+    in dict: key = item number (1, 2, 3, 4)
+    value = list of item specs (name, price, quantity).. ex. {'1': ['knife','100','damage+2, agility']...}
+    '''
+    items_to_sell_dict = {}
+    for number, item_name in enumerate(hero.inventory_dict):
+        item_parametres = [] # list with item parametres (to add to dict key value)
+        # import item attributes by name of item from mod_items:
+        item = items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)
+        # list (future dict values) append by item name, price and quantity in hero inventory:
+        item_parametres += [item.name, str(item.price), str(hero.inventory_dict[item_name])]
+        items_to_sell_dict[str(number+1)] = item_parametres
+        # result is dict with numbers (keys) and list od object attributes (values)
+            
+    return items_to_sell_dict
 
