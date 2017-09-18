@@ -65,7 +65,7 @@ def hero_settings():
     attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {"srebro":5}
+    inventory_dict = {} #{"srebro":5}
 
     ################################ show active items on Hero:
 
@@ -238,7 +238,7 @@ def inventory_update(hero, add_remove_items_dict):
     return hero
 
 
-def calendar(calendar_list = None):
+def calendar(calendar_list):
     '''
     element of calendar mechanic - exports calendar elements to display
     '''
@@ -271,16 +271,30 @@ def calendar(calendar_list = None):
     return calendar_list
 
 
-def quest(hero = None, npc = None):
+def quest(hero=None, npc=None):
     '''
     element of quest mechanic - block npc's statement, that have been said
     '''
-
-    if npc.quest_name not in hero.quest_info.keys():
+    # hero.quest_info is dict that stores quest names (keys) and npc statements (value of quest name key)
+    # hero.quest_condition_list stores info, if hero has completed quest:
+    # - if True - it affect on npc's statements and behaviour
+    '''
+    print('jestem w hero mod',hero.quest_info)
+    
+    print('jestem w hero mod',hero.quest_completed_list)
+    print('jestem w hero mod',npc.quest_condition in hero.quest_condition_list)
+    mod_display.pause()
+    '''
+    if npc.quest_name not in hero.quest_info.keys(): 
         for element in npc.quest_list:
             if element not in hero.quest_info.values():
-                hero.quest_info[npc.quest_name] = [element]
-                break
+                hero.quest_info[npc.quest_name] = [npc.quest_list[0]]
+                if npc.quest_condition in hero.quest_condition_list:
+                    if len(npc.quest_list) > 1:
+                # npc.quest_list[1]] == second element of npc quest list (finalize quest, if hero has 'magic key'*):
+                # 'magic key' == *quest_condition in hero.quest_condition_list
+                        hero.quest_info[npc.quest_name][0] += '\n'+npc.quest_list[1]
+
 
     else:
         if npc.quest_list[0] not in hero.quest_blocked_list:       
@@ -288,16 +302,16 @@ def quest(hero = None, npc = None):
         
         
     if npc.quest_condition in hero.quest_condition_list:
-        if npc.quest_list[1] not in hero.quest_info[npc.quest_name]:
-            temporary_list = []
-            temporary_list.append([npc.quest_list[1]])
-            hero.quest_info[npc.quest_name] += temporary_list[0]
-            del temporary_list[:]
+        if len(npc.quest_list) > 1:
+            if npc.quest_list[1] not in hero.quest_info[npc.quest_name][0]:
+                # npc.quest_list[1]] == second element of npc quest list (finalize quest, if hero has 'magic key'*):
+                # 'magic key' == *quest_condition in hero.quest_condition_list
+                hero.quest_info[npc.quest_name][0] += '\n'+npc.quest_list[1]
 
     return hero
 
 
-def next_level_promotion(hero = None):
+def next_level_promotion(hero=None):
     '''
     check if there is hero level promotion
     allows to player modify one of hero attributes

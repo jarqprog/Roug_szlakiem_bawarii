@@ -51,6 +51,11 @@ def win_fight(enemy=None, hero=None):
         mod_display.pause()
     mod_display.clear_screen()
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
+    looted_gold = mod_enemy.enemy_gold_reward(enemy=enemy)
+    if looted_gold > 0:
+        print("\nzdobyto", looted_gold, "sztuk złota\n")
+        hero.gold += looted_gold
+        mod_display.pause()
     time.sleep(.3)
     # and some random generated items:
     mod_items.treasure_generator(maxloops=enemy.maxdrop, maxitem_lvl=enemy.maxdrop_lvl, item_gen=None, hero=hero)
@@ -82,6 +87,7 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
     print('\n\n'+defender.name+':',counterattack_result,'+',defender.attack,"(atak):", counterattack_result+defender.attack)
     print(attacker.name+':', attack), time.sleep(0.3)
     if attack < counterattack_result+defender.attack:
+        if damage > attacker.actualLife: damage = attacker.actualLife
         attacker.actualLife -= damage
         print(defender.name, "zadał obrażenia:", attacker.name, "stracił", damage, "pkt. życia")
         time.sleep(0.3)
@@ -94,18 +100,20 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
 
         if defender.actualLife < 0:
             defender.actualLife = 0
-            combat_end = 1
+            combat_end = 1 # break fight loop
+
             return combat_end
 
 
     else:
         print('\n'+attacker.name, "obronił się!")
         attacker_change = 1
+
         return attacker_change
             
             
 
-def fight(enemy = None, hero = None, attacker = None):
+def fight(enemy=None, hero=None, attacker=None):
     '''
     fight mechanic = hit
     '''
@@ -138,14 +146,15 @@ def fight(enemy = None, hero = None, attacker = None):
         mod_display.pause()
         attacker_change = 1
         attack = int(attack_result+attacker.attack)
-        counterattack(enemy = enemy, hero = hero, attacker = attacker, attack = attack)
+        counterattack(enemy=enemy, hero=hero, attacker=attacker, attack=attack)
 
         return attacker_change
 
     else:
         damage = random.randint(attacker.dmg_list[0], attacker.dmg_list[1])
+        if damage > defender.actualLife: damage = defender.actualLife
         print('\n'+attacker.name, "zadał obrażenia:", defender.name, "stracił", damage, "pkt. życia")
-        time.sleep(0.3)
+        time.sleep(0.3)      
         defender.actualLife -= damage
         if attacker == hero:
             hero.actualExp += damage
@@ -158,18 +167,18 @@ def fight(enemy = None, hero = None, attacker = None):
             return combat_end
 
 
-def event_fight_spec_enemy(enemy = None, hero = None):
+def event_fight_spec_enemy(enemy=None, hero=None):
     '''
-    event == fight with random enemy
+    event == fight with special (quest) enemy
     '''
     # random generate enemy (using filters):
-    enemy = mod_enemy.enemy_settings(name = enemy, loc = None, lvl = None, gen = None)
-    enemy.attack = mod_enemy.attack_points_calc(enemy = enemy)
-    enemy.defend = mod_enemy.defend_points_calc(enemy = enemy)
-    mod_enemy.combat_attribute_default(enemy = enemy)
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy = enemy)
+    enemy = mod_enemy.enemy_settings(name=enemy, loc=None, lvl=None, gen=None)
+    enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
+    enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
+    mod_enemy.combat_attribute_default(enemy=enemy)
+    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
     # update hero attrinute:
-    mod_hero.combat_attribute_default(hero = hero)
+    mod_hero.combat_attribute_default(hero=hero)
     mod_hero.attack_points_calc(hero)
     mod_hero.defend_points_calc(hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
@@ -182,14 +191,14 @@ def event_fight_spec_enemy(enemy = None, hero = None):
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
         # initiative test:
-        attacker = priority_test(enemy = enemy, hero = hero)
+        attacker = priority_test(enemy=enemy, hero=hero)
         # define attacker and defender:
         if attacker == hero: defender = enemy
         elif attacker == enemy: defender = hero  
         attacker_change = 0 # if 1 = loop is break and we repeat initiative test
         while True:
-            mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
-            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
+            mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=attacker)
+            attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
@@ -198,9 +207,38 @@ def event_fight_spec_enemy(enemy = None, hero = None):
                 break
                 
             elif enemy.actualLife < 1:
+                # enemy is dead:
                 enemy.actualLife = 0
                 hero.quest_condition_list.append(enemy.quest_condition)
-                if enemy.quest_info: print(enemy.quest_info)
+                # if it is quest enemy (is either enemy and quest npc):
+                try:
+                    npc = mod_npc.npc_settings(name=enemy.name, loc=None, gen=None)
+                    hero.quest_completed_list.append(npc.quest_name)
+                    if npc.quest_name not in hero.quest_info.keys():
+                        hero.quest_info.update({npc.quest_name:[enemy.quest_info]})
+                    else:
+                        hero.quest_info[npc.quest_name][0] += '\n'+str(enemy.quest_info)
+                    # "portal..." is special reward for quest, it is teleport to nex level (map):
+                    next_map_info = "\nUdało Ci się, wkroczysz do następnej krainy!\n" # tmp!
+                    if "portal 2" in npc.quest_special_reward:
+                        hero.new_location = 2
+                        print(next_map_info)
+                        pause()
+                    elif "portal 3" in npc.quest_special_reward:
+                        hero.new_location = 3
+                        print(next_map_info)
+                        pause()
+                    elif "portal 4" in npc.quest_special_reward:
+                        hero.new_location = 4
+                        print(next_map_info)
+                        pause()
+                    
+
+                except:
+                    pass
+                if enemy.quest_info:
+                    print(enemy.quest_info)
+
                 win_fight(enemy, hero)
                 combat_end = 1              
                 break
@@ -211,7 +249,7 @@ def event_fight_spec_enemy(enemy = None, hero = None):
     return hero
 
 
-def event_fight(enemy = None, hero = None):
+def event_fight(enemy=None, hero=None):
     '''
     event == fight with random enemy
     '''
@@ -235,23 +273,23 @@ def event_fight(enemy = None, hero = None):
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
         # initiative test:
-        attacker = priority_test(enemy = enemy, hero = hero)
+        attacker = priority_test(enemy=enemy, hero=hero)
         # define attacker and defender:
         if attacker == hero: defender = enemy
         elif attacker == enemy: defender = hero  
         attacker_change = 0 # if 1 = loop is break and we repeat initiative test
         while True:
-            mod_display.display_enemy_vs_hero(enemy = enemy, hero = hero, attacker = attacker)
-            attacker_change = fight(enemy = enemy, hero = hero, attacker = attacker)
+            mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=attacker)
+            attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
                 combat_end = 1
                 hero.actualLife = 0
-                break    
+                break
             
             elif enemy.actualLife < 1:
-                win_fight(enemy = enemy, hero = hero)
+                win_fight(enemy=enemy, hero=hero)
                 combat_end = 1
                 break
 
@@ -266,9 +304,9 @@ def event_quest(npc = None, hero = None):
     event == quest adventure
     '''
 
-    npc = mod_npc.npc_settings(name = npc, loc = None, gen = None)
-    mod_hero.quest(hero = hero, npc = npc)
-    mod_display.display_event_quest(hero = hero, npc = npc)
+    npc = mod_npc.npc_settings(name=npc, loc=None, gen=None)
+    mod_hero.quest(hero=hero, npc=npc)
+    mod_display.display_event_quest(hero=hero, npc=npc)
 
 
     return hero
@@ -285,21 +323,18 @@ def event_npc(npc=None,hero=None):
 def event_question_mark(hero=None):
     '''
     event == random event when hero on '?'
-    small chance to win silver, huge chance to fight with random enemy
+    small chance to win gold, huge chance to fight with random enemy
     '''
     print("\n\nOtwierasz puszczkę Pandory.. Czy Ci się udało?..\n")
     mod_display.pause()
     chance_factor = random.randint(1, 100)
-    if chance_factor < 85:
+    if chance_factor < 90:
         enemy = mod_enemy.enemy_settings(name=None, loc=hero.location, lvl=None, gen=None)
         event_fight(enemy = enemy, hero = hero)
 
     else:
-        print('\n\n'+hero.name+", udało Ci się! Zdobywasz:\n"), mod_display.dot_loop()
-        add_remove_items_dict = {"srebro":random.randint(1,4)}
-        mod_hero.inventory_update(hero, add_remove_items_dict)
-        mod_display.display_looted_items(add_remove_items_dict)
-        mod_display.dot_loop()
+        looted_gold = random.randint(5,50)*hero.level*hero.location
+        print('\n\n'+hero.name+", udało Ci się! Zdobywasz:", looted_gold, "sztuk złota\n")
         mod_display.pause()
 
     
@@ -308,20 +343,21 @@ def event_question_mark(hero=None):
         
         
 
-def event_random_npc(hero = None):
+def event_random_npc(hero):
     '''
     event == meet random (from hero location) NPC
+    call display function to show npc's random statement 
     '''
     # random generate npc (using filters):
     try:
-        npc = mod_npc.npc_settings(name = None, loc = hero.location, gen = None)
-        mod_display.display_NPC_random_speach(npc = npc)
+        npc = mod_npc.npc_settings(name=None, loc=hero.location, gen=None)
+        mod_display.display_NPC_random_speach(npc=npc)
 
     except:
         pass
 
 
-def quest_event_smashed_camp(hero=None):
+def quest_event_smashed_camp(hero):
     '''
     smashed camp quest
     '''
@@ -337,10 +373,14 @@ def quest_event_smashed_camp(hero=None):
     return hero
 
 
-def quest_event_thievish_bear(hero = None):
+def quest_event_thievish_bear(hero):
     '''
     bad quest thievish_bear_quest
     '''
+    if "miodzik" in hero.inventory_dict.keys():
+        if "Zdobyto miodzik" not in hero.quest_condition_list:
+            hero.quest_condition_list.append("Zdobyto miodzik")
+
 
     npc = mod_npc.npc_settings(name="Złodziejski Miś", loc=None, gen=None)
     if npc.quest_list[0] in hero.quest_blocked_list:
@@ -398,31 +438,38 @@ def event_well_of_life(hero=None):
     '''
     full life regeneration
     '''
-    print("\n\nZa cenę 1 srebra w pełni Cię uleczę.. ")
-    if hero.inventory_dict["srebro"] >= 1:
-        
-        while True:
-            player_choice = input("Jeśli chcesz skorzystać, wpisz 't', jeśli nie, wpisz 'n' i zatwierdź <enter> -->")
-            
-            try: 
-                if player_choice == 't' or player_choice == 'n':
-                    if player_choice == 't':
-                        print("Uzupełniono życie!")
-                        hero.actualLife = hero.maxLife
-                        hero.inventory_dict["srebro"] -= 1
-                        mod_display.pause()
-                    elif player_choice == 'n':
-                        print("Bywaj zatem!")
-                        mod_display.pause()
-                    break
-            
-            except:
-                continue
-
-    else:
+    price = hero.maxLife - hero.actualLife
+    print("Witaj,", hero.name+", jestem uzdrowicielem.")
+    if hero.actualLife == hero.maxLife:
+        print("\nWidzę, że nie potrzebujesz leczenia! Nie trwoń mojego czasu..")
         mod_display.pause()
+    else:
+        print("\n\nZa cenę", price, "sztuk złota w pełni Cię uleczę.. ")
 
-    return hero
+        if hero.gold >= price:          
+            while True:
+                player_choice = input("Jeśli chcesz skorzystać, wpisz 't', jeśli nie, wpisz 'n' i zatwierdź <enter> -->")
+                
+                try: 
+                    if player_choice == 't' or player_choice == 'n':
+                        if player_choice == 't':
+                            print("Uzupełniono życie!")
+                            hero.actualLife = hero.maxLife
+                            hero.gold -= price
+                            mod_display.pause()
+                        elif player_choice == 'n':
+                            print("Bywaj zatem!")
+                            mod_display.pause()
+                        break
+                
+                except:
+                    continue
+
+        else:
+            print("\n\nNie posiadasz wystarczającej ilości złota..\n")
+            mod_display.pause()
+
+        return hero
 
 
 def quest_event_gate_keeper(hero=None):
@@ -466,14 +513,10 @@ def event_shop(hero):
     while user_choice != 'W':
         items_to_buy = mod_display.display_shop(hero, items_to_buy)
         user_choice = mod_display.display_player_choice_shop(hero, items_to_buy)
-
         if user_choice == 'W':
             break
         elif user_choice == '1':
-            user_choice = mod_display.shop_hero_buy(hero, items_to_buy)
-            if user_choice == 'W':
-                break
-        
+            user_choice = mod_display.shop_hero_buy(hero, items_to_buy)        
         else:
             user_choice = mod_display.shop_hero_sell(hero)
     

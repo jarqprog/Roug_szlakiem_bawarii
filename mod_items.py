@@ -82,6 +82,14 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     dagger.body = "prawa ręka"
     dagger.item_info = "obrażenia (max+5), zwinność"
 
+    dagger_of_agility = Items("sztylet zwinności", 4, "weapon", 700, [2,3,4])
+    dagger_of_agility.buff_min_dmg = 1 # + "min dmg"
+    dagger_of_agility.buff_max_dmg = 8 # + "max dmg"
+    dagger_of_agility.combat_attribute = "zwinność"
+    dagger_of_agility.body = "prawa ręka"
+    dagger_of_agility.item_info = "zwinność +1, obrażenia (min+1, max+8), zwinność"
+    dagger_of_agility.buff_agg = 1 # agility +1
+
     # pałka
     club = Items("maczuga", 1, "weapon", 20, [1,2,3,4])
     club.buff_min_dmg = 1 # + "min dmg"
@@ -125,7 +133,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
 
 
     # hełm garnczkowy +1 obrony (self, name, level, genre, price, location, item_info)
-    helmet_pot = Items("hełm garnczkowy", 3, "armour", 500, [2,3,4])
+    helmet_pot = Items("hełm garnczkowy", 4, "armour", 500, [2,3,4])
     helmet_pot.buff_arm = 2 # + "pancerz (act_armour)"
     helmet_pot.body = "głowa"
     helmet_pot.item_info = "obrona +2, siła"
@@ -164,6 +172,9 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     ruby.item_info = "to bogactwo!!!"
     jantar = Items("jantar", 2, "jewels", 200, [1,2,3,4])
     jantar.item_info = "Jantar Lechitów! To majątek!"
+    silver_bar = Items("sztabka srebra", 3, "jewels", 300, [2,3,4])
+    silver_bar.item_info = "to bogactwo!"
+
 
 
 
@@ -174,22 +185,38 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     tunic.body = "tors"
 
     wolf_skin = Items("wilcza skóra", 1, "other", 7, [1,2])
-    wolf_skin.item_info = "może to sprzedam?"
+    wolf_skin.item_info = "wilka trochę żal, ale skóra ładna i ciepła"
 
-    stale_fish = Items(u"popsuta ryba", 1, "other", 0, [1])
-    stale_fish.item_info = "może to sprzedam?"
+    giant_club = Items("olbrzymia maczuga", 1, "quest", 70, [2,3,4])
+    giant_club.item_info = "broń olbrzymów, jest dla mnie za ciężka!"
+
+    goblin_ear = Items("ucho goblina", 1, "quest", 20, [1,2])
+    goblin_ear.item_info = "podobno jest za to nagroda.."
+
+    outlaw_sign = Items("znak banity", 1, "quest", 25, [1,2])
+    outlaw_sign.item_info = "podobno jest za to nagroda.." 
 
 
 
 
-##### QUEST ITEMS:    
-    placek_sliwkowy = Items("placek śliwkowy", 1, "quest", 1, [1, 2])
-    placek_sliwkowy.item_info = "pyszności!"
-    wolek_zbozowy = Items("wołek zbożowy", 1, "quest", 1, [1] )
-    wolek_zbozowy.item_info = "co to za robak?!"
+##### QUEST ITEMS:     "zabytkowy obraz":1, "sztabka srebra":10, "sztylet zwinności":1
+    plum_cake = Items("placek śliwkowy", 1, "quest", 1, [1, 2])
+    plum_cake.item_info = "pyszności!"
+    corn_cob = Items("wołek zbożowy", 1, "quest", 1, [1] )
+    corn_cob.item_info = "co to za robak?!"
+    abacus = Items("liczydło", 4, "quest", 0, [1])
+    abacus.item_info = "coś mi mówi, żeby tego nie sprzedawać.. "
+    measuring_rope = Items("lina pomiarowa", 4, "quest", 0, [1])
+    measuring_rope.item_info = "coś mi mówi, żeby tego nie sprzedawać.. "
+
+    antique_picture = Items("zabytkowy obraz", 2, "quest", 0, [2]) # quest lvl 2 (mayor)
+    antique_picture.item_info = "wygląda zagadkowo, może dla kogoś jest coś wart.."
+
+
     # quest z misiem lvl 1
-    honey = Items("miodzik", 1, "quest", 1, [1])
-    placek_sliwkowy.item_info = "pyszności"
+    honey = Items("miodzik", 1, "quest", 10, [1])
+    honey.item_info = "pycha!"
+
     mada_faka_ring = Items("pierścień skurczybyka", 2, "quest", 50, [2,3])
     mada_faka_ring.item_info = "coś mi się o uszy obiło, że lepiej zachować"
 
@@ -200,12 +227,17 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
 ############## list of all items - we use this in functions below:
     # na razie potrzeba ręcznie dopisywać każdy przedmiot, ale to raczej nie problem
     # mogę po każdym przedmiocie robić list.append, ale nie ma tego tak dużo, żeby kompa obciążać ;)
-    items_all_list = [placek_sliwkowy, wolek_zbozowy, knife, sword, helmet, club,
+    items_all_list = [
+    plum_cake, corn_cob,
+    knife, sword, helmet, club,
     dagger, axe, spear,
+    dagger_of_agility,
     helmet_pot, armour_lether, wolf_skin,
     ring_of_strenght, ring_of_agility,  
-    diament, ruby, jantar, heart_of_mountain,
-    honey, mada_faka_ring
+    diament, ruby, jantar, heart_of_mountain, silver_bar,
+    tunic,
+    honey, mada_faka_ring, measuring_rope, abacus, antique_picture,
+    goblin_ear, outlaw_sign, giant_club
     ]
 
 
@@ -228,7 +260,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     elif (all == True and (loc in element.location or loc == None) and (lvl == element.level or lvl == None)
     and (gen == element.genre or gen == None)):
         item_export_list = [] # temporary helper list
-        for element in items_all_list:        
+        for element in items_all_list:      
             item_random_list.append(element)
 
         return item_export_list
@@ -243,7 +275,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
         
 
         # export random enemy to main function:
-        item_rnd_exported_to_main = item_random_list[random.randint(0, len(item_random_list)-1)]
+        item_rnd_exported_to_main = random.choice(item_random_list) #[random.randint(0, len(item_random_list)-1)]
         
         return item_rnd_exported_to_main
         # loc = None, lvl = None, gen = None
@@ -263,7 +295,8 @@ def treasure_generator(maxloops=None, maxitem_lvl=None, item_gen=None, hero=None
             for i in range(random.randint(1, maxloops)):
                 random_level = random.randint(1, maxitem_lvl) # randomly generates item level for each loop
                 generated_item = items_settings(name=None, loc=None, lvl=random_level, gen=item_gen, hero=None)
-                treasure_list.append(generated_item.name)
+                if generated_item.genre != "quest": # block quest items
+                    treasure_list.append(generated_item.name)
         
         
         # transform treasure list to dict:
@@ -293,7 +326,7 @@ def item_dict_generator(hero=None, level=None):
         level = random.randint(1,4) # specify how high level items can be added to sell assortment
         # import item attributes by name of item from mod_items:
         item = items_settings(name=None, loc=None, lvl=level, gen=None, hero=None, all=None)
-        if item.name not in item_already_gen: # blocker
+        if item.name not in item_already_gen and item.genre != 'quest': # blocker
             item_already_gen.append(item.name)
             item_parametres = [] # list with item attributes (future dict values)
             item_parametres += [item.name, str(item.price), item.item_info]

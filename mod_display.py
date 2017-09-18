@@ -10,6 +10,7 @@ import sys
 
 try:
     from msvcrt import getwch as getch
+
 except ImportError:
     def getch():
         import tty, termios
@@ -46,16 +47,10 @@ def pause():
     '''
     stop game action (for ex. in the middle of fight)
     '''
-    print('wciśnij dowolny klawisz, by kontynuować.. ')
+    print('\n\n(wciśnij dowolny klawisz, by kontynuować..)\n')
     char = getch()
 
-    '''
-    if os.name == 'nt': # if windows
-        pause = input("\n\n" + "Wciśnij enter żeby kontynuować" + "\n",) # temporary - we need here glitch
-    
-    else: # if linux
-        pause = input("\n\n"+"\x1b[6;31;47m" + "Wciśnij enter żeby kontynuować" + "\x1b[0m"+"\n",)
-    '''
+
 def display_varied_info():
     '''
     function with a list of short messages (mainly to increse playability). It random generates message to display from list:
@@ -99,8 +94,7 @@ def display_quest_log(hero=None):
                 if quest_name in hero.quest_completed_list:
                     display_hyphen_multiply(multiplier = 42)
                     print(quest_name+':')
-                    for npc_statment in hero.quest_info[quest_name]:
-                        print(npc_statment,'\n')
+                    print(hero.quest_info[quest_name][0],'\n')
         
 
     dot_loop()
@@ -254,36 +248,43 @@ def display_shop(hero, items_to_buy):
     printing_var = 8 # variable used in printing below
     longest_word = (max(len(x) for x in all_list))+printing_var # # set lenght of longest item name
     multiplier = 90 # variable used in proper printing ------ ('display_hyphen_multiply' function):
+    shop_margin = 1.2 # item price + 20%
     print(hero.name+", witaj w moim sklepie.\nOto moje towary:\n")
     for item in items_to_buy.keys():
         # variable used in printing below:
         el_to_pr_1 = item+':' # el_to_pr_1 means 'element to print'
         el_to_pr_2 = items_to_buy[item][0] # item name
         el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-        el_to_pr_4 = str(int(int(items_to_buy[item][1])*1.1)) # item price + 10% (string -> float -> integer)
+        el_to_pr_4 = str(int(int(items_to_buy[item][1])*shop_margin)) # item price + 20% (string -> float -> integer)
         printing_var = 12
         el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
         el_to_pr_6 = items_to_buy[item][2] # item info
         print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
 
     print("\nPosiadane rzeczy w Twojej torbie:")
-    display_hyphen_multiply(multiplier)
-    # display items in hero inventory:
-    for number, item_name in enumerate(hero.inventory_dict.keys()):
-        # set item data:
-        item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)  
-        # variable used in printing below:
-        el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
-        el_to_pr_2 = item.name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
-        el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-        el_to_pr_4 = str(item.price)
-        printing_var = 12
-        el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-        el_to_pr_6 = str(item.item_info)
+    
+    if len(hero.inventory_dict.keys()) == 0:
+        print('\r-torba jest pusta, nie masz niczego na sprzedaż.. Posiadane złoto:',str(hero.gold)+'\n\n\n\n')
+    
+    else:    
+    
+        display_hyphen_multiply(multiplier)
+        # display items in hero inventory:
+        for number, item_name in enumerate(hero.inventory_dict.keys()):
+            # set item data:
+            item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)
+            # variable used in printing below:
+            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
+            el_to_pr_2 = item_name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
+            el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
+            el_to_pr_4 = str(item.price)
+            printing_var = 12
+            el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
+            el_to_pr_6 = str(item.item_info)
 
-        print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
 
-    print("\nPosiadane złoto:",str(hero.gold)+"\n\n")
+        print("\nPosiadane złoto:",str(hero.gold)+"\n\n")
 
     return items_to_buy
 
@@ -328,7 +329,8 @@ def shop_hero_buy(hero, items_to_buy):
 
     item_number = user_choice # item (key) in items_to_buy dict
     item_name = items_to_buy[item_number][0] # index in list (value in dict items_to_buy)
-    price = int(int(items_to_buy[item_number][1])*1.1) # item price increased by 10%
+    shop_margin = 1.2 # item price + 20%
+    price = int(int(items_to_buy[item_number][1])*shop_margin) # item price increased by 10%
     if hero.gold < price: # if hero has not enough gold 
         print('\nNie posiadasz wystarczającej ilości złota.\n'), pause()
         
@@ -371,73 +373,88 @@ def shop_hero_sell(hero):
     '''
     sell item in shop
     '''
-    exp_start = ' <-- wybierz ' # first element in expression (constant)
-    exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant) 
-    exp_var = str(len(hero.inventory_dict.keys())) # specify range of player choice (number of items):
-    exp_middle = "numer przedmiotu do sprzedaży (1-" +exp_var+ ")" # changed only this element of expression
-    expression = exp_start + exp_middle + exp_end
-    condition = [str(number+1) for number in range(len(hero.inventory_dict.keys()))]+['W'] # item number in range items_to_buy dict or 'W' (exit)
-    user_choice = user_choice_input(condition, expression)
-    if user_choice == 'W':
-        
-        return user_choice # break shop loop
+    if len(hero.inventory_dict.keys()) == 0:
+        print('\ntorba jest pusta, nie masz niczego na sprzedaż.. \n\n')
+        pause()
 
-    else:
-        # make dict with hero items (key is number, value is list with item attributes: name, price, quantity):
-        items_to_sell = mod_items.generate_hero_items_to_sell_dict(hero)
-        item_name = items_to_sell[user_choice][0]
-        item_price = int(items_to_sell[user_choice][1])
-        item_quantity = int(items_to_sell[user_choice][2]) # quantity of specified item (user_choice) in hero inventory 
-        if item_quantity == 1:
-            quantity = '1' # used in printing at the end of function
-            gold_earned = item_price
-            
+        return hero
 
-        else: # quantity of specified item in hero inventory > 1..
-            print('\nJaką ilość chcesz sprzedać?\n')
-
-            exp_var = str(item_quantity) # quanitity of item limit
-            exp_middle = "z przedziału (1-" +exp_var+ ")" # changed only this element of expression
-            expression = exp_start + exp_middle + exp_end
-            # condition is list of item number in range quanitity of item limit or 'W' (exit):
-            condition = [str(number+1) for number in range(item_quantity)]+['W']
-            user_choice = user_choice_input(condition, expression)
-
-            if user_choice == 'W': # exit
-                
-                return user_choice # break shop loop
-
-
-            else:
-                quantity = user_choice
-                gold_earned = item_price * int(user_choice)
-            
-
-        print('\nWybrano:', item_name +', ilość:', quantity + ', otrzymasz:', str(gold_earned),
-        'sztuk złota. Czy powierdzasz?\n\n')
-        exp_middle = "'t' - tak, 'n' - nie"
+    
+    else:  
+        exp_start = ' <-- wybierz ' # first element in expression (constant)
+        exp_end = ", 'w' - wyjście, <enter> - zatwierdza wybór" # last element in expression (constant) 
+        exp_var = str(len(hero.inventory_dict.keys())) # specify range of player choice (number of items):
+        exp_middle = "numer przedmiotu do sprzedaży (1-" +exp_var+ ")" # changed only this element of expression
         expression = exp_start + exp_middle + exp_end
-        condition = ('T', 'N', 'W')
+        condition = [str(number+1) for number in range(len(hero.inventory_dict.keys()))]+['W'] # item number in range items_to_buy dict or 'W' (exit)
         user_choice = user_choice_input(condition, expression)
         if user_choice == 'W':
             
             return user_choice # break shop loop
 
+        else:
+            # make dict with hero items (key is number, value is list with item attributes: name, price, quantity):
+            items_to_sell = mod_items.generate_hero_items_to_sell_dict(hero)
+            item_name = items_to_sell[user_choice][0]
+            item_price = int(items_to_sell[user_choice][1])
+            if item_price == 0:
+                print('\nNie kupię tego, przedmiot', item_name, 'jest dla mnie bezwartościowy.\n')
+                pause()
 
-        elif user_choice == 'N':
-            
-            return user_choice # back to begining
+                return hero # back to main choice
 
 
-        else: # selling is confirmed
-            hero.gold += gold_earned
-            add_remove_items_dict = {item_name: -(int(quantity))} # remove item to hero inventory
-            mod_hero.inventory_update(hero, add_remove_items_dict)
-            display_looted_items(add_remove_items_dict)
-            print('Twoja sakwa jest cięższa, przybyło', str(gold_earned), 'sztuk złota!\n')
-            pause()
-            
-            return hero
+            item_quantity = int(items_to_sell[user_choice][2]) # quantity of specified item (user_choice) in hero inventory 
+            if item_quantity == 1:
+                quantity = '1' # used in printing at the end of function
+                gold_earned = item_price
+                
+
+            else: # quantity of specified item in hero inventory > 1..
+                print('\nJaką ilość chcesz sprzedać?\n')
+
+                exp_var = str(item_quantity) # quanitity of item limit
+                exp_middle = "z przedziału (1-" +exp_var+ ")" # changed only this element of expression
+                expression = exp_start + exp_middle + exp_end
+                # condition is list of item number in range quanitity of item limit or 'W' (exit):
+                condition = [str(number+1) for number in range(item_quantity)]+['W']
+                user_choice = user_choice_input(condition, expression)
+
+                if user_choice == 'W': # exit
+                    
+                    return user_choice # break shop loop
+
+
+                else:
+                    quantity = user_choice
+                    gold_earned = item_price * int(user_choice)
+                
+
+            print('\nWybrano:', item_name +', ilość:', quantity + ', otrzymasz:', str(gold_earned),
+            'sztuk złota. Czy powierdzasz?\n\n')
+            exp_middle = "'t' - tak, 'n' - nie"
+            expression = exp_start + exp_middle + exp_end
+            condition = ('T', 'N', 'W')
+            user_choice = user_choice_input(condition, expression)
+            if user_choice == 'W':
+                
+                return user_choice # break shop loop
+
+
+            elif user_choice == 'N':
+                
+                return user_choice # back to begining
+
+
+            else: # selling is confirmed
+                hero.gold += gold_earned
+                add_remove_items_dict = {item_name: -(int(quantity))} # remove item to hero inventory
+                mod_hero.inventory_update(hero, add_remove_items_dict)
+                display_looted_items(add_remove_items_dict)
+                print('Twoja sakwa jest cięższa, przybyło', str(gold_earned), 'sztuk złota!\n')
+                pause()
+                
+                return hero
 
 
 def user_choice_input(condition, expression):
@@ -572,6 +589,7 @@ def display_looted_items(add_remove_items_dict):
     '''
     displays looted/buyed items (from "add_remove_items_dict")
     '''
+    time.sleep(.2)
     print("\nW torbie:")
     multiplier = 30 # variable used in proper printing ------:
     display_hyphen_multiply(multiplier)
@@ -610,50 +628,64 @@ def display_event_quest(npc=None, hero=None):
     '''
     display quest info, dialogs, info about quest result
     '''
-    random_speach = "".join('\n'+npc.name + " do Ciebie: " + str(npc.speach_list[random.randint(0,len(npc.speach_list)-1)]))
+    # random speach is short npc's 'small talk' 
+    random_speach = "".join('\n'+npc.name + " do Ciebie: " + random.choice(npc.speach_list))
     print(random_speach)
+    # if quest is not completed yet:
     if npc.quest_name not in hero.quest_completed_list:
-
+        # display npc's statement associated with quest:
         for element in hero.quest_info[npc.quest_name]:
             if element not in hero.quest_blocked_list:
+                # quest_blocked_list stores statement, that have been already used by npc
+                # (it blocks statements that have been used)
                 if npc.quest_condition in hero.quest_condition_list:
-                    info_to_display = (element +". Gratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
+                    # element is npc statement connected with quest:
+                    info_to_display = (element +"\n\nGratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
+                    # xp points reward for completion quest:
                     hero.actualExp += npc.xp_reward
+                    # add quest name to hero quest completed list (block this quest in future)
                     hero.quest_completed_list.append(npc.quest_name)
+                    # "portal..." is special reward for quest, it is teleport to nex level (map):
+                    next_map_info = "\nUdało Ci się, wkroczysz do następnej krainy!\n" # tmp!
                     if "portal 2" in npc.quest_special_reward:
                         hero.new_location = 2
+                        print(next_map_info)
+                        pause()
                     elif "portal 3" in npc.quest_special_reward:
                         hero.new_location = 3
+                        print(next_map_info)
+                        pause()
                     elif "portal 4" in npc.quest_special_reward:
                         hero.new_location = 4
+                        print(next_map_info)
+                        pause()
 
                 else:             
                     info_to_display = element
-
+                # display info about quest and quest log:
                 quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."                    
                 print('\n'+info_to_display)
                 print("".join(quest_name_to_display))
+                # display info if quest is completed:
                 if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
                     print("\r - wykonane.")
+                    # display info and update hero inventory if there is item reward:
                     add_remove_items_dict = npc.inventory_dict
                     mod_hero.inventory_update(hero, add_remove_items_dict)                     
                     display_looted_items(add_remove_items_dict)
                 
                 break
 
-    return hero, npc
+    return hero
 
 
 def display_next_level_promotion(hero=None):
     '''
     display hero attributes for lvl promotion function
     '''           
-
-    number = 1
-    for key, value in hero.attrib_dict.items():
-        print(str(number).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
-        number += 1
-    
+    for number, (key, value) in enumerate(hero.attrib_dict.items()):
+        print(str(number+1).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
+  
     player_choice = input("\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
     display_hyphen_multiply(multiplier=82)
     while True:
