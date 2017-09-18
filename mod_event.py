@@ -53,13 +53,13 @@ def win_fight(enemy=None, hero=None):
     print("Może coś jeszcze?", end=''), mod_display.dot_loop()
     looted_gold = mod_enemy.enemy_gold_reward(enemy=enemy)
     if looted_gold > 0:
-        print("\nzdobyto", looted_gold, "sztuk złota\n")
+        print("\n\nzdobyto", looted_gold, "sztuk złota\n")
         hero.gold += looted_gold
         mod_display.pause()
     time.sleep(.3)
     # and some random generated items:
     mod_items.treasure_generator(maxloops=enemy.maxdrop, maxitem_lvl=enemy.maxdrop_lvl, item_gen=None, hero=hero)
-    mod_display.display_hero_chart(hero=hero)
+    mod_display.display_info_about_next_map_portal(hero=hero)
 
     return hero
 
@@ -171,80 +171,72 @@ def event_fight_spec_enemy(enemy=None, hero=None):
     '''
     event == fight with special (quest) enemy
     '''
-    # random generate enemy (using filters):
+
+        # random generate enemy (using filters):
     enemy = mod_enemy.enemy_settings(name=enemy, loc=None, lvl=None, gen=None)
-    enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
-    enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
-    mod_enemy.combat_attribute_default(enemy=enemy)
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
-    # update hero attrinute:
-    mod_hero.combat_attribute_default(hero=hero)
-    mod_hero.attack_points_calc(hero)
-    mod_hero.defend_points_calc(hero)
-    print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
-    print("Szykuj się do walki. Twój przeciwnik to", end=''), mod_display.dot_loop()
-    
-    print(' ',enemy.name.upper()+'!','\n')
-    mod_display.pause()
-    mod_display.clear_screen()
-    # pętla walki:
-    combat_end = 0
-    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
-        # initiative test:
-        attacker = priority_test(enemy=enemy, hero=hero)
-        # define attacker and defender:
-        if attacker == hero: defender = enemy
-        elif attacker == enemy: defender = hero  
-        attacker_change = 0 # if 1 = loop is break and we repeat initiative test
-        while True:
-            mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=attacker)
-            attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
-            mod_display.pause()
-            mod_display.clear_screen()
-            if hero.actualLife < 1:
-                hero.actualLife = 0
-                combat_end = 1
-                break
-                
-            elif enemy.actualLife < 1:
-                # enemy is dead:
-                enemy.actualLife = 0
-                hero.quest_condition_list.append(enemy.quest_condition)
-                # if it is quest enemy (is either enemy and quest npc):
-                try:
-                    npc = mod_npc.npc_settings(name=enemy.name, loc=None, gen=None)
-                    hero.quest_completed_list.append(npc.quest_name)
-                    if npc.quest_name not in hero.quest_info.keys():
-                        hero.quest_info.update({npc.quest_name:[enemy.quest_info]})
-                    else:
-                        hero.quest_info[npc.quest_name][0] += '\n'+str(enemy.quest_info)
-                    # "portal..." is special reward for quest, it is teleport to nex level (map):
-                    next_map_info = "\nUdało Ci się, wkroczysz do następnej krainy!\n" # tmp!
-                    if "portal 2" in npc.quest_special_reward:
-                        hero.new_location = 2
-                        print(next_map_info)
-                        pause()
-                    elif "portal 3" in npc.quest_special_reward:
-                        hero.new_location = 3
-                        print(next_map_info)
-                        pause()
-                    elif "portal 4" in npc.quest_special_reward:
-                        hero.new_location = 4
-                        print(next_map_info)
-                        pause()
+    if enemy.name not in hero.enemy_killed:
+        enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
+        enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
+        mod_enemy.combat_attribute_default(enemy=enemy)
+        enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
+        # update hero attrinute:
+        mod_hero.combat_attribute_default(hero=hero)
+        mod_hero.attack_points_calc(hero)
+        mod_hero.defend_points_calc(hero)
+        print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
+        print("Szykuj się do walki. Twój przeciwnik to", end=''), mod_display.dot_loop()
+        
+        print(' ',enemy.name.upper()+'!','\n')
+        mod_display.pause()
+        mod_display.clear_screen()
+        # pętla walki:
+        combat_end = 0
+        while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
+            # initiative test:
+            attacker = priority_test(enemy=enemy, hero=hero)
+            # define attacker and defender:
+            if attacker == hero: defender = enemy
+            elif attacker == enemy: defender = hero  
+            attacker_change = 0 # if 1 = loop is break and we repeat initiative test
+            while True:
+                mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=attacker)
+                attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
+                mod_display.pause()
+                mod_display.clear_screen()
+                if hero.actualLife < 1:
+                    hero.actualLife = 0
+                    combat_end = 1
+                    break 
                     
+                elif enemy.actualLife < 1:
+                    # enemy is dead:
+                    enemy.actualLife = 0
+                    hero.quest_condition_list.append(enemy.quest_condition)
+                    if enemy.genre == "quest": # quest enemies are unique
+                        hero.enemy_killed.append(enemy.name) # block enemy for future
+                    # if it is quest enemy (is either enemy and quest npc):
+                    try:
+                        npc = mod_npc.npc_settings(name=enemy.name, loc=None, gen=None) # import npc by enemy name (if it is quest enemy)
+                        hero.quest_completed_list.append(npc.quest_name) # info in hero attribute, that quest is completed
+                        # update quest info to display:
+                        if npc.quest_name not in hero.quest_info.keys():
+                            hero.quest_info.update({npc.quest_name:[enemy.quest_info]}) 
+                        else:
+                            hero.quest_info[npc.quest_name][0] += '\n'+str(enemy.quest_info)
+                        # check if there is special reward for quest = teleport to nex level (map):
+                        check_if_portal(hero=hero, npc=npc) # if True: return updated hero.new_location (signal to display info about portal)
+                    except:
+                        pass # I just want to ignore potential error
 
-                except:
-                    pass
-                if enemy.quest_info:
-                    print(enemy.quest_info)
+                    if enemy.quest_info:
+                        print(enemy.quest_info) # display statment about quest (element of enemy quest list) 
 
-                win_fight(enemy, hero)
-                combat_end = 1              
-                break
+                    win_fight(enemy, hero)
+                    combat_end = 1 # combat_end == 1: break fight loop              
+                    break
 
-            elif attacker_change == 1:
-                break
+                elif attacker_change == 1:
+                    break
 
     return hero
 
@@ -299,12 +291,12 @@ def event_fight(enemy=None, hero=None):
     return hero
 
 
-def event_quest(npc = None, hero = None):
+def event_quest(npc=None, hero=None):
     '''
     event == quest adventure
+    it is regular advenure: meet quest npc, displays info about meeting
     '''
-
-    npc = mod_npc.npc_settings(name=npc, loc=None, gen=None)
+    npc = mod_npc.npc_settings(name=npc, loc=None, gen=None) # import (by name) npc data from class npc (mod_npc)
     mod_hero.quest(hero=hero, npc=npc)
     mod_display.display_event_quest(hero=hero, npc=npc)
 
@@ -322,7 +314,7 @@ def event_npc(npc=None,hero=None):
 
 def event_question_mark(hero=None):
     '''
-    event == random event when hero on '?'
+    event == random event when hero on '?' mark on the map
     small chance to win gold, huge chance to fight with random enemy
     '''
     print("\n\nOtwierasz puszczkę Pandory.. Czy Ci się udało?..\n")
@@ -333,15 +325,14 @@ def event_question_mark(hero=None):
         event_fight(enemy = enemy, hero = hero)
 
     else:
+        # looted gold depends on luck, hero level and hero location (higher level, higher location number == more gold to gain)
         looted_gold = random.randint(5,50)*hero.level*hero.location
         print('\n\n'+hero.name+", udało Ci się! Zdobywasz:", looted_gold, "sztuk złota\n")
         mod_display.pause()
 
     
     return hero
-        
-        
-        
+          
 
 def event_random_npc(hero):
     '''
@@ -354,21 +345,19 @@ def event_random_npc(hero):
         mod_display.display_NPC_random_speach(npc=npc)
 
     except:
-        pass
+        pass # wonna ignore info about error
 
 
 def quest_event_smashed_camp(hero):
     '''
     smashed camp quest
     '''
-
     npc = mod_npc.npc_settings(name="Obóz niesłusznie rozbitych", loc=None, gen=None)
     if npc.quest_condition not in hero.quest_condition_list:
         hero.quest_condition_list.append(npc.quest_condition)
 
     event_quest(npc = "Obóz niesłusznie rozbitych", hero=hero)
     mod_display.pause()
-
 
     return hero
 
@@ -408,27 +397,22 @@ def quest_event_strong_hand_troll(hero=None):
     '''
     bad quest strong_hand_troll
     '''
-
-    try:
-        hero.inventory_dict["rubiny"] >= 3
-
-        if hero.inventory_dict["rubiny"] >= 3:
+    # first check if quest condition is True:
+    if 'rubin' in hero.inventory_dict:
+        if hero.inventory_dict["rubin"] >= 3:
+            # if True:
             hero.quest_condition_list.append("Zdobyto rubiny")
-            condition = 1
-    except:
-        condition = 0
-            
-
-    npc = mod_npc.npc_settings(name="Troll Silnoręki", loc=None, gen=None)
-    if npc.quest_list[0] in hero.quest_blocked_list:
-        if condition == 1 :      
             event_quest(npc="Troll Silnoręki", hero=hero)
-            mod_display.pause()
-        else:
-            event_fight_spec_enemy(enemy="Troll Silnoręki", hero=hero)
+
+            return hero # quest end
+
+
+    npc = mod_npc.npc_settings(name="Troll Silnoręki", loc=None, gen=None) # import npc data
+    if npc.quest_list[0] in hero.quest_blocked_list: # if it's second visit without 3 rubbies and troll is angry 
+        event_fight_spec_enemy(enemy="Troll Silnoręki", hero=hero) # fight!
             
     else:
-        event_quest(npc="Troll Silnoręki", hero=hero)       
+        event_quest(npc="Troll Silnoręki", hero=hero) # if it's first visit, troll is neutral
         mod_display.pause()
 
     return hero
@@ -436,11 +420,11 @@ def quest_event_strong_hand_troll(hero=None):
 
 def event_well_of_life(hero=None):
     '''
-    full life regeneration
+    full life regeneration event (healer)
     '''
-    price = hero.maxLife - hero.actualLife
+    price = hero.maxLife - hero.actualLife # price is 1 gold for every 1 life point to recover
     print("Witaj,", hero.name+", jestem uzdrowicielem.")
-    if hero.actualLife == hero.maxLife:
+    if hero.actualLife == hero.maxLife: # ckeck if hero need 'health care'
         print("\nWidzę, że nie potrzebujesz leczenia! Nie trwoń mojego czasu..")
         mod_display.pause()
     else:
@@ -463,7 +447,7 @@ def event_well_of_life(hero=None):
                         break
                 
                 except:
-                    continue
+                    pass # just wonna ignore error
 
         else:
             print("\n\nNie posiadasz wystarczającej ilości złota..\n")
@@ -477,29 +461,29 @@ def quest_event_gate_keeper(hero=None):
     lvl 3 quest: gate keeper
     '''
     npc = mod_npc.npc_settings(name="Strażnik portalu", loc=None, gen=None)
-    if npc.quest_list[0] in hero.quest_blocked_list:
-        pass
+
+    if "pierścień skurczybyka" in hero.inventory_dict:
+        hero.quest_condition_list.append("Zdobyto pierścień skurczybyka")
+        event_quest(npc="Strażnik portalu", hero=hero)
+
+        return hero # quest end
 
 
     else:
         event_quest(npc="Strażnik portalu", hero=hero)
-        mod_display.pause()
-        if "pierścień skurczybyka" in hero.inventory_dict.keys():
-            hero.quest_condition_list.append("Zdobyto pierścień skurczybyka")
 
-    return hero
+        return hero
 
 
 def quest_event_hermit(hero=None):
     '''
-    hermit quest
+    hermit quest (info about main mission)
     '''
     npc = mod_npc.npc_settings(name="Pustelnik", loc=None, gen=None)
     if npc.quest_condition not in hero.quest_condition_list:
         hero.quest_condition_list.append(npc.quest_condition)
 
     event_quest(npc="Pustelnik", hero=hero)
-    mod_display.pause()
     
     return hero
 
@@ -510,15 +494,33 @@ def event_shop(hero):
     '''
     items_to_buy = mod_items.item_dict_generator(hero, level=None) # shop items to buy (dict type)
     user_choice = ''
-    while user_choice != 'W':
+    while user_choice != 'W': # shop loop, display shop and hero assortment
         items_to_buy = mod_display.display_shop(hero, items_to_buy)
         user_choice = mod_display.display_player_choice_shop(hero, items_to_buy)
-        if user_choice == 'W':
+        if user_choice == 'W': # quit from shop
             break
-        elif user_choice == '1':
+        elif user_choice == '1': # buy option
             user_choice = mod_display.shop_hero_buy(hero, items_to_buy)        
-        else:
+        else: # sell option
             user_choice = mod_display.shop_hero_sell(hero)
     
     print('') # empty line (for estetic reason)
+
     return hero
+
+
+def check_if_portal(hero=None, npc=None):
+    '''
+    check if npc or special enemy has attribute that opens portal to next location (game map)  
+    '''
+    if npc.quest_name in hero.quest_completed_list: # if quest is completed
+        
+        if "portal 2" in npc.quest_special_reward: # "portal #..." is special reward for quest, it is teleport to nex level (map):
+            hero.new_location = 2
+        elif "portal 3" in npc.quest_special_reward:
+            hero.new_location = 3
+        elif "portal 4" in npc.quest_special_reward:
+            hero.new_location = 4
+    
+    return hero
+

@@ -44,7 +44,7 @@ class Hero:
         # main concidered attribute is aggility ("zwinność") or in case of heavy axe we use strenght ("siła")
         # if hero onbody_dict["prawa ręka"] is empty ("") default attribute is set by function:
         # combat_attribute_default(hero = hero) in this mod
-        self.combat_attribute = combat_attribute_default(hero = self)
+        self.combat_attribute = combat_attribute_default(hero=self)
         # quest_info contains speach statements, that have been told by NPC..
         # if element od NPC speach list is in value of dict key, key = quest name,
         # NPC tells next element on list
@@ -52,6 +52,7 @@ class Hero:
         self.quest_condition_list = []
         self.quest_blocked_list = []
         self.quest_completed_list = []
+        self.enemy_killed = [] # list with already killed enemies (special, quest enemies - blocked for future)
         #self.new_location = 1
 
         
@@ -65,7 +66,7 @@ def hero_settings():
     attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
 
     ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {} #{"srebro":5}
+    inventory_dict = {'placek śliwkowy':3}
 
     ################################ show active items on Hero:
 
@@ -278,35 +279,23 @@ def quest(hero=None, npc=None):
     # hero.quest_info is dict that stores quest names (keys) and npc statements (value of quest name key)
     # hero.quest_condition_list stores info, if hero has completed quest:
     # - if True - it affect on npc's statements and behaviour
-    '''
-    print('jestem w hero mod',hero.quest_info)
-    
-    print('jestem w hero mod',hero.quest_completed_list)
-    print('jestem w hero mod',npc.quest_condition in hero.quest_condition_list)
-    mod_display.pause()
-    '''
-    if npc.quest_name not in hero.quest_info.keys(): 
+
+    if npc.quest_name not in hero.quest_info.keys(): # == hero first time met npc and quest
+        hero.quest_info.update({npc.quest_name:[]}) # creat key with quest name and empty list (value) for npc's statement
         for element in npc.quest_list:
-            if element not in hero.quest_info.values():
-                hero.quest_info[npc.quest_name] = [npc.quest_list[0]]
-                if npc.quest_condition in hero.quest_condition_list:
-                    if len(npc.quest_list) > 1:
-                # npc.quest_list[1]] == second element of npc quest list (finalize quest, if hero has 'magic key'*):
-                # 'magic key' == *quest_condition in hero.quest_condition_list
-                        hero.quest_info[npc.quest_name][0] += '\n'+npc.quest_list[1]
-
-
+            if npc.quest_condition in hero.quest_condition_list:
+                hero.quest_info[npc.quest_name].append(element) # add all statement (quest is completed)
+            else:
+                hero.quest_info[npc.quest_name].append(element) # add only first npc's statement
+                break
+                
     else:
-        if npc.quest_list[0] not in hero.quest_blocked_list:       
-            hero.quest_blocked_list.append(npc.quest_list[0])
-        
-        
-    if npc.quest_condition in hero.quest_condition_list:
-        if len(npc.quest_list) > 1:
-            if npc.quest_list[1] not in hero.quest_info[npc.quest_name][0]:
-                # npc.quest_list[1]] == second element of npc quest list (finalize quest, if hero has 'magic key'*):
-                # 'magic key' == *quest_condition in hero.quest_condition_list
-                hero.quest_info[npc.quest_name][0] += '\n'+npc.quest_list[1]
+        for element in npc.quest_list:
+            if npc.quest_condition in hero.quest_condition_list:
+                if element not in hero.quest_info[npc.quest_name]: 
+                    hero.quest_info[npc.quest_name].append(element) # add all statement (quest is completed)
+            else: # if there is not any progress with quest - npc doesn't say anything new besides small talk
+                break
 
     return hero
 

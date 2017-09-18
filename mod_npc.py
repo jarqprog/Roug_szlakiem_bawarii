@@ -148,9 +148,7 @@ def npc_settings(name=None, loc=None, gen=None):
     redhood.quest_name = "Ratuj Babcię"
     redhood.quest_list = [
         "Możesz mi pomóc? Babcię porwał wilk. Odszukaj go, zwróć Starowinkę, to będę Ci dozgonnie wdzięczna!",
-        "Ojejku, jejku, Babcia uratowana, Zły Wilk pokonany! Dziękuję Ci! (całus) ",
-        "No co tam?"       
-        
+        "Ojejku, jejku, Babcia uratowana, Zły Wilk pokonany! Dziękuję Ci! (całus) "
     ]
     
     redhood.quest_condition = "Babcia uratowana"
@@ -160,7 +158,7 @@ def npc_settings(name=None, loc=None, gen=None):
 
     # Leśniczy
     forester = Npc("Leśniczy", [1])
-    forester.speach_list = ["O, witaj!", "Miło Cię widzieć", "Co u Ciebie?", "Dużo mam pracy"]
+    forester.speach_list = ["O, witaj!", "Miło Cię widzieć", "Co u Ciebie?", "Dużo mam pracy..", "Ładny ten las, prawda?"]
     forester.xp_reward = 100
     forester.quest_name = "Narzędzia pomiarowe"
     forester.quest_list = [
@@ -183,7 +181,8 @@ def npc_settings(name=None, loc=None, gen=None):
     wrongly_smashed_camp.quest_condition = "Zdobyto miodzik"
     wrongly_smashed_camp.inventory_dict = {"miodzik":1}
     wrongly_smashed_camp.quest_list = [
-        "Hihi, pewnie chcesz naszego miodzika? A proszę bardzo! ",
+        "Hihi, pewnie chcesz naszego miodzika? A proszę bardzo!\
+        \nTakie to nasze zadanie dla Ciebie: weź miodzik, ha! ",
         "Bywaj zdrów!"
     ]
 
@@ -236,17 +235,17 @@ def npc_settings(name=None, loc=None, gen=None):
     ]
     
     mayor.quest_condition = "Zdobyto zabytkowy obraz"
-    mayor.inventory_dict = {"rubiny":3, "zabytkowy obraz":-1}
+    mayor.inventory_dict = {"rubin":3, "zabytkowy obraz":-1}
 
 
 
     # Troll Silnoręki
     troll_strong_hand = Npc("Troll Silnoręki", [2])
-    troll_strong_hand.speach_list = [u"Chcieć na druga strona dziury? Dać rubiny", "(sapie)", "Śmierć tu znaleźć.. "]
+    troll_strong_hand.speach_list = [u"Chcieć na druga strona dziury? Dać rubiny", "(sapie)", "Śmierć tu znaleźć.."]
     troll_strong_hand.xp_reward = 800
     troll_strong_hand.quest_name = "Rubiny dla trolla"
     troll_strong_hand.quest_condition = "Zdobyto rubiny"
-    troll_strong_hand.inventory_dict = {"rubiny":-3}
+    troll_strong_hand.inventory_dict = {"rubin":-3}
     troll_strong_hand.quest_list = [
         "Dać mi trzy rubiny, ja cie puścić. Wrócić bez nich - zginąć marnie, zginąć marnie, tak... ",
         "Mieć rubiny?! Ty przejść, ja cie nie zabić teraz.. "]
@@ -262,7 +261,7 @@ def npc_settings(name=None, loc=None, gen=None):
     portal_keeper.quest_name = "pierścień skurczybyka"
     portal_keeper.quest_list = [
         "Czarownik? Tak, jego siedziba jest za portalem. Chcesz przejść?\
-         Pomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę..\
+         \nPomóż mi ze skurczybykami - nie dają nam spokoju! Przynieś pierścień skurczybyka, to Cię przepuszczę..\
           \nUwaga, wkrótce zniknę! ",
         
         "Już pogoniłeś szubrawca? Nie doceniałem Cię - wspaniale, otwieram portal - przejdź proszę!\
@@ -270,7 +269,7 @@ def npc_settings(name=None, loc=None, gen=None):
     ]
     
     portal_keeper.quest_condition = "Zdobyto pierścień skurczybyka"
-    portal_keeper.inventory_dict = {"placek śliwkowy":2}
+    portal_keeper.inventory_dict = {"placek śliwkowy":2, "pierścień skurczybyka":-1}
     portal_keeper.quest_special_reward = ["portal 4"]
 
     # Pustelnik - przełęcz rozpaczy
@@ -280,7 +279,7 @@ def npc_settings(name=None, loc=None, gen=None):
     hermit.xp_reward = 10
     hermit.quest_name = "Oblib.."
     hermit.quest_condition = "Oblib"
-    hermit.inventory_dict = {"srebro":1}
+    hermit.inventory_dict = {"sztabka srebra":1}
     hermit.quest_list = [
         "Tak, karzeł Oblib.. Niestety zginął. Obrączka? Zabił go czarownik, ale to potężna i straszna kreatura..\
          \nIdź do Strażnika portalu, on zna drogę..", 

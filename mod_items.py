@@ -163,17 +163,18 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
 
 ##### JEWELS: (self, name, level, genre, price, location, item_info)
 
-    
-    heart_of_mountain = Items("serce góry", 6, "jewels", 1500, [3,4]) 
-    heart_of_mountain.item_info = "nie do wiary, kupię za to dwie wioski! To bogactwo!!!"
+    gold_nugget = Items("samorodek", 3, "jewels", 400, [2,3,4])
+    gold_nugget_big = Items("duży samorodek", 4, "jewels", 700, [3,4])
+    heart_of_mountain = Items("serce góry", 5, "jewels", 1500, [3,4]) 
+    #heart_of_mountain.item_info = "nie do wiary, kupię za to dwie wioski! To bogactwo!!!"
     diament = Items("diament", 4, "jewels", 500, [3,4])
-    diament.item_info = "diament! To bogactwo!!!"
+    #diament.item_info = "diament! To bogactwo!!!"
     ruby = Items("rubin", 3, "jewels", 200, [2,3,4])
-    ruby.item_info = "to bogactwo!!!"
+    #ruby.item_info = "to bogactwo!!!"
     jantar = Items("jantar", 2, "jewels", 200, [1,2,3,4])
-    jantar.item_info = "Jantar Lechitów! To majątek!"
+    #jantar.item_info = "Jantar Lechitów! To majątek!"
     silver_bar = Items("sztabka srebra", 3, "jewels", 300, [2,3,4])
-    silver_bar.item_info = "to bogactwo!"
+    #silver_bar.item_info = "to bogactwo!"
 
 
 
@@ -214,7 +215,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
 
 
     # quest z misiem lvl 1
-    honey = Items("miodzik", 1, "quest", 10, [1])
+    honey = Items("miodzik", 1, "quest", 0, [1])
     honey.item_info = "pycha!"
 
     mada_faka_ring = Items("pierścień skurczybyka", 2, "quest", 50, [2,3])
@@ -235,6 +236,7 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
     helmet_pot, armour_lether, wolf_skin,
     ring_of_strenght, ring_of_agility,  
     diament, ruby, jantar, heart_of_mountain, silver_bar,
+    gold_nugget, gold_nugget_big,
     tunic,
     honey, mada_faka_ring, measuring_rope, abacus, antique_picture,
     goblin_ear, outlaw_sign, giant_club
@@ -274,11 +276,10 @@ def items_settings(name = None, loc = None, lvl = None, gen = None, hero = None,
                 item_random_list.append(element)
         
 
-        # export random enemy to main function:
-        item_rnd_exported_to_main = random.choice(item_random_list) #[random.randint(0, len(item_random_list)-1)]
-        
+        # export random item to main function:
+        item_rnd_exported_to_main = random.choice(item_random_list)
+
         return item_rnd_exported_to_main
-        # loc = None, lvl = None, gen = None
 
 def treasure_generator(maxloops=None, maxitem_lvl=None, item_gen=None, hero=None):
     '''
@@ -310,8 +311,7 @@ def treasure_generator(maxloops=None, maxitem_lvl=None, item_gen=None, hero=None
         return hero
 
     else: # if nothing added to hero inventory (bag)
-        print('\n- nie tym razem...')
-        mod_display.pause()
+        print('\n- więcej skarbów nie znaleziono...')
 
 
 def item_dict_generator(hero=None, level=None):

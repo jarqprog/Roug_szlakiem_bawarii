@@ -187,10 +187,11 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
 
 
     #   Troll Silnoręki (QUEST in lvl 2)
-    troll_strong_hand = Enemy("Troll Silnoręki",75, 4, 11, "beast", [2], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
+    troll_strong_hand = Enemy("Troll Silnoręki",75, 4, 11, "quest", [2], attrib_dict, treasure_dict, specials_list, speach_list, [2,12])
     troll_strong_hand.attrib_dict = {u"siła":7, "zwinność":2, "percepcja":1, "inteligencja":1, "siła woli":2}
     troll_strong_hand.treasure_dict = {u"sztabka srebra":random.randint(1,3), "rubin":random.randint(1,8)}
-    troll_strong_hand.speach_list = [u"Chcesz pokonać przełęcz? Po moim trupie! ", "A masz! ", "Ja cie zjeść! ", "(przeraźliwy ryk) "]
+    troll_strong_hand.speach_list = [u"Chcesz pokonać przełęcz? Po moim trupie!", "A masz!", "Ja cie zjeść!",
+    "(przeraźliwy ryk)"]
     troll_strong_hand.specials_list = [u"Przeraźliwy! ", "Śmierć się zbliża! "]
     troll_strong_hand.quest_info = "Troll pokonany! Możesz przekroczyć portal! "
     
@@ -222,21 +223,21 @@ def enemy_settings(name = None, loc = None, lvl = None, gen = None):
     else:
         enemy_random_list = []
          # temporary helper list
-        tmp_lvl = 0 # helps in loop below:
         for element in enemies_random_list:
             if (loc in element.location or loc == None) and (lvl == element.level or lvl == None) and (gen == element.genre or gen == None):
                 enemy_random_list.append(element)
         
 
         # export random enemy to main function:
-        enemy_rnd_exported_to_main = enemy_random_list[random.randint(0, len(enemy_random_list)-1)]
-        
+        if loc: # if location != None - filter enemy by location:
+            enemy_filtered_by_location = [enemy for enemy in enemy_random_list if loc in enemy.location]
+            enemy_rnd_exported_to_main = random.choice(enemy_filtered_by_location)
+
+        else:
+            enemy_rnd_exported_to_main = random.choice(enemy_random_list)
+
         return enemy_rnd_exported_to_main
-        # loc = None, lvl = None, gen = None
 
-
-    #   # name, life, level, attrib_dict, treasure_dict, genre, xp4hero, specials, speach, location
-    #wolf = Enemy("wilk",10, 1, attrib_dict,treasure_dict,"animal",5,None,"Wrrrrr!",
 
 
 def attack_points_calc(enemy = None):

@@ -76,7 +76,9 @@ def display_varied_info():
 
 
 def display_quest_log(hero=None):
-
+    '''
+    display quest log with quests: in progress and already completed
+    '''
     clear_screen()
 
     print('\n'+hero.name+", zadania do wykonania:\n")
@@ -94,10 +96,8 @@ def display_quest_log(hero=None):
                 if quest_name in hero.quest_completed_list:
                     display_hyphen_multiply(multiplier = 42)
                     print(quest_name+':')
-                    print(hero.quest_info[quest_name][0],'\n')
-        
-
-    dot_loop()
+                    for npc_statment in hero.quest_info[quest_name]:
+                        print(npc_statment,'\n')
     pause()
 
 
@@ -481,7 +481,7 @@ def user_choice_input(condition, expression):
                 return user_choice.upper()
 
         except:
-            continue
+            pass # wonna avoid error info
         
 
 def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
@@ -590,11 +590,12 @@ def display_looted_items(add_remove_items_dict):
     displays looted/buyed items (from "add_remove_items_dict")
     '''
     time.sleep(.2)
-    print("\nW torbie:")
-    multiplier = 30 # variable used in proper printing ------:
-    display_hyphen_multiply(multiplier)
-    for item in add_remove_items_dict:
-        print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
+    if len(add_remove_items_dict) > 0:
+        print("\nW torbie:")
+        multiplier = 30 # variable used in proper printing ------:
+        display_hyphen_multiply(multiplier)
+        for item in add_remove_items_dict:
+            print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
 
 
 def display_calendar_location(hero=None):
@@ -634,47 +635,40 @@ def display_event_quest(npc=None, hero=None):
     # if quest is not completed yet:
     if npc.quest_name not in hero.quest_completed_list:
         # display npc's statement associated with quest:
-        for element in hero.quest_info[npc.quest_name]:
-            if element not in hero.quest_blocked_list:
-                # quest_blocked_list stores statement, that have been already used by npc
-                # (it blocks statements that have been used)
-                if npc.quest_condition in hero.quest_condition_list:
-                    # element is npc statement connected with quest:
-                    info_to_display = (element +"\n\nGratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia! ")
-                    # xp points reward for completion quest:
-                    hero.actualExp += npc.xp_reward
-                    # add quest name to hero quest completed list (block this quest in future)
-                    hero.quest_completed_list.append(npc.quest_name)
-                    # "portal..." is special reward for quest, it is teleport to nex level (map):
-                    next_map_info = "\nUdało Ci się, wkroczysz do następnej krainy!\n" # tmp!
-                    if "portal 2" in npc.quest_special_reward:
-                        hero.new_location = 2
-                        print(next_map_info)
-                        pause()
-                    elif "portal 3" in npc.quest_special_reward:
-                        hero.new_location = 3
-                        print(next_map_info)
-                        pause()
-                    elif "portal 4" in npc.quest_special_reward:
-                        hero.new_location = 4
-                        print(next_map_info)
-                        pause()
+        elements = '' # stores npc's statments to display
+        for element in hero.quest_info[npc.quest_name]: # element is npc statement connected with quest
+            if element not in hero.quest_blocked_list: # quest_blocked_list stores statement,
+            # ..that have been already used by npc                 
+                elements += '\n'+element
+                hero.quest_blocked_list.append(element) # block already displayed statements
 
-                else:             
-                    info_to_display = element
-                # display info about quest and quest log:
-                quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."                    
-                print('\n'+info_to_display)
-                print("".join(quest_name_to_display))
-                # display info if quest is completed:
-                if len(npc.inventory_dict) > 0 and npc.quest_condition in hero.quest_condition_list:
-                    print("\r - wykonane.")
-                    # display info and update hero inventory if there is item reward:
-                    add_remove_items_dict = npc.inventory_dict
-                    mod_hero.inventory_update(hero, add_remove_items_dict)                     
-                    display_looted_items(add_remove_items_dict)
-                
-                break
+        quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."
+        if npc.quest_condition not in hero.quest_condition_list: # quest is not finished
+            # display info about quest and quest log:                   
+            print('\n'+elements)
+            print("".join(quest_name_to_display))
+            
+        else: # quest is finished
+            # add quest name to hero quest completed list (block this quest in future):
+            hero.quest_completed_list.append(npc.quest_name)
+            # display info if quest is completed:
+            print('\n'+elements) # display statement
+            print("".join(quest_name_to_display))
+            print("\r - wykonane.")
+            print("\n\nGratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia!")
+            pause()
+            hero.actualExp += npc.xp_reward # xp points reward for completion quest
+            # if there is extra reward (items from npc inventory):
+            if len(npc.inventory_dict) > 0:                   
+                # display info and update hero inventory if there is item reward:
+                add_remove_items_dict = npc.inventory_dict
+                mod_hero.inventory_update(hero, add_remove_items_dict)                     
+                display_looted_items(add_remove_items_dict)
+              
+    
+    # check if there is special reward for quest = teleport to nex level (map), display info about opened portal:
+    mod_event.check_if_portal(hero=hero, npc=npc)
+    display_info_about_next_map_portal(hero=hero)
 
     return hero
 
@@ -697,6 +691,18 @@ def display_next_level_promotion(hero=None):
             player_choice = input("podaj numer atrybutu.. ")
     
     return player_choice
+
+
+def display_info_about_next_map_portal(hero=None):
+    '''
+    check if hero has opened portal to next level (success in quest or fight with special enemy)
+    display info about portal
+    '''
+    if hero.location != hero.new_location:
+        print('\n\n'+hero.name+", udało Ci się, wkrótce wkroczysz do następnej krainy!\n")
+
+    
+
 
 
 
