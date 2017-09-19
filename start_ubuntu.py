@@ -409,6 +409,10 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
         return difficulty_choice
+    elif position == "$":
+        mod_event.event_shop(hero=hero)
+        os.system("clear")
+        print("\n" * 10)
     elif position == "+":
         mod_event.event_well_of_life(hero)
         os.system("clear")
@@ -682,7 +686,7 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
         print("Legenda:\n\n")
         print("B = Boss" + "\t" + "L = Lesniczy" + "\t" + "D = Dom Babci")
         print("R = Obóz niesłusznie rozbitych" + "\t" + "Z = Zły wilk")
-        print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś")
+        print("W = Wioska Szwarzwald" + "\t" + "M = Dziwny Miś" + "\t" + "$ = Sklep")
         print("? = Niespodzianka - moze fanty, może psikus" + "\t" + "T = Most trolla Silnorękiego")
         print("+ = Zródło życia" + "\t" + "P = Przełęcz zguuuby")
         print("G = Gaj Łotrzyków" + "\t" + "F = Fasolowe pole" + "\t\t" + "C - Chata pustelnika")
