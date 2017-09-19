@@ -506,7 +506,7 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     # make list of enemy attributes values to print:
     enem_to_display_list1 = [enemy.name+':']+list(enemy.attrib_dict.values())
     # make list of other attributes names to print in table's head (życie, obrażenia, atak..)
-    head_to_display_list2 = ["", "życie", "obrażenia", "atak", "obrona", "gł. cecha"]
+    head_to_display_list2 = ["", "życie", "obrażenia", "atak", "obrona", "cecha wiodąca"]
     # make list of hero attributes values to print:
     hero_to_display_list2 = [hero.name+':', str(hero.actualLife), str(mod_hero.display_damage(hero = hero))]+list([str(hero.attack), str(hero.defend), str(hero.combat_attribute)])
     # make list of enemy attributes values to print:
@@ -700,6 +700,30 @@ def display_info_about_next_map_portal(hero=None):
     '''
     if hero.location != hero.new_location:
         print('\n\n'+hero.name+", udało Ci się, wkrótce wkroczysz do następnej krainy!\n")
+
+
+def display_text_from_file(filename=None, color=None):
+    '''
+    import text from text file, display it
+    additional feature is text coloring (if color != None) 
+    '''
+    
+    # opens file, import data in string format:
+    try:
+        imported_file = open(filename, encoding="utf-8")
+        text_from_file = imported_file.read()
+        imported_file.close()
+        if color == None: # color feature not implemented yet
+            print('\n\n'+text_from_file+'\n\n')
+            # color feature not implemented yet
+
+    except:
+        print('file not found:', filename)
+    
+
+
+
+
 
     
 
