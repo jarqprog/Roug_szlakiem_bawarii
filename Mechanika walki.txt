@@ -1,0 +1,28 @@
+Mechanika walki
+
+Inicjatywa - kto ją uzyskał, jest stroną atakującą. Atakuje do momentu, aż obrońcy uda się uniknąć ciosu (patrz niżej).
+Inicjatywa zależy przede wszystkim od zwinności, percepcji i inteligencji, chociaż traf losu ma tu również swój udział.
+
+Atak - strona, która przejęła incjatywę - atakuje. Każdy skuteczny atak (którego obrońca nie zdołał uniknąć),
+kończy się zadaniem obrażeń. Na skuteczność ataku ma wpływ przede wszytkim siła i zwinność oraz, w mniejszym stopniu,
+inteligencja Postaci.
+
+Obrona - obrońca może uniknąć obrażeń - jeśli w walce uzyska lepszy wynik od atakującego, uderzenie jest nieskuteczne.
+Na obronę ma wpływ przede wszystkim zwinność oraz noszony pancerz (zwykły lub magiczny), ale też, w mniejszym stopniu,
+siła i inteligencja Postaci.
+
+Cecha wiodąca - jest nią siła lub zwinność, zależnie od tego, jakiej broni używa Postać. Należy uważnie rozwijać bohatera
+i mądrze dobierać oręż, ponieważ potężny wojownik o niezwyklej sile, który posłuży się sztyletem (lub inną lekką bronią),
+może się okazać w walce zupełnie nieskuteczny! I przeciwnie, władając toporem lub młotem bitewnym, wbije przeciwnika w ziemię! 
+
+Rzuty na atak i obronę - konfrontuje się możliwości ataku i obrony walczących. Istotnym elementem walki są rzuty kością czterościenną.
+Ilość rzutów zależy od wysokości cechy wiodącej - stąd tak istotny jest dobór oręża do cech Postaci. Wynik poszczególnych rzutów
+jest sumowany i dodawany do punktów ataku lub obrony walczących. Wyższy wynik punktowy oznacza skuteczny atak lub obronę.
+
+Kontratak - jeśli broniącemu udało się uniknąć uderzenia, to przeprowadza kontratak. Wykonywane są rzuty kością analogiczne
+do ataku, przy czym niedawny napastnik nie ponawia rzutu (wykorzystany jest jego poprzedni wynik ataku). Jeśli kontratakujący
+uzyska wyższy wynik, kontratak jest skuteczny i zadawane są obrażenia.
+
+Niezależnie od wyniku kontrataku, sprawdzana jest inicjatywa i rozpoczyna się kolejna tura walki.. Walka zawsze kończy się śmiercią
+jednego z przeciwników. Postępuj zatem rozważnie... lub szalenie, jeśli taka Twa wola!
+

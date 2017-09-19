@@ -714,7 +714,7 @@ def display_text_from_file(filename=None, color=None):
         text_from_file = imported_file.read()
         imported_file.close()
         if color == None: # color feature not implemented yet
-            print('\n\n'+text_from_file+'\n\n')
+            print('\n'+text_from_file)
             # color feature not implemented yet
 
     except:
