@@ -369,7 +369,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
     # 1st level events:
     if position == "M":
-        mod_event.quest_event_thievish_bear(hero)
+        mod_event.quest_neutral_hostile_npc(hero=hero, npc_name="Złodziejski Miś")
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
@@ -384,7 +384,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
     elif position == "R":
-        mod_event.quest_event_smashed_camp(hero)
+        mod_event.event_quest(npc="Obóz niesłusznie rozbitych", hero=hero)
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
@@ -418,16 +418,22 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "?":
-        mod_event.event_question_mark(hero=hero)
+        mod_event.event_question_mark(hero)
         os.system("clear")
         print("\n" * 10)
     # 2nd level events:
     elif position == "N":
         os.system("clear")
         print("\n" * 7)
-        print("Zbliza się do Ciebie dziadek NPC i zaczyna radzić:")
-        print("'-Na Twoim miejscu udałbym się do wioski na północ, może znajdziec tam pomocna informację, na razie.'")
-        print("Dziadek NPC zostaje w pobliżu na wszelki wypadek gdyby musiał tobie powtórzyć co powiedział.")
+        print("Zbliża się do Ciebie staruszek i zaczyna radzić:")
+        print("""
+        Na Twoim miejscu udałbym się do wioski na północ,
+        może znajdziesz tam pomocną informację, bywaj!
+        """)
+        print("""
+            Staruszek zostaje w pobliżu na wszelki wypadek,
+            gdyby musiał powtórzyć, co powiedział.
+            """)
         input_char = getch()
         os.system("clear")
     elif position == "W":
@@ -436,14 +442,14 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         print("\n" * 10)
     elif position == "G":
-        if "Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. " not in hero.quest_condition_list:
-            mod_event.event_fight_spec_enemy(enemy="Herszt bandytów", hero=hero)
-            hero.quest_condition_list.append("Zdobyto obraz Sołtysa! Idź do niego po nagrodę.. ")
-            input_char = getch()
+        mod_event.event_fight_spec_enemy(enemy="Herszt bandytów", hero=hero)
         os.system("clear")
         print("\n" * 10)
     elif position == "T":
-        mod_event.quest_event_strong_hand_troll(hero)
+        mod_event.quest_neutral_hostile_npc(
+            hero=hero, npc_name="Troll Silnoręki"
+            )
+
         if hero.new_location == 3:
             hero.location = hero.new_location
             os.system("clear")
@@ -459,9 +465,9 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         os.system("clear")
         loose_screen(hero, start_time)
     elif position == "S":
-        if "pierścień skurczybyka" in hero.inventory_dict.keys():
-            hero.new_location = 4
-        mod_event.quest_event_gate_keeper(hero=hero)
+        # if "pierścień skurczybyka" in hero.inventory_dict.keys():
+            # hero.new_location = 4
+        mod_event.event_quest(npc="Strażnik portalu", hero=hero)
         input_char = getch()
         if hero.new_location == 4:
             hero.location = hero.new_location
@@ -472,13 +478,13 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             print("\n" * 10)
     elif position == "F":
         os.system("clear")
-        print("\n\n\n\nMyslałeś, że będziesz jadł sobie fasole za darmo?? RACZEJ NIE !!!")
+        print("\n\n\n\nMyslałeś, że będziesz jadł sobie fasole za darmo?! RACZEJ NIE!!!")
         input_char = getch()
         os.system("clear")
         mod_event.event_fight_spec_enemy(enemy="skurczybyk", hero=hero)
         os.system("clear")
     elif position == "C":
-        mod_event.quest_event_hermit(hero=hero)
+        mod_event.event_quest(npc="Pustelnik", hero=hero)
     # 4th level events:
     elif position == "B":
         hot_warm_cold_boss(hero=hero, start_time=start_time)
