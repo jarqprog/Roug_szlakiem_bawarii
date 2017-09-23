@@ -1,12 +1,19 @@
-
+#!/usr/bin/python3
 # mod_hero - custom mod, contains hero data
 
-import mod_items, math, mod_npc, mod_display
+import math
+
+# import custom modules:
+import mod_items
+import mod_npc
+import mod_display
 
 
-################################ Hero class:
+# Hero class:
 class Hero:
-    def __init__(self, name, proffession, level, attrib_dict, inventory_dict, onbody_dict):
+    def __init__(
+            self, name, proffession, level, attrib_dict,
+            inventory_dict, onbody_dict):
         # hero's name:
         self.name = name
         # hero's class (warior, hunter, thief...)
@@ -19,25 +26,26 @@ class Hero:
         self.inventory_dict = inventory_dict
         # contains active items that have influence on hero (wearing items):
         self.onbody_dict = onbody_dict
-        self.maxLife = 40 # max life points (limit)
-        self.actualLife = 40 # actual number of life points
-        self.actualExp = 1 # actual number of exp points
-        self.location = 1 # actual map level
-        self.map_position = 0 # hero map position
-        self.position_horizontal = 1 # hero map coordinate X
-        self.position_vertical = 18 # hero map coordinate Y
-        self.dmg_list = [1,4] # initial min and max damage
-        self.attack = 0 # initial attack points
-        self.defend = 0 # initial defend points
-        self.courage = 0 # initial courage points - not used yet
-        self.max_armour = 0 # max armour points calculated by "amour_max_calc(hero = None)" function in this mod
-        self.act_armour = 2 # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated by "amour_act_calc(hero = None)" function in this mod
-        self.add_remove_items_dict = {} # dict used for modify hero inventory (add/remove)
-        self.life_recovery = 1 # define replenish life level after each turn
-        self.calendar_list = [0, "niedziela", "wieczór"] # define actual game turn (number of main loop executed)
-
-
-        
+        self.maxLife = 40  # max life points (limit)
+        self.actualLife = 40  # actual number of life points
+        self.actualExp = 1  # actual number of exp points
+        self.location = 1  # actual map level
+        self.map_position = 0  # hero map position ????????????????????????
+        self.position_horizontal = 1  # hero map coordinate X
+        self.position_vertical = 18  # hero map coordinate Y
+        self.dmg_list = [0, 0]  # initial min and max damage (calculate by function dmg_points_calc in this mode)
+        self.attack = 0  # initial attack points
+        self.defend = 0  # initial defend points
+        self.courage = 0  # initial courage points - not used yet
+        # max armour points calculated by "amour_max_calc(hero=None)" function in this mod (it depends on hero strength)
+        self.max_armour = 0
+        # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated
+        # by "amour_act_calc(hero=None)" function in this mod
+        self.act_armour = 2
+        self.add_remove_items_dict = {}  # dict used for modify hero inventory (add/remove)
+        self.life_recovery = 1  # define replenish life level after each turn
+        self.calendar_list = [0, "niedziela", "wieczór"]  # define actual game turn (number of main loop executed)
+      
         # combat_attribute:
         # determines what hero attribute is used in combat tests, it comes from item in hero onbody_dict["prawa ręka"]
         # for example, if hero is using dagger,
@@ -45,15 +53,31 @@ class Hero:
         # if hero onbody_dict["prawa ręka"] is empty ("") default attribute is set by function:
         # combat_attribute_default(hero = hero) in this mod
         self.combat_attribute = combat_attribute_default(hero=self)
-        # quest_info contains speach statements, that have been told by NPC..
+
+        # QUESTS parametres:
+    
+        # quest_info contains speach statements, that have been told by NPC,
         # if element od NPC speach list is in value of dict key, key = quest name,
         # NPC tells next element on list
         self.quest_info = {}
-        self.quest_condition_list = []
+
+        # hero.quest_condition_list stores info, if hero has completed quest
+        # - if True - it affect on npc's statements and behaviour
+        # list will expand by new info, while hero will execute quests:
+        self.quest_condition_list = [""]  # *
+        # * empty string in quest_condition_list is used in some quests, that..
+        # should be automatically succesfull:
+        # info quests, quests where task is to meet npc..   
+
+        # quest_blocked_list contains statements already heared (block it):
         self.quest_blocked_list = []
+
+        # quest quest_completed_list contains quest names already finished:
         self.quest_completed_list = []
-        self.enemy_killed = [] # list with already killed enemies (special, quest enemies - blocked for future)
-        #self.new_location = 1
+        
+        # list with already killed enemies:
+        # unique\special\quest enemies - blocked them for future
+        self.enemy_killed = []
 
         
 # HERO - import function ##############################
@@ -63,69 +87,95 @@ def hero_settings():
     contains hero data to export to main:
     '''
     # hero dicts:
-    attrib_dict = {"siła":1, "zwinność":1, "percepcja":1, "inteligencja":1, "siła woli":1}
+    attrib_dict = {
+        "siła": 1, "zwinność": 1, "percepcja": 1,
+        "inteligencja": 1, "siła woli": 1
+        }
 
-    ################## inventory_dict keep only names and values of items (without deep specyfication)
-    inventory_dict = {'placek śliwkowy':3}
+    # inventory_dict keep only names and values of items
+    # (without deep specyfication)
+    inventory_dict = {'placek śliwkowy': 3}
 
-    ################################ show active items on Hero:
-
-    onbody_dict = {u'głowa':'skórzany hełm','szyja':'','tors':'skórzany kaftan','lewa ręka':'','prawa ręka':'maczuga','palec':'','kieszeń':'sok z gumijagód'}
+    # show active items on Hero:
+    onbody_dict = {
+        u'głowa': 'skórzany hełm',
+        'szyja': '',
+        'tors': 'skórzany kaftan',
+        'lewa ręka': '',
+        'prawa ręka': 'maczuga',
+        'palec': '',
+        'kieszeń': 'sok z gumijagód'
+        }
     
-    ################################ start specs (odpalenie funkcji hero_crea )
+    # start specs (odpalenie funkcji hero_crea )
     hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
-    hero.calendar_list = [0, "niedziela", "wieczór"] # start value of calendar list
-    hero.new_location = 1 # variable used in change location mechanic
-    hero.gold = 2 # initial wealt in pouch
+    hero.calendar_list = [
+        0, "niedziela", "wieczór"
+        ]  # start value of calendar list
+    hero.new_location = 1  # variable used in change location mechanic
+    hero.gold = 2  # initial wealt in pouch
   
     return hero
 
-def attack_points_calc(hero = None):
+
+def dmg_points_calc(hero=None):
+    ''' calculates hero min and max '''
+
+    hero.dmg_list = [1, 4]
+
+
+def attack_points_calc(hero=None):
     ''' calculates hero attack ability '''
-    hero.attack = 2*hero.attrib_dict["siła"]+2*hero.attrib_dict["zwinność"]+hero.attrib_dict["inteligencja"]
+    hero.attack = (
+        2*hero.attrib_dict["siła"] + 2*hero.attrib_dict["zwinność"]
+        + hero.attrib_dict["inteligencja"]
+        )
     
     return hero.attack
 
 
-def defend_points_calc(hero = None):
+def defend_points_calc(hero=None):
     ''' calculates hero defend ability '''
-    hero.defend = 3*hero.attrib_dict["zwinność"]+hero.attrib_dict["siła"]+hero.attrib_dict["inteligencja"]+hero.act_armour
-    
+    hero.defend = (
+        3*hero.attrib_dict["zwinność"] + hero.attrib_dict["siła"]
+        + hero.attrib_dict["inteligencja"] + hero.act_armour
+        )
+
     return hero.defend
 
 
-def exp_nextlvl(hero = None):
+def exp_nextlvl(hero=None):
     '''
     calculate experience points required to achive next experience level
     '''
     return ((50*hero.level)*2*hero.level)
 
 
-def amour_max_calc(hero = None):
+def amour_max_calc(hero=None):
     ''' calculates max armour points '''
     hero.max_armour = hero.attrib_dict["siła"]*3
     
     return hero.max_armour
 
 
-def display_exp(hero = None):
+def display_exp(hero=None):
     '''
     display actual exp and exp needed to achive next level
     '''
     nextLevel = exp_nextlvl(hero)
 
-    return (''.join((str(hero.actualExp),'/',(str(nextLevel)))))
+    return (''.join((str(hero.actualExp), '/', (str(nextLevel)))))
 
 
-def display_life(hero = None):
+def display_life(hero=None):
     '''
     display actual life points and max life points
     '''
+  
+    return (''.join((str(hero.actualLife), '/', (str(hero.maxLife)))))
 
-    return (''.join((str(hero.actualLife),'/',(str(hero.maxLife)))))
 
-
-def display_gold(hero = None):
+def display_gold(hero=None):
     '''
     display gold (hero's wealth) in right format
     '''
@@ -133,7 +183,7 @@ def display_gold(hero = None):
     return (''.join((str(hero.gold),' szt. złota')))
 
 
-def display_location(hero = None):
+def display_location(hero=None):
     '''
     export hero location to display (used in display mod)
     '''
@@ -147,36 +197,35 @@ def display_location(hero = None):
         return "Nawiedzone zamczysko"
 
 
-
-def display_damage(hero = None):
+def display_damage(hero=None):
     '''
     display hero's actual min and max damage
     '''
     hero.dmg_list
 
-    return (''.join((str(hero.dmg_list[0]),'-',(str(hero.dmg_list[1])))))
+    return (''.join((str(hero.dmg_list[0]), '-', (str(hero.dmg_list[1])))))
 
 
-
-def display_armour(hero = None):
+def display_armour(hero=None):
     '''
     used to display actual and max armour points
     '''
 
-    return (''.join((str(hero.act_armour),'/',(str(hero.max_armour)))))
+    return (''.join((str(hero.act_armour), '/', (str(hero.max_armour)))))
 
 
-def display_armour(hero = None):
+def display_armour(hero=None):
     '''
     used to display actual and max armour points
     '''
 
-    return (''.join((str(hero.act_armour),'/',(str(hero.max_armour)))))
+    return (''.join((str(hero.act_armour), '/', (str(hero.max_armour)))))
 
 
-def combat_attribute_default(hero = None):
+def combat_attribute_default(hero=None):
     '''
-    set default value of combat_attribute: siła or zwinność - depends on weapon in hand
+    set default value of combat_attribute: 'siła' or 'zwinność'
+    (depends on weapon in hand)
     if no weapon: deaoult attribut is higher attribut
     '''
     if hero.onbody_dict["prawa ręka"] == "":
@@ -185,17 +234,21 @@ def combat_attribute_default(hero = None):
 
             return hero.combat_attribute
 
-
         else:
             hero.combat_attribute = "zwinność"
-
 
             return hero.combat_attribute            
             
     else:
-        mod_items.items_settings(name = (hero.onbody_dict["prawa ręka"]), loc = None, lvl = None, gen = None, hero = None, all = None)
+        mod_items.items_settings(
+            name=(hero.onbody_dict["prawa ręka"]), loc=None, lvl=None,
+            gen=None, hero=None, all=None
+            )
 
-        imported_item = mod_items.items_settings(name = hero.onbody_dict["prawa ręka"], loc = None, lvl = None, gen = None, hero = hero, all = None)
+        imported_item = mod_items.items_settings(
+            name=hero.onbody_dict["prawa ręka"], loc=None, lvl=None,
+            gen=None, hero=hero, all=None
+            )
 
         hero.combat_attribute = imported_item.combat_attribute
 
@@ -204,7 +257,8 @@ def combat_attribute_default(hero = None):
 
 def items_list_to_dict(items_to_add):
     '''
-    transform list of items to dictionary (used to update hero's inventory dict)
+    transform list of items to dictionary
+    (used to update hero's inventory dict)
     '''
     items_dict = {}
     for item in items_to_add:
@@ -225,11 +279,17 @@ def inventory_update(hero, add_remove_items_dict):
     add_items = add_remove_items_dict
 
     for item in add_items.keys():
-        if item not in hero_items: # if it's new item = copy item to inventory
+        # if it's new item = copy item to inventory
+        if item not in hero_items:
             hero_items[item] = add_items[item]
-        elif item in hero_items: # if it's not new item = add item value to inventory
+        
+        # if it's not new item = add item value to inventory
+        elif item in hero_items:
             hero_items[item] += add_items[item]
-        if int(hero_items[item]) < 1: # if value inventory item is negativ number = remove item from inventory*
+        
+        # if value inventory item is negativ number:
+        # remove item from inventory*
+        if int(hero_items[item]) < 1:
             del hero_items[item]
 
     # * we can use it in shops, when selling items..
@@ -239,11 +299,33 @@ def inventory_update(hero, add_remove_items_dict):
     return hero
 
 
+def dict_update(items_dict, add_remove_items_dict):
+    '''
+    update items_dict by add_remove_items_dict
+    (operation on dicts with items, e.g.:
+    {'milk': 1, 'bread': 3}
+    key is item, value is item quantity)
+    '''
+    for item in add_remove_items_dict.keys():
+        # if it's new item = copy item to inventory
+        if item not in items_dict:
+            items_dict[item] = add_remove_items_dict[item]
+        
+        # if it's not new item = add item value to inventory
+        elif item in items_dict:
+            items_dict[item] += add_remove_items_dict[item]
+
+    return items_dict
+
+
 def calendar(calendar_list):
     '''
     element of calendar mechanic - exports calendar elements to display
     '''
-    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+    week_list = [
+        "poniedziałek", "wtorek", "środa", "czwartek",
+        "piątek", "sobota", "niedziela"
+        ]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
    
     week_index = week_list.index(calendar_list[1])
@@ -252,8 +334,7 @@ def calendar(calendar_list):
     if calendar_list[2] != day_time_list[3]:
         time_of_day = day_time_list[day_index+1]
         
-    else:
-        
+    else:       
         time_of_day = day_time_list[0]
         
         if calendar_list[1] != week_list[6]:
@@ -276,25 +357,39 @@ def quest(hero=None, npc=None):
     '''
     element of quest mechanic - block npc's statement, that have been said
     '''
-    # hero.quest_info is dict that stores quest names (keys) and npc statements (value of quest name key)
+    # hero.quest_info is dict that stores quest names (keys)
+    # and npc statements (value of quest name key)
     # hero.quest_condition_list stores info, if hero has completed quest:
     # - if True - it affect on npc's statements and behaviour
 
-    if npc.quest_name not in hero.quest_info.keys(): # == hero first time met npc and quest
-        hero.quest_info.update({npc.quest_name:[]}) # creat key with quest name and empty list (value) for npc's statement
+    # if hero has finished quest before, just ignore rest:
+    # if npc.quest_name not in hero.quest_completed_list:
+
+    # if hero first time met npc and quest:
+    if npc.quest_name not in hero.quest_info.keys():
+        # create key with quest name and empty list (value) for npc's statement
+        hero.quest_info.update({npc.quest_name: []})
+
         for element in npc.quest_list:
             if npc.quest_condition in hero.quest_condition_list:
-                hero.quest_info[npc.quest_name].append(element) # add all statement (quest is completed)
+                # add all statement (quest is completed):
+                hero.quest_info[npc.quest_name].append(element)
             else:
-                hero.quest_info[npc.quest_name].append(element) # add only first npc's statement
+                # add only first npc's statement:
+                hero.quest_info[npc.quest_name].append(element)
                 break
-                
+
+    # if hero has met npc before:
     else:
         for element in npc.quest_list:
             if npc.quest_condition in hero.quest_condition_list:
-                if element not in hero.quest_info[npc.quest_name]: 
-                    hero.quest_info[npc.quest_name].append(element) # add all statement (quest is completed)
-            else: # if there is not any progress with quest - npc doesn't say anything new besides small talk
+                if element not in hero.quest_info[npc.quest_name]:
+                    # add all statement (quest is completed):
+                    hero.quest_info[npc.quest_name].append(element)
+            
+            # if there is not any progress with quest
+            # - npc doesn't say anything new besides small talk:
+            else:
                 break
 
     return hero
@@ -309,7 +404,7 @@ def next_level_promotion(hero=None):
     if hero.actualExp > ((50*hero.level)*2*hero.level):
         
         while True:
-            player_choice = mod_display.display_next_level_promotion(hero = hero)
+            player_choice = mod_display.display_next_level_promotion(hero=hero)
             mod_display.display_hero_chart(hero)
             print("Awansujesz na kolejny poziom doświadczenia!\n")
 
@@ -344,7 +439,36 @@ def next_level_promotion(hero=None):
                 continue
         
         hero.level += 1
-        hero.maxLife += 30 # buff to max life
-        hero.actualLife = hero.maxLife # full life regenration   
+        hero.maxLife += 30  # buff to max life
+        hero.actualLife = hero.maxLife  # full life regeneration   
                 
     return hero
+
+
+def check_item_condition_quest(hero=None, npc=None):
+    '''
+    check if hero has items to finish quest (if it is quest condition):
+    '''
+    # npc.quest_items stores quest items forming quest condition:
+    if len(npc.quest_items) > 0:
+        
+        # if hero hasn't fullfilled quest condition yet:
+        if npc.quest_condition not in hero.quest_condition_list:
+            # create list of npc quest condition items
+            # and items in hero inventory: 
+            npc_compare_list = [key for key in npc.quest_items.keys()]
+            # hero_compare_list contains only that items, which are in npc dict
+            # and quantity that items is >= quantity items in npc dict:
+            hero_compare_list = [
+                key for key in hero.inventory_dict.keys()
+                if key in npc.quest_items.keys()
+                and
+                hero.inventory_dict[key] >= abs(npc.quest_items[key])
+                ]
+            
+            # compare lists (have they same contant?):
+            if npc_compare_list == hero_compare_list:
+                # if true - add info, that hero has fulfilled quest condition:
+                hero.quest_condition_list.append(npc.quest_condition)
+
+                return hero

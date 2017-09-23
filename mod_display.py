@@ -1,19 +1,28 @@
-﻿# mod_varied_info - custom mod, contains list of short messages to random display in main:
+﻿#!/usr/bin/python3
+# mod_display - custom mod
+# includes display in console functions
 
-import os, math
-import random, time
-import mod_hero 
-import mod_enemy, mod_npc, mod_event, mod_items
-
+import os
+import math
+import random
+import time
 import sys
 
+# import custom mods
+import mod_hero
+import mod_enemy
+import mod_npc
+import mod_event
+import mod_items
 
+# import getch (avoid problem with windows/ubuntu)
 try:
     from msvcrt import getwch as getch
 
 except ImportError:
     def getch():
-        import tty, termios
+        import tty
+        import termios
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -23,24 +32,29 @@ except ImportError:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
+
 def clear_screen():
+    '''
+    clear screen - universal for ubuntu/windows platform
+    '''
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def dot_loop():
     '''
-    display animated dot ('.'): . -> .. -> ... 
+    display animated dot ('.'): . -> .. -> ...
     '''
-
-    for i in ('...'):        
+    for i in ('...'):
+        # don't know how tu handle with pep8 in this line
         print(i, end='', flush=True)
         time.sleep(.2)
+
 
 def display_hyphen_multiply(multiplier=None):
     '''
     display multiplied hyphen (-----------------)
     '''
     print('-' * multiplier)
-
 
 
 def pause():
@@ -85,19 +99,18 @@ def display_quest_log(hero=None):
     if len(hero.quest_info) > 0:
         for quest_name in hero.quest_info.keys():
             if quest_name not in hero.quest_completed_list:
-                display_hyphen_multiply(multiplier = 42)
+                display_hyphen_multiply(multiplier=42)
                 print(quest_name+':')
                 for npc_statment in hero.quest_info[quest_name]:
-                    print(npc_statment,'\n')
+                    print(npc_statment, '\n')
 
     if len(hero.quest_completed_list) > 0:
         print("\n\nzadania wykonane:\n")
         for quest_name in hero.quest_info.keys():
                 if quest_name in hero.quest_completed_list:
-                    display_hyphen_multiply(multiplier = 42)
-                    print(quest_name+':')
-                    for npc_statment in hero.quest_info[quest_name]:
-                        print(npc_statment,'\n')
+                    display_hyphen_multiply(multiplier=42)
+                    print(quest_name+'\n')
+
     pause()
 
 
@@ -125,16 +138,17 @@ def display_hero_chart(hero=None):
 
 
     #################### OTHERS: life, exp, gold, location ############################
-    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak", "obrona", "obrażenia", "pancerz"]
+    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak",
+    "obrona", "obrażenia", "pancerz"]
     # other_value_list element from functions:
-    other_value_list = [mod_hero.display_life(hero = hero),
-    mod_hero.display_exp(hero = hero),
-    mod_hero.display_gold(hero = hero),
-    mod_hero.display_location(hero = hero),
+    other_value_list = [mod_hero.display_life(hero=hero),
+    mod_hero.display_exp(hero=hero),
+    mod_hero.display_gold(hero=hero),
+    mod_hero.display_location(hero=hero),
     str(hero.attack),
     str(hero.defend),
-    mod_hero.display_damage(hero = hero),
-    mod_hero.display_armour(hero = hero)
+    mod_hero.display_damage(hero=hero),
+    mod_hero.display_armour(hero=hero)
     ]
 
     # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
@@ -143,25 +157,28 @@ def display_hero_chart(hero=None):
     inventory_key_list.append("") # add to avoid error with "max" below
     inventory_value_list.append("") # add to avoid error with "max" below
     
-    # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie - tworzy zmienne użyte przy druku tabeli:
-    printing_var = 5 #helps correctly print hero chart
-    long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var # longest attributes key
-    long_att_val = (max(len(str(x)) for x in attrib_regular_value_list)) # longest attributes value
-    long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var # longest inventory key
-    long_inv_val = (max(len(str(x)) for x in inventory_value_list)) # longest inventory value
-    long_onbody_key = (max(len(x) for x in onbody_key_list))+printing_var # longest onbody key
-    long_onbody_val = (max(len(x) for x in onbody_value_list))+printing_var # longest onbody value
-    long_other_key = (max(len(x) for x in other_key_list))+printing_var # longest onbody key
-    long_other_val = (max(len(x) for x in other_value_list))+printing_var # longest onbody value
+    # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie
+    # - tworzy zmienne użyte przy druku tabeli:
+    printing_var = 5  # helps correctly print hero chart
+    long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var   # longest attributes key
+    long_att_val = (max(len(str(x)) for x in attrib_regular_value_list))   # longest attributes value
+    long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var   # longest inventory key
+    long_inv_val = (max(len(str(x)) for x in inventory_value_list))   # longest inventory value
+    long_onbody_key = (max(len(x) for x in onbody_key_list))+printing_var  # longest onbody key
+    long_onbody_val = (max(len(x) for x in onbody_value_list))+printing_var  # longest onbody value
+    long_other_key = (max(len(x) for x in other_key_list))+printing_var   # longest onbody key
+    long_other_val = (max(len(x) for x in other_value_list))+printing_var   # longest onbody value
 
-    inventory_key_list.remove("") # remove - it's no longer needed
-    inventory_value_list.remove("") # remove - it's no longer needed
+    inventory_key_list.remove("")   # remove - it's no longer needed
+    inventory_value_list.remove("")   # remove - it's no longer needed
     
-    sum_longest_arg = int(long_att_key+long_att_val+long_inv_key+long_inv_val
-    +long_onbody_key+long_onbody_val+long_other_key+long_other_val)
+    sum_longest_arg = int(
+        long_att_key + long_att_val + long_inv_key + long_inv_val
+        + long_onbody_key + long_onbody_val + long_other_key + long_other_val
+        )
     # ta część kodu rysuje tabelę:
     # to print in head: hero name, profession, level (exp level)
-    printing_var = 0 #helps correctly print hero chart
+    printing_var = 0   #helps correctly print hero chart
     h00 = hero.name.ljust(printing_var)
     h01 = hero.proffession.ljust(printing_var)
     h02 = str(hero.level).ljust(printing_var)
@@ -234,6 +251,13 @@ def display_hero_chart(hero=None):
         print(u'',p1,p2,p3,p4,p5,p6,p7,p8)
     # footer of table:
     display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
+
+
+def display_inventory_chart(hero):
+    '''
+    display inventory chart (items in inventory and onbody hero dicts)
+    '''
+    pass
 
 
 def display_shop(hero, items_to_buy):
@@ -491,7 +515,7 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     clear_screen()
     mod_hero.attack_points_calc(hero)
     mod_hero.defend_points_calc(hero)
-    mod_enemy.enemy_info(enemy=enemy)
+    mod_enemy.enemy_info(enemy)
     # check what is main enemy attribut in combat
     enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
 
@@ -658,15 +682,26 @@ def display_event_quest(npc=None, hero=None):
             print("\n\nGratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia!")
             pause()
             hero.actualExp += npc.xp_reward # xp points reward for completion quest
-            # if there is extra reward (items from npc inventory):
-            if len(npc.inventory_dict) > 0:                   
-                # display info and update hero inventory if there is item reward:
-                add_remove_items_dict = npc.inventory_dict
-                mod_hero.inventory_update(hero, add_remove_items_dict)                     
-                display_looted_items(add_remove_items_dict)
+            items_dict = {}  # create empty dict used below:
+            # check if quest condition is related with handing out items (to npc):
+            if len(npc.quest_items) > 0:
+                # give items to npc (result is items_dict winth negative values)
+                # items_dict =  mod_hero.dict_update(items_dict, add_remove_items_dict=npc.quest_items)
+                items_dict = npc.quest_items
+            # if there is extra reward: recieve items from npc inventory:
+            add_remove_items_dict = mod_hero.dict_update(
+                items_dict, add_remove_items_dict=npc.inventory_dict
+                )
+
+            # check if it is some items to remove or add to hero inventory
+            if len(add_remove_items_dict) > 0:
+                mod_hero.inventory_update(hero, add_remove_items_dict)  # update inventory
+                display_looted_items(add_remove_items_dict)  # display result
               
     
-    # check if there is special reward for quest = teleport to nex level (map), display info about opened portal:
+    # check if there is special reward for quest:
+    # teleport to next level (map),
+    # display info about opened portal:
     mod_event.check_if_portal(hero=hero, npc=npc)
     display_info_about_next_map_portal(hero=hero)
 
@@ -677,11 +712,12 @@ def display_next_level_promotion(hero=None):
     '''
     display hero attributes for lvl promotion function
     '''           
-    for number, (key, value) in enumerate(hero.attrib_dict.items()):
+    for number, (key, value) in enumerate(hero.attrib_dict.items()):  # display hero attributes
         print(str(number+1).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
-  
+    #  player decide, which attribute to increase:
     player_choice = input("\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
     display_hyphen_multiply(multiplier=82)
+
     while True:
         try: 
             int(player_choice) in range(1, 5)
@@ -706,8 +742,7 @@ def display_text_from_file(filename=None, color=None):
     '''
     import text from text file, display it
     additional feature is text coloring (if color != None) 
-    '''
-    
+    ''' 
     # opens file, import data in string format:
     try:
         imported_file = open(filename, encoding="utf-8")
@@ -719,6 +754,13 @@ def display_text_from_file(filename=None, color=None):
 
     except:
         print('file not found:', filename)
+
+
+def display_help_chart():
+    '''
+    work in progress
+    '''
+    pass
     
 
 
