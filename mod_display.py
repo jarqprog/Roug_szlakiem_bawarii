@@ -114,7 +114,7 @@ def display_quest_log(hero=None):
     pause()
 
 
-def display_hero_chart(hero=None):
+def display_hero_chart(hero):
     """display hero's chart - attributes, inventory items, wearing items"""
     clear_screen() # czyści ekran
     #################### ATTRIBUTES ############################
@@ -127,35 +127,39 @@ def display_hero_chart(hero=None):
     inventory_key_list = list(hero.inventory_dict.keys())
     inventory_value_list = list(hero.inventory_dict.values())
 
-    #################### ON-BODY ############################
+    # ON-BODY ############################
     # przedmioty noszone na sobie
     # przekształcenie kluczy i wartości słownka w listy
     onbody_key_list = list(hero.onbody_dict.keys())
     onbody_value_list = list(hero.onbody_dict.values())
 
-    mod_hero.attack_points_calc(hero)
-    mod_hero.defend_points_calc(hero)
-
-
-    #################### OTHERS: life, exp, gold, location ############################
-    other_key_list = ["życie", "doświadczenie", "złoto", "lokalizacja", "atak",
-    "obrona", "obrażenia", "pancerz"]
+    # OTHERS: life, exp, gold, location ############################
+    other_key_list = [
+        "życie", "doświadczenie", "złoto", "lokalizacja", "atak",
+        "obrona", "obrażenia", "pancerz"
+        ]
     # other_value_list element from functions:
-    other_value_list = [mod_hero.display_life(hero=hero),
-    mod_hero.display_exp(hero=hero),
-    mod_hero.display_gold(hero=hero),
-    mod_hero.display_location(hero=hero),
-    str(hero.attack),
-    str(hero.defend),
-    mod_hero.display_damage(hero=hero),
-    mod_hero.display_armour(hero=hero)
-    ]
+    other_value_list = [
+        mod_hero.display_life(hero),
+        mod_hero.display_exp(hero),
+        mod_hero.display_gold(hero),
+        mod_hero.display_location(hero),
+        str(hero.attack),
+        str(hero.defend),
+        mod_hero.display_damage(hero),
+        mod_hero.display_armour(hero)
+        ]
 
     # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
     # (pomoże to odpowiednio wydrukować tabelkę):
-    total_number_of_items = max(len(attrib_regular_key_list),len(inventory_key_list),len(onbody_key_list),len(other_key_list))
-    inventory_key_list.append("") # add to avoid error with "max" below
-    inventory_value_list.append("") # add to avoid error with "max" below
+    total_number_of_items = max(
+        len(attrib_regular_key_list),
+        len(inventory_key_list),
+        len(onbody_key_list),
+        len(other_key_list)
+        )
+    inventory_key_list.append("")  # add to avoid error with "max" below
+    inventory_value_list.append("")  # add to avoid error with "max" below
     
     # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie
     # - tworzy zmienne użyte przy druku tabeli:
@@ -296,7 +300,9 @@ def display_shop(hero, items_to_buy):
         # display items in hero inventory:
         for number, item_name in enumerate(hero.inventory_dict.keys()):
             # set item data:
-            item = mod_items.items_settings(name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None)
+            item = mod_items.import_item(
+                name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None
+                )
             # variable used in printing below:
             el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
             el_to_pr_2 = item_name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
@@ -508,16 +514,13 @@ def user_choice_input(condition, expression):
             pass # wonna avoid error info
         
 
-def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
+def display_enemy_vs_hero(hero, enemy=None, attacker=None):
     '''
     display basic info about enemy compared to hero's stats 
     '''
     clear_screen()
-    mod_hero.attack_points_calc(hero)
-    mod_hero.defend_points_calc(hero)
     mod_enemy.enemy_info(enemy)
     # check what is main enemy attribut in combat
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
 
     enemy_dmg = "".join([str(enemy.dmg_list[0]),"-", str(enemy.dmg_list[1])]) # used below in enemy_to_display_list
     printing_var = 2 # variable that helps in printing (used below)
@@ -532,9 +535,17 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     # make list of other attributes names to print in table's head (życie, obrażenia, atak..)
     head_to_display_list2 = ["", "życie", "obrażenia", "atak", "obrona", "cecha wiodąca"]
     # make list of hero attributes values to print:
-    hero_to_display_list2 = [hero.name+':', str(hero.actualLife), str(mod_hero.display_damage(hero = hero))]+list([str(hero.attack), str(hero.defend), str(hero.combat_attribute)])
+    hero_to_display_list2 = (
+        [hero.name+':', str(hero.actualLife),
+        str(mod_hero.display_damage(hero))] +
+        list([str(hero.attack), str(hero.defend),
+        str(hero.combat_attribute)])
+        )
     # make list of enemy attributes values to print:
-    enem_to_display_list2 = [enemy.name+':', enemy.actualLife, enemy_dmg]+list([str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
+    enem_to_display_list2 = ([
+        enemy.name+':', enemy.actualLife, enemy_dmg] +
+        list([str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
+        )
     # search for the longest element in each lists (needed to print nice table with stats):
 
     long_head = max(len(str(x)) for x in head_to_display_list1)+printing_var
@@ -546,8 +557,16 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     # this part of code helps display_hyphen_multiply function (display ----- in proper lenght):
     printing_var_add = 4 # variable used in printing below
     # search for sum of lenght of element in all lists:
-    all_lists = [head_to_display_list1 + hero_to_display_list1 + enem_to_display_list1]
-    longest_of_all_lists = max(len(str(x)) for x in all_lists) + printing_var + printing_var_add
+    all_lists = [
+        head_to_display_list1 +
+        hero_to_display_list1 +
+        enem_to_display_list1
+        ]
+
+    longest_of_all_lists = (
+        max(len(str(x)) for x in all_lists) +
+        printing_var + printing_var_add
+        )
     
     # attacker is first to display:
     if attacker == hero:
@@ -565,7 +584,7 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
 
 
     # for ex.:
-    # display_enemy(enemy = enemy_settings(name = None, loc = hero.location, lvl = None, gen = None))
+    # display_enemy(enemy=summon_enemy(name=None, loc=hero.location, lvl=None, gen=None))
 
     # prints info about enemy and hero/enemy stats (table form):
     print("\nstatystki:".rjust(longest_arg))
@@ -585,11 +604,11 @@ def display_enemy_vs_hero(enemy=None, hero=None, attacker=None):
     display_hyphen_multiply(multiplier=longest_of_all_lists) # display ------
 
 
-def calendar(hero=None):
+def calendar(hero):
     '''
     display short info about day, day time using turn counter
     '''
-    turn_counter = mod_hero.calendar(hero = hero)
+    turn_counter = mod_hero.calendar(hero)
 
     week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
@@ -605,8 +624,12 @@ def calendar(hero=None):
     else:
         day_time = day_time_list[0]
     
-    return print("Dzień", str(day)+",", day_time+", jesteś w krainie:", mod_hero.display_location(hero = hero)+".")
-
+    return print(
+        "Dzień", str(day) +
+        ",", day_time +
+        ", jesteś w krainie:",
+        mod_hero.display_location(hero) + "."
+        )
 
 
 def display_looted_items(add_remove_items_dict):
@@ -622,7 +645,7 @@ def display_looted_items(add_remove_items_dict):
             print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
 
 
-def display_calendar_location(hero=None):
+def display_calendar_location(hero):
     '''
     display short info about day, day time, location, weather info, eventually random npc statement
     '''
@@ -649,7 +672,7 @@ def display_NPC_random_speach(npc=None):
     print("Napotkany", npc.name, "do Ciebie:", speach_to_display + "...\r\r")
 
 
-def display_event_quest(npc=None, hero=None):
+def display_event_quest(hero, npc=None):
     '''
     display quest info, dialogs, info about quest result
     '''
@@ -702,13 +725,13 @@ def display_event_quest(npc=None, hero=None):
     # check if there is special reward for quest:
     # teleport to next level (map),
     # display info about opened portal:
-    mod_event.check_if_portal(hero=hero, npc=npc)
+    mod_event.check_if_portal(hero, npc=npc)
     display_info_about_next_map_portal(hero=hero)
 
     return hero
 
 
-def display_next_level_promotion(hero=None):
+def display_next_level_promotion(hero):
     '''
     display hero attributes for lvl promotion function
     '''           

@@ -1,6 +1,6 @@
 
 # mod_enemy - custom mod, contains enemy data
-# function enemy_settings(name = None, loc = None, lvl = None, gen = None)
+# function summon_enemy(name=None, loc=None, lvl=None, gen=None)
 # load specified or random opponent to main
 
 import random
@@ -51,7 +51,7 @@ class Enemy:
         self.quest_info = ""
 
 
-def enemy_settings(name=None, loc=None, lvl=None, gen=None):
+def summon_enemy(name=None, loc=None, lvl=None, gen=None):
     '''
     Stores enemies data base.
     Creates enemy and export to MAIN using specific arguments:
@@ -300,44 +300,52 @@ def enemy_settings(name=None, loc=None, lvl=None, gen=None):
         else:
             enemy = random.choice(enemy_random_list)
     
-    # cre (dictionary with attributes), e.g.:
+    # create dictionary with attributes, e.g.:
     # {"siła": 2, "zwinność": 3...}
-    # from enemy.attrib (tuple):
+    # from enemy.attrib (tuple) - in tuple attributes
+    # are specified in short form (e.g. 1, 2, 3, 2, 1):
     create_enemy_attrib_dict(enemy)
+
+    # calculate exported enemy additional parametres:
+    enemy.combat_attribute = combat_attribute_default(enemy)
+    enemy.attack = attack_points_calc(enemy)
+    enemy.defend = defend_points_calc(enemy)
+
     return enemy
 
 
-def attack_points_calc(enemy=None):
+def attack_points_calc(enemy):
     ''' calculates enemy attack ability '''
     enemy.attack = (
         2*enemy.attrib_dict["siła"] +
         2*enemy.attrib_dict["zwinność"] +
         enemy.attrib_dict["inteligencja"]
         )
-    
+
     return enemy.attack
 
 
-def defend_points_calc(enemy=None):
+def defend_points_calc(enemy):
     ''' calculates enemy defend ability '''
     enemy.defend = (
         3*enemy.attrib_dict["zwinność"] +
         enemy.attrib_dict["siła"] +
         enemy.attrib_dict["inteligencja"] +
         enemy.act_armour
-    ) 
+    )
+
     return enemy.defend
 
 
-def combat_attribute_default(enemy=None):
+def combat_attribute_default(enemy):
     '''set default value of combat_attribute'''
     if enemy.attrib_dict["siła"] >= enemy.attrib_dict["zwinność"]:
         enemy.combat_attribute = "siła"
-        return enemy.combat_attribute
 
     else:
         enemy.combat_attribute = "zwinność"
-        return enemy.combat_attribute
+
+    return enemy.combat_attribute
 
 
 def enemy_info(enemy):

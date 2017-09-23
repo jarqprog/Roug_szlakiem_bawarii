@@ -282,7 +282,7 @@ def npc_settings(name=None, loc=None, gen=None):
         "Ten gupi myśliwy Cię przysłał?", "Nie drażnij mnie!",
         "(mruczy)", "Co tam masz, miodzik?!"
         ]
-    thievish_bear_quest.xp_reward = 1000
+    thievish_bear_quest.xp_reward = 50
     thievish_bear_quest.quest_name = "Złodziejski Miś"
     thievish_bear_quest.quest_condition = "Zdobyto miodzik"
     thievish_bear_quest.quest_items = {"miodzik": -1}

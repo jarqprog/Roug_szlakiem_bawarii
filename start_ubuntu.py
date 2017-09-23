@@ -362,18 +362,14 @@ def hot_warm_cold_boss(hero, start_time):
 
 def game_events(position, hero, start_time, board, position_hor, position_ver):
     """ Returns event. """
-    # ENEMY CLASS IMPORT TO MAIN:
-    enemy = mod_enemy.enemy_settings(name=None, loc=None, lvl=None, gen=None)
-    enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
-    enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
+    mod_hero.update_hero_parameters(hero)  # update hero parametres
     # 1st level events:
     if position == "M":
-        mod_event.quest_neutral_hostile_npc(hero=hero, npc_name="Złodziejski Miś")
+        mod_event.quest_neutral_hostile_npc(hero, npc_name="Złodziejski Miś")
         os.system("clear")
         print("\n" * 10)
     elif position == "L":
-        mod_event.event_quest(npc="Leśniczy", hero=hero)
+        mod_event.event_quest(hero, npc="Leśniczy")
         if hero.new_location == 2:
             hero.location = hero.new_location
             input_char = getch()
@@ -384,11 +380,11 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
             os.system("clear")
             print("\n" * 10)
     elif position == "R":
-        mod_event.event_quest(npc="Obóz niesłusznie rozbitych", hero=hero)
+        mod_event.event_quest(hero, npc="Obóz niesłusznie rozbitych")
         os.system("clear")
         print("\n" * 10)
     elif position == "D":
-        mod_event.event_quest(npc="Czerwony Kapturek", hero=hero)
+        mod_event.event_quest(hero, npc="Czerwony Kapturek")
         input_char = getch()
         os.system("clear")
         print("\n" * 10)
@@ -437,7 +433,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         input_char = getch()
         os.system("clear")
     elif position == "W":
-        mod_event.event_quest(npc="Sołtys", hero=hero)
+        mod_event.event_quest(hero, npc="Sołtys")
         input_char = getch()
         os.system("clear")
         print("\n" * 10)
@@ -447,7 +443,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         print("\n" * 10)
     elif position == "T":
         mod_event.quest_neutral_hostile_npc(
-            hero=hero, npc_name="Troll Silnoręki"
+            hero, npc_name="Troll Silnoręki"
             )
 
         if hero.new_location == 3:
@@ -467,7 +463,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
     elif position == "S":
         # if "pierścień skurczybyka" in hero.inventory_dict.keys():
             # hero.new_location = 4
-        mod_event.event_quest(npc="Strażnik portalu", hero=hero)
+        mod_event.event_quest(hero, npc="Strażnik portalu")
         input_char = getch()
         if hero.new_location == 4:
             hero.location = hero.new_location
@@ -484,7 +480,7 @@ def game_events(position, hero, start_time, board, position_hor, position_ver):
         mod_event.event_fight_spec_enemy(enemy="skurczybyk", hero=hero)
         os.system("clear")
     elif position == "C":
-        mod_event.event_quest(npc="Pustelnik", hero=hero)
+        mod_event.event_quest(hero, npc="Pustelnik")
     # 4th level events:
     elif position == "B":
         hot_warm_cold_boss(hero=hero, start_time=start_time)
@@ -616,7 +612,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
         event_result = None
         if int(hero.actualLife) < 1:
             loose_screen(hero, start_time)
-        mod_hero.next_level_promotion(hero=hero)
+        mod_hero.next_level_promotion(hero)
         if input_char.upper() not in ["L", "K"]:
             os.system("clear")
             print("\n" * 10)
@@ -678,7 +674,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
 def input_char_not_movement(hero, start_time, board, input_char, event_result, position_hor, position_ver):
     """ Returns input_char result different than movement. """
     if input_char.upper() == "E":
-        mod_display.display_hero_chart(hero=hero)
+        mod_display.display_hero_chart(hero)
         print("\x1b[6;31;47m" + "Wciśnij cokolwiek, żeby wyjść." + "\x1b[0m")
         input_char = getch()
         os.system("clear")
@@ -727,11 +723,8 @@ def input_char_not_movement(hero, start_time, board, input_char, event_result, p
 
 def main():
     # Hero class import to main:
-    hero = mod_hero.hero_settings()
-    hero.attack = mod_hero.attack_points_calc(hero=hero)
-    hero.defend = mod_hero.defend_points_calc(hero=hero)
-    mod_hero.combat_attribute_default(hero=hero)
-    hero.max_armour = mod_hero.amour_max_calc(hero=hero)
+    hero = mod_hero.import_hero()
+    mod_hero.update_hero_parameters(hero)  # set hero parametres
     # After import:
     developers()
     title_screen()

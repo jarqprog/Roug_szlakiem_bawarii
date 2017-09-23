@@ -14,12 +14,12 @@ import mod_display
 import mod_npc
 
 
-def priority_test(enemy=None, hero=None):
+def priority_test(hero, enemy=None):
     '''
     who's attacker, who's defender
     '''
     mod_display.clear_screen()
-    mod_display.display_enemy_vs_hero(enemy=enemy, hero=hero, attacker=None)
+    mod_display.display_enemy_vs_hero(hero, enemy=enemy, attacker=None)
     # zwinność, percepcja i inteligencja have influence on this test:
     hero_test_stats = (
         int(hero.attrib_dict["zwinność"])
@@ -92,9 +92,9 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
     part of the fight mechanic (part of fight function) 
     '''
     mod_display.display_enemy_vs_hero(
-        enemy=enemy, hero=hero, attacker=attacker
+        hero, enemy=enemy, attacker=attacker
         )
-    # attacker = priority_test(enemy = enemy, hero=hero) 
+
     # define attacker and defender:
     if attacker == hero:
         defender = enemy
@@ -234,18 +234,8 @@ def event_fight_spec_enemy(enemy=None, hero=None):
     '''
 
     # random generate enemy (using filters):
-    enemy = mod_enemy.enemy_settings(name=enemy, loc=None, lvl=None, gen=None)
+    enemy = mod_enemy.summon_enemy(name=enemy)
     if enemy.name not in hero.enemy_killed:
-        enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
-        enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
-        mod_enemy.combat_attribute_default(enemy=enemy)
-        enemy.combat_attribute = mod_enemy.combat_attribute_default(
-            enemy=enemy
-            )
-        # update hero attribute:
-        mod_hero.combat_attribute_default(hero=hero)
-        mod_hero.attack_points_calc(hero)
-        mod_hero.defend_points_calc(hero)
         print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
         print(
             "Szykuj się do walki. Twój przeciwnik to", end=''
@@ -257,11 +247,12 @@ def event_fight_spec_enemy(enemy=None, hero=None):
         # fight loop:
         combat_end = 0
         while (
-            combat_end == 0 and hero.actualLife > 0
-            and enemy.actualLife > 0
-            ):
+            combat_end == 0 and
+            hero.actualLife > 0 and
+            enemy.actualLife > 0
+        ):
             # initiative test:
-            attacker = priority_test(enemy=enemy, hero=hero)
+            attacker = priority_test(hero, enemy=enemy)
             # define attacker and defender:
             if attacker == hero:
                 defender = enemy
@@ -273,7 +264,7 @@ def event_fight_spec_enemy(enemy=None, hero=None):
             attacker_change = 0
             while True:
                 mod_display.display_enemy_vs_hero(
-                    enemy=enemy, hero=hero, attacker=attacker
+                    hero, enemy=enemy, attacker=attacker
                     )
                 attacker_change = fight(
                     enemy=enemy, hero=hero, attacker=attacker
@@ -290,7 +281,8 @@ def event_fight_spec_enemy(enemy=None, hero=None):
                     enemy.actualLife = 0
                     hero.quest_condition_list.append(enemy.quest_condition)
                     if enemy.genre == "quest":  # quest enemies are unique
-                        hero.enemy_killed.append(enemy.name)  # block enemy for future
+                        # block enemy for future:
+                        hero.enemy_killed.append(enemy.name)
                     # if it is quest enemy (is either enemy and quest npc):
                     try:
                         # import npc by enemy name (if it is quest enemy):
@@ -311,15 +303,17 @@ def event_fight_spec_enemy(enemy=None, hero=None):
                         # (teleport to next level (map))
                         # if True: return updated hero.new_location
                         # (signal to display info about portal)
-                        check_if_portal(hero=hero, npc=npc)
+                        check_if_portal(hero, npc=npc)
                     except:
                         pass  # I just want to ignore potential error
 
                     if enemy.quest_info:
-                        print(enemy.quest_info)  # display statment about quest (element of enemy quest list) 
+                        # display statment about quest
+                        # (element of enemy quest list):
+                        print(enemy.quest_info)
 
                     win_fight(enemy, hero)
-                    combat_end = 1  # combat_end == 1: break fight loop              
+                    combat_end = 1  # combat_end == 1: break fight loop
                     break
 
                 elif attacker_change == 1:
@@ -333,17 +327,9 @@ def event_fight(enemy=None, hero=None):
     event == fight with random enemy
     '''
     # random generate enemy (using filters):
-    enemy = mod_enemy.enemy_settings(
+    enemy = mod_enemy.summon_enemy(
         name=None, loc=hero.location, lvl=None, gen=None
         )
-    enemy.attack = mod_enemy.attack_points_calc(enemy=enemy)
-    enemy.defend = mod_enemy.defend_points_calc(enemy=enemy)
-    mod_enemy.combat_attribute_default(enemy=enemy)
-    enemy.combat_attribute = mod_enemy.combat_attribute_default(enemy=enemy)
-    # update hero attrinute:
-    mod_hero.combat_attribute_default(hero=hero)
-    mod_hero.attack_points_calc(hero)
-    mod_hero.defend_points_calc(hero)
     print("\n\nZaraz, zaraz... Coś się dzieje!\n"), time.sleep(.3)
     print("Twój przeciwnik to", end=''), mod_display.dot_loop()
     print(' ', enemy.name.upper()+'!', '\n')
@@ -353,7 +339,7 @@ def event_fight(enemy=None, hero=None):
     combat_end = 0
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
         # initiative test:
-        attacker = priority_test(enemy=enemy, hero=hero)
+        attacker = priority_test(hero, enemy=enemy)
         # define attacker and defender:
         if attacker == hero:
             defender = enemy
@@ -365,7 +351,7 @@ def event_fight(enemy=None, hero=None):
 
         while True:
             mod_display.display_enemy_vs_hero(
-                enemy=enemy, hero=hero, attacker=attacker
+                hero, enemy=enemy, attacker=attacker
                 )
             attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
             mod_display.pause()
@@ -386,7 +372,7 @@ def event_fight(enemy=None, hero=None):
     return hero
 
 
-def event_quest(npc=None, hero=None):
+def event_quest(hero, npc=None):
     '''
     event == quest adventure
     it is regular advenure: meet quest npc, displays info about meeting
@@ -394,21 +380,13 @@ def event_quest(npc=None, hero=None):
     # import (by name) npc data from class npc (mod_npc):
     npc = mod_npc.npc_settings(name=npc, loc=None, gen=None)
     # check if hero has items to finish quest (if it is quest condition):
-    mod_hero.check_item_condition_quest(hero=hero, npc=npc)
+    mod_hero.check_item_condition_quest(hero, npc=npc)
     # prepare quest npc statement lists (blocked or not?):
-    mod_hero.quest(hero=hero, npc=npc)
+    mod_hero.quest(hero, npc=npc)
     # display event:
-    mod_display.display_event_quest(hero=hero, npc=npc)
+    mod_display.display_event_quest(hero, npc=npc)
 
     return hero
-
-
-def event_npc(npc=None, hero=None):
-    '''
-    event == meet specified (by name) NPC
-    '''
-    # summon npc by name:
-    npc = mod_npc.npc_settings(name=npc.name, loc=None, gen=None)
 
 
 def event_question_mark(hero):
@@ -420,7 +398,7 @@ def event_question_mark(hero):
     mod_display.pause()
     chance_factor = random.randint(1, 100)
     if chance_factor < 90:
-        enemy = mod_enemy.enemy_settings(
+        enemy = mod_enemy.summon_enemy(
             name=None, loc=hero.location, lvl=None, gen=None
             )
         event_fight(enemy=enemy, hero=hero)
@@ -452,7 +430,7 @@ def event_random_npc(hero):
         pass  # wonna ignore info about error
 
 
-def quest_neutral_hostile_npc(hero=None, npc_name=None):
+def quest_neutral_hostile_npc(hero, npc_name=None):
     '''
     event with npc, which can turn into enemy
     during the second meeting
@@ -462,14 +440,13 @@ def quest_neutral_hostile_npc(hero=None, npc_name=None):
     if npc_name not in hero.enemy_killed:
         # check if hero has met npc before, import npc by name:
         npc = mod_npc.npc_settings(name=npc_name, loc=None, gen=None)
-        print(npc.quest_items)
         # if hero has npc statement in quest_blocked_list
         # (which stores heard npc statement)..
         # means that hero has met npc before
         if npc.quest_list[0] in hero.quest_blocked_list:
             # check if hero has items to finish quest
             # (if it is quest condition):
-            mod_hero.check_item_condition_quest(hero=hero, npc=npc)
+            mod_hero.check_item_condition_quest(hero, npc=npc)
             # second meeting without quest condition fulfilled means that
             # NPC transform to enemy:
             if npc.quest_condition not in hero.quest_condition_list:
@@ -558,7 +535,7 @@ def event_shop(hero):
     return hero
 
 
-def check_if_portal(hero=None, npc=None):
+def check_if_portal(hero, npc=None):
     '''
     check if npc or special enemy has attribute
     that opens portal to next location (game map)  

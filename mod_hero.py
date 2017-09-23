@@ -11,21 +11,32 @@ import mod_display
 
 # Hero class:
 class Hero:
-    def __init__(
-            self, name, proffession, level, attrib_dict,
-            inventory_dict, onbody_dict):
+    def __init__(self):
         # hero's name:
-        self.name = name
+        self.name = ""
         # hero's class (warior, hunter, thief...)
-        self.proffession = proffession
-        # hero's expirience level:
-        self.level = level
-        # contains basic atributes (attack, defence, agility...), that we are using in game mechanic's tests:  
-        self.attrib_dict = attrib_dict
+        self.proffession = ""
+        # hero's expierience level:
+        self.level = 1
+        # contains basic atributes (attack, defence, agility...),
+        # that we are using in game mechanic's tests:
+        self.attrib_dict = {
+            "siła": 1, "zwinność": 1, "percepcja": 1,
+            "inteligencja": 1, "siła woli": 1
+            }  # starting attributes dict
+        
         # contains hero inventory (non active items - in bag):
-        self.inventory_dict = inventory_dict
+        self.inventory_dict = {'placek śliwkowy': 3}
         # contains active items that have influence on hero (wearing items):
-        self.onbody_dict = onbody_dict
+        self.onbody_dict = {
+            'głowa': '',
+            'szyja': '',
+            'tors': '',
+            'lewa ręka': '',
+            'prawa ręka': '',
+            'palec': '',
+            'kieszeń': ''
+            }
         self.maxLife = 40  # max life points (limit)
         self.actualLife = 40  # actual number of life points
         self.actualExp = 1  # actual number of exp points
@@ -33,31 +44,43 @@ class Hero:
         self.map_position = 0  # hero map position ????????????????????????
         self.position_horizontal = 1  # hero map coordinate X
         self.position_vertical = 18  # hero map coordinate Y
-        self.dmg_list = [0, 0]  # initial min and max damage (calculate by function dmg_points_calc in this mode)
+        # initial min and max damage
+        # (calculate by function dmg_points_calc in this mode)
+        self.dmg_list = [0, 0]
         self.attack = 0  # initial attack points
         self.defend = 0  # initial defend points
         self.courage = 0  # initial courage points - not used yet
-        # max armour points calculated by "amour_max_calc(hero=None)" function in this mod (it depends on hero strength)
+        # max armour points calculated by "amour_max_calc(hero=None)"
+        # function in this mod (it depends on hero strength)
         self.max_armour = 0
-        # modified by armour in onbody_dict OR (OPTIONAL) actual armour points calculated
+        # modified by armour in onbody_dict OR
+        # (OPTIONAL) actual armour points calculated
         # by "amour_act_calc(hero=None)" function in this mod
-        self.act_armour = 2
-        self.add_remove_items_dict = {}  # dict used for modify hero inventory (add/remove)
-        self.life_recovery = 1  # define replenish life level after each turn
-        self.calendar_list = [0, "niedziela", "wieczór"]  # define actual game turn (number of main loop executed)
+        self.act_armour = 0
+        # dict used for modify hero inventory (add/remove)
+        self.add_remove_items_dict = {}
+        # define replenish life level after each turn
+        self.life_recovery = 1
+        # define actual game turn (number of main loop executed)
+        self.calendar_list = [
+            0, "niedziela", "wieczór"
+            ]  # start value of calendar list
       
         # combat_attribute:
-        # determines what hero attribute is used in combat tests, it comes from item in hero onbody_dict["prawa ręka"]
+        # determines what hero attribute is used in combat tests,
+        # it comes from item in hero onbody_dict["prawa ręka"]
         # for example, if hero is using dagger,
-        # main concidered attribute is aggility ("zwinność") or in case of heavy axe we use strenght ("siła")
-        # if hero onbody_dict["prawa ręka"] is empty ("") default attribute is set by function:
-        # combat_attribute_default(hero = hero) in this mod
-        self.combat_attribute = combat_attribute_default(hero=self)
+        # main concidered attribute is aggility ("zwinność") or
+        # in case of heavy axe we use strenght ("siła")
+        # if hero onbody_dict["prawa ręka"] is empty ("")
+        # default attribute is set by functioncheck_combat_attribute
+        self.combat_attribute = check_combat_attribute(self)
 
         # QUESTS parametres:
-    
+
         # quest_info contains speach statements, that have been told by NPC,
-        # if element od NPC speach list is in value of dict key, key = quest name,
+        # if element od NPC speach list is in value of dict key,
+        # key = quest name,
         # NPC tells next element on list
         self.quest_info = {}
 
@@ -67,7 +90,7 @@ class Hero:
         self.quest_condition_list = [""]  # *
         # * empty string in quest_condition_list is used in some quests, that..
         # should be automatically succesfull:
-        # info quests, quests where task is to meet npc..   
+        # info quests, quests where task is to meet npc..
 
         # quest_blocked_list contains statements already heared (block it):
         self.quest_blocked_list = []
@@ -82,59 +105,51 @@ class Hero:
         
 # HERO - import function ##############################
 
-def hero_settings():
+def import_hero():
     '''
     contains hero data to export to main:
     '''
-    # hero dicts:
-    attrib_dict = {
-        "siła": 1, "zwinność": 1, "percepcja": 1,
-        "inteligencja": 1, "siła woli": 1
-        }
-
-    # inventory_dict keep only names and values of items
-    # (without deep specyfication)
-    inventory_dict = {'placek śliwkowy': 3}
-
-    # show active items on Hero:
-    onbody_dict = {
-        u'głowa': 'skórzany hełm',
-        'szyja': '',
-        'tors': 'skórzany kaftan',
-        'lewa ręka': '',
-        'prawa ręka': 'maczuga',
-        'palec': '',
-        'kieszeń': 'sok z gumijagód'
-        }
-    
-    # start specs (odpalenie funkcji hero_crea )
-    hero = Hero("", "", 1, attrib_dict, inventory_dict, onbody_dict)
-    hero.calendar_list = [
-        0, "niedziela", "wieczór"
-        ]  # start value of calendar list
+    # start specs:
+    hero = Hero()
     hero.new_location = 1  # variable used in change location mechanic
     hero.gold = 2  # initial wealt in pouch
-  
+    update_hero_parameters(hero)
+
     return hero
 
 
-def dmg_points_calc(hero=None):
-    ''' calculates hero min and max '''
+def update_hero_parameters(hero):
+    '''
+    update hero parameters:
+    attack, defend, max_armour, combat_attribute
+    use in main (or before combat)
+    may add here other params to update
+    '''
+    hero.attack = attack_points_calc(hero)
+    hero.defend = defend_points_calc(hero)
+    hero.max_armour = amour_max_calc(hero)
+    hero.combat_attribute = check_combat_attribute(hero)
 
+    return hero
+
+
+def dmg_points_calc(hero):
+    ''' calculates hero min and max '''  # not implemented yet
     hero.dmg_list = [1, 4]
 
 
-def attack_points_calc(hero=None):
+def attack_points_calc(hero):
     ''' calculates hero attack ability '''
     hero.attack = (
-        2*hero.attrib_dict["siła"] + 2*hero.attrib_dict["zwinność"]
-        + hero.attrib_dict["inteligencja"]
+        2*hero.attrib_dict["siła"] +
+        2*hero.attrib_dict["zwinność"] +
+        hero.attrib_dict["inteligencja"]
         )
-    
+
     return hero.attack
 
 
-def defend_points_calc(hero=None):
+def defend_points_calc(hero):
     ''' calculates hero defend ability '''
     hero.defend = (
         3*hero.attrib_dict["zwinność"] + hero.attrib_dict["siła"]
@@ -144,46 +159,69 @@ def defend_points_calc(hero=None):
     return hero.defend
 
 
-def exp_nextlvl(hero=None):
+def exp_nextlvl(hero):
     '''
     calculate experience points required to achive next experience level
     '''
-    return ((50*hero.level)*2*hero.level)
+    return (50*hero.level)*2*hero.level
 
 
-def amour_max_calc(hero=None):
+def amour_max_calc(hero):
     ''' calculates max armour points '''
     hero.max_armour = hero.attrib_dict["siła"]*3
-    
+
     return hero.max_armour
 
 
-def display_exp(hero=None):
+def check_combat_attribute(hero):
+    '''
+    set default value of combat_attribute: 'siła' or 'zwinność'
+    (depends on weapon in hand)
+    if no weapon: deaoult attribut is higher attribut
+    '''
+    if hero.onbody_dict["prawa ręka"] == "":
+        if hero.attrib_dict["siła"] >= hero.attrib_dict["zwinność"]:
+            hero.combat_attribute = "siła"
+
+        else:
+            hero.combat_attribute = "zwinność"
+
+    else:
+        imported_item = mod_items.import_item(
+            name=hero.onbody_dict["prawa ręka"]
+            )
+
+        hero.combat_attribute = imported_item.combat_attribute
+
+    return hero.combat_attribute
+
+
+def display_exp(hero):
     '''
     display actual exp and exp needed to achive next level
     '''
     nextLevel = exp_nextlvl(hero)
 
-    return (''.join((str(hero.actualExp), '/', (str(nextLevel)))))
+    return ''.join((str(hero.actualExp), '/', (str(nextLevel))))
 
 
-def display_life(hero=None):
+def display_life(hero):
     '''
     display actual life points and max life points
     '''
-  
-    return (''.join((str(hero.actualLife), '/', (str(hero.maxLife)))))
+
+    return ''.join((str(hero.actualLife), '/', (str(hero.maxLife))))
 
 
-def display_gold(hero=None):
+def display_gold(hero):
     '''
     display gold (hero's wealth) in right format
     '''
 
-    return (''.join((str(hero.gold),' szt. złota')))
+    return ''.join((str(hero.gold), ' szt. złota'))
 
 
-def display_location(hero=None):
+def display_location(hero):
     '''
     export hero location to display (used in display mod)
     '''
@@ -197,62 +235,25 @@ def display_location(hero=None):
         return "Nawiedzone zamczysko"
 
 
-def display_damage(hero=None):
+def display_damage(hero):
     '''
     display hero's actual min and max damage
     '''
-    hero.dmg_list
-
-    return (''.join((str(hero.dmg_list[0]), '-', (str(hero.dmg_list[1])))))
+    return ''.join((str(hero.dmg_list[0]), '-', (str(hero.dmg_list[1]))))
 
 
-def display_armour(hero=None):
+def display_armour(hero):
     '''
     used to display actual and max armour points
     '''
+    return ''.join((str(hero.act_armour), '/', (str(hero.max_armour))))
 
-    return (''.join((str(hero.act_armour), '/', (str(hero.max_armour)))))
 
-
-def display_armour(hero=None):
+def display_armour(hero):
     '''
     used to display actual and max armour points
     '''
-
-    return (''.join((str(hero.act_armour), '/', (str(hero.max_armour)))))
-
-
-def combat_attribute_default(hero=None):
-    '''
-    set default value of combat_attribute: 'siła' or 'zwinność'
-    (depends on weapon in hand)
-    if no weapon: deaoult attribut is higher attribut
-    '''
-    if hero.onbody_dict["prawa ręka"] == "":
-        if hero.attrib_dict["siła"] >= hero.attrib_dict["zwinność"]:
-            hero.combat_attribute = "siła"
-
-            return hero.combat_attribute
-
-        else:
-            hero.combat_attribute = "zwinność"
-
-            return hero.combat_attribute            
-            
-    else:
-        mod_items.items_settings(
-            name=(hero.onbody_dict["prawa ręka"]), loc=None, lvl=None,
-            gen=None, hero=None, all=None
-            )
-
-        imported_item = mod_items.items_settings(
-            name=hero.onbody_dict["prawa ręka"], loc=None, lvl=None,
-            gen=None, hero=hero, all=None
-            )
-
-        hero.combat_attribute = imported_item.combat_attribute
-
-        return hero.combat_attribute
+    return ''.join((str(hero.act_armour), '/', (str(hero.max_armour))))
 
 
 def items_list_to_dict(items_to_add):
@@ -345,7 +346,7 @@ def calendar(calendar_list):
         del calendar_list[1]
         calendar_list.insert(1, day_of_week)
       
-        calendar_list[0] +=1 
+        calendar_list[0] += 1
     del calendar_list[2]
       
     calendar_list.insert(2, time_of_day)
@@ -353,7 +354,7 @@ def calendar(calendar_list):
     return calendar_list
 
 
-def quest(hero=None, npc=None):
+def quest(hero, npc=None):
     '''
     element of quest mechanic - block npc's statement, that have been said
     '''
@@ -395,16 +396,16 @@ def quest(hero=None, npc=None):
     return hero
 
 
-def next_level_promotion(hero=None):
+def next_level_promotion(hero):
     '''
     check if there is hero level promotion
     allows to player modify one of hero attributes
-    displays result 
+    displays result
     '''
     if hero.actualExp > ((50*hero.level)*2*hero.level):
         
         while True:
-            player_choice = mod_display.display_next_level_promotion(hero=hero)
+            player_choice = mod_display.display_next_level_promotion(hero)
             mod_display.display_hero_chart(hero)
             print("Awansujesz na kolejny poziom doświadczenia!\n")
 
@@ -440,12 +441,12 @@ def next_level_promotion(hero=None):
         
         hero.level += 1
         hero.maxLife += 30  # buff to max life
-        hero.actualLife = hero.maxLife  # full life regeneration   
+        hero.actualLife = hero.maxLife  # full life regeneration 
                 
     return hero
 
 
-def check_item_condition_quest(hero=None, npc=None):
+def check_item_condition_quest(hero, npc=None):
     '''
     check if hero has items to finish quest (if it is quest condition):
     '''

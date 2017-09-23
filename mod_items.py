@@ -6,7 +6,7 @@ import time
 
 # import custom modules
 import mod_hero
-import mod_display
+import mod_display  # don't know why pep8 raises error..
 
 
 class Items:
@@ -63,7 +63,7 @@ class Items:
         self.combat_attribute = ""
 
 
-def items_settings(
+def import_item(
         name=None, loc=None, lvl=None, gen=None, hero=None, all=None):
     '''
     Stores items data base.
@@ -295,7 +295,7 @@ def treasure_generator(
             for i in range(random.randint(1, maxloops)):
                 # randomly generates item level for each loop:
                 random_level = random.randint(1, maxitem_lvl)
-                generated_item = items_settings(
+                generated_item = import_item(
                     name=None, loc=None, lvl=random_level,
                     gen=item_gen, hero=None
                     )
@@ -306,7 +306,7 @@ def treasure_generator(
         # then update hero's inventory:
         add_remove_items_dict = mod_hero.items_list_to_dict(treasure_list)
         mod_hero.inventory_update(hero, add_remove_items_dict)
-        mod_display.display_hero_chart(hero=hero)
+        mod_display.display_hero_chart(hero)
         mod_display.display_looted_items(add_remove_items_dict)
         mod_display.pause()
 
@@ -332,7 +332,7 @@ def item_dict_generator(hero=None, level=None):
         # specify how high level items can be added to sell assortment:
         level = random.randint(1, 4)
         # import item attributes by name of item from mod_items:
-        item = items_settings(
+        item = import_item(
             name=None, loc=None, lvl=level, gen=None, hero=None, all=None
             )
         # condition to block unwanted items:
@@ -362,7 +362,7 @@ def generate_hero_items_to_sell_dict(hero):
         # list with item parametres (to add to dict key value):
         item_parametres = []
         # import item attributes by name of item from mod_items:
-        item = items_settings(
+        item = import_item(
             name=item_name, loc=None, lvl=None,
             gen=None, hero=None, all=None
             )
@@ -384,7 +384,7 @@ def gen_hero_items_onbody(hero):
 
     '''
     # work in progress
-    # item = items_settings(
+    # item = import_item(
     # name = 'hełm', loc = None, lvl = None,
     # gen = None, hero = None, all = None)
 
