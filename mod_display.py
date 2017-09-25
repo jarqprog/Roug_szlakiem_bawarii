@@ -67,29 +67,31 @@ def pause():
 
 def display_varied_info():
     '''
-    function with a list of short messages (mainly to increse playability). It random generates message to display from list:
+    function with a list of short messages (mainly to increse playability).
+    It random generates message to display from list:
     '''
     info_to_display_list = [
-    "Ładny dzień", "Zbiera się na burzę", "Trochę zimno",
-    "Mam przeczucie, że coś się wydarzy...",
-    "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
-    "Oby nikt tu na mnie nie czyhał", "Trochę wieje", "Mam nadzieję, że zaliczę checkpoint..",
-    "Gdzie ten Oblib?", "Ech, Mullog zmarnieje bez obrączki!", "Co by tu zrobić?", "Mam złe przeczucie..",
-    "Porada: źródło życia na mapce oznaczone jest znakiem '+'",
-    "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
-    
-    ]
+        "Ładny dzień", "Zbiera się na burzę", "Trochę zimno",
+        "Mam przeczucie, że coś się wydarzy...",
+        "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
+        "Oby nikt tu na mnie nie czyhał", "Trochę wieje",
+        "Mam nadzieję, że zaliczę checkpoint..",
+        "Gdzie ten Oblib?", "Ech, Mullog zmarnieje bez obrączki!",
+        "Co by tu zrobić?", "Mam złe przeczucie..",
+        "Porada: źródło życia na mapce oznaczone jest znakiem '+'",
+        "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
+        ]
 
-    random_chanse = random.randint(1,10)
-    if random_chanse > 7:
-        info_to_display = random.choice(info_to_display_list) # randomly display element of list #info_to_display_list[random.randint(0, len(info_to_display_list)-1)]
+    random_chance = random.randint(1, 10)
+    if random_chance > 7:
+        info_to_display = random.choice(info_to_display_list)
     else:
         info_to_display = ''
 
     return print(info_to_display)
 
 
-def display_quest_log(hero=None):
+def display_quest_log(hero):
     '''
     display quest log with quests: in progress and already completed
     '''
@@ -99,7 +101,9 @@ def display_quest_log(hero=None):
     if len(hero.quest_info) > 0:
         for quest_name in hero.quest_info.keys():
             if quest_name not in hero.quest_completed_list:
-                display_hyphen_multiply(multiplier=42)
+                # variable used in function below (multiply '-')
+                multiplier = 42
+                display_hyphen_multiply(multiplier)
                 print(quest_name+':')
                 for npc_statment in hero.quest_info[quest_name]:
                     print(npc_statment, '\n')
@@ -108,7 +112,6 @@ def display_quest_log(hero=None):
         print("\n\nzadania wykonane:\n")
         for quest_name in hero.quest_info.keys():
                 if quest_name in hero.quest_completed_list:
-                    display_hyphen_multiply(multiplier=42)
                     print(quest_name+'\n')
 
     pause()
@@ -116,29 +119,20 @@ def display_quest_log(hero=None):
 
 def display_hero_chart(hero):
     """display hero's chart - attributes, inventory items, wearing items"""
-    clear_screen() # czyści ekran
-    #################### ATTRIBUTES ############################
-    # przekształca słownniki z atrybutami bohatera na listy kluczy i wartości:
+    clear_screen()
+    # create lists from hero attributes, inventory, weared items,
+    # additional attributes:
     attrib_regular_key_list = list(hero.attrib_dict.keys())
     attrib_regular_value_list = list(hero.attrib_dict.values())
-
-    #################### INVENTORY ############################
-    # przekształca słownik ekwipunku bohatera na listy kluczy i wartości:
     inventory_key_list = list(hero.inventory_dict.keys())
     inventory_value_list = list(hero.inventory_dict.values())
-
-    # ON-BODY ############################
-    # przedmioty noszone na sobie
-    # przekształcenie kluczy i wartości słownka w listy
     onbody_key_list = list(hero.onbody_dict.keys())
     onbody_value_list = list(hero.onbody_dict.values())
-
-    # OTHERS: life, exp, gold, location ############################
+    # (additional attributes)
     other_key_list = [
         "życie", "doświadczenie", "złoto", "lokalizacja", "atak",
         "obrona", "obrażenia", "pancerz"
         ]
-    # other_value_list element from functions:
     other_value_list = [
         mod_hero.display_life(hero),
         mod_hero.display_exp(hero),
@@ -149,72 +143,81 @@ def display_hero_chart(hero):
         mod_hero.display_damage(hero),
         mod_hero.display_armour(hero)
         ]
-
-    # sprawdza najdłuższy ciąg w listach kluczy atrybutów/ekwipunku/na sobie
-    # (pomoże to odpowiednio wydrukować tabelkę):
+    # check the most numerous lists:
+    # (to properly print chart)
     total_number_of_items = max(
         len(attrib_regular_key_list),
         len(inventory_key_list),
         len(onbody_key_list),
         len(other_key_list)
         )
-    inventory_key_list.append("")  # add to avoid error with "max" below
-    inventory_value_list.append("")  # add to avoid error with "max" below
-    
-    # sprawdza najdłuższy wyraz wśród list atrybutów/umiejętności/ekwipunku/rzeczy na sobie
-    # - tworzy zmienne użyte przy druku tabeli:
+    # check the longest word in lists:
+    # (to properly print chart)
     printing_var = 5  # helps correctly print hero chart
-    long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var   # longest attributes key
-    long_att_val = (max(len(str(x)) for x in attrib_regular_value_list))   # longest attributes value
-    long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var   # longest inventory key
-    long_inv_val = (max(len(str(x)) for x in inventory_value_list))   # longest inventory value
-    long_onbody_key = (max(len(x) for x in onbody_key_list))+printing_var  # longest onbody key
-    long_onbody_val = (max(len(x) for x in onbody_value_list))+printing_var  # longest onbody value
-    long_other_key = (max(len(x) for x in other_key_list))+printing_var   # longest onbody key
-    long_other_val = (max(len(x) for x in other_value_list))+printing_var   # longest onbody value
+    long_att_key = (max(len(x) for x in attrib_regular_key_list))+printing_var
+    long_att_val = (max(len(str(x)) for x in attrib_regular_value_list))
+    # if hero inventory isn't empty:
+    if len(hero.inventory_dict) > 0:
+        long_inv_key = (max(len(x) for x in inventory_key_list))+printing_var
+        long_inv_val = (max(len(str(x)) for x in inventory_value_list))
+    # in case of empty inventory (safeguard against error):
+    else:
+        long_inv_key = 1
+        long_inv_val = 1
+    long_onbody_key = (max(len(x) for x in onbody_key_list))+printing_var
+    long_onbody_val = (max(len(x) for x in onbody_value_list))+printing_var
+    long_other_key = (max(len(x) for x in other_key_list))+printing_var
+    long_other_val = (max(len(x) for x in other_value_list))+printing_var
 
-    inventory_key_list.remove("")   # remove - it's no longer needed
-    inventory_value_list.remove("")   # remove - it's no longer needed
-    
+    # sum_longest_arg is used to print table's head and bottom line (---):
     sum_longest_arg = int(
-        long_att_key + long_att_val + long_inv_key + long_inv_val
-        + long_onbody_key + long_onbody_val + long_other_key + long_other_val
+        long_att_key + long_att_val + long_inv_key + long_inv_val +
+        long_onbody_key + long_onbody_val + long_other_key + long_other_val
         )
-    # ta część kodu rysuje tabelę:
-    # to print in head: hero name, profession, level (exp level)
-    printing_var = 0   #helps correctly print hero chart
+    # specify variable to print in table's head:
+    # hero name, profession, level (exp level)
+    printing_var = 0  # helps correctly print hero chart
     h00 = hero.name.ljust(printing_var)
     h01 = hero.proffession.ljust(printing_var)
     h02 = str(hero.level).ljust(printing_var)
-
-    printing_var = 2 #helps correctly print hero chart
+    print(
+        '\n', h00, "-", h01, h02 +
+        ', poziom doświadczenia\n'
+        )
+    # head: attribs, items in bag, others spec (attack, defend, life, exp..)
+    printing_var = 2
     h1 = 'atrybuty:'.rjust(long_att_key+printing_var)
     printing_var = 0
     h2 = 'w torbie:'.rjust(long_att_val+long_inv_key+printing_var)
     printing_var = 1
     h3 = 'na sobie:'.rjust(long_inv_val+long_onbody_key+printing_var)
     h4 = 'pozostałe:'.rjust(long_onbody_val+long_other_key+printing_var)
-    print(u'\n',h00,"-",h01, h02, 'poziom doświadczenia','\n') # hero name, profession, level
-    print(h1,h2,h3,h4) # head: attribs, items in bag, others spec (attack, defend, life, exp..)
-    printing_var_head_bottom = 5 #helps correctly print hero chart
-    display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
+    print(h1, h2, h3, h4)
 
-    for i in range(int(total_number_of_items)) :
+    printing_var_head_bottom = 5
+    # display '------'
+    display_hyphen_multiply(
+        multiplier=(sum_longest_arg + printing_var_head_bottom)
+        )
+
+    for i in range(int(total_number_of_items)):
         
         # printing attributes (siła, zwinność...):
-        # (if one of the columns is shorter, program will print empty string, to not copy same thing):
+        # (if one of the columns is shorter, program will print empty string,
+        # to not copy same thing):
         try:
-            # if quantity of line to print (len) is less then 'i' in loop, program will generate empty string:
-            int(len(attrib_regular_key_list)) >= i 
+            # if quantity of line to print (len) is less then 'i' in loop,
+            # program will generate empty string:
+            int(len(attrib_regular_key_list)) >= i
             if int(len(attrib_regular_key_list)) >= i:
                 iattrib = int(i)
                 attribKeyPrt = str(attrib_regular_key_list[iattrib])+':'
                 attribValuePrt = str(attrib_regular_value_list[iattrib])
         except:
-            attribKeyPrt = "" # empty string
+            attribKeyPrt = ""
             attribValuePrt = ""
         try:
-            int(len(inventory_key_list)) >= i         
+            int(len(inventory_key_list)) >= i
             if int(len(inventory_key_list)) >= i:
                 iinventory = int(i)
                 inventoryKeyPrt = str(inventory_key_list[iinventory])+':'
@@ -241,20 +244,23 @@ def display_hero_chart(hero):
             otherKeyPrt = ""
             otherValuePrt = ""
 
-    # variables used to display table:
-        p1 = attribKeyPrt.rjust(long_att_key) # attrib name
-        p2 = attribValuePrt.ljust(long_att_val) # attrib value
-        p3 = inventoryKeyPrt.rjust(long_inv_key) # item in inventory - name
-        p4 = inventoryValuePrt.ljust(long_inv_val) # item in inventory - quantity
-        p5 = onbodyKeyPrt.rjust(long_onbody_key) # body part
-        p6 = onbodyValuePrt.ljust(long_onbody_val) # item on body
-        p7 = otherKeyPrt.rjust(long_other_key) # other spec name
-        p8 = otherValuePrt.ljust(long_other_val) # other spec value
-
-        # body of table:
-        print(u'',p1,p2,p3,p4,p5,p6,p7,p8)
-    # footer of table:
-    display_hyphen_multiply(multiplier = (sum_longest_arg+printing_var_head_bottom))
+    # set variables to display table's body:
+        p1 = attribKeyPrt.rjust(long_att_key)  # attrib name
+        p2 = attribValuePrt.ljust(long_att_val)  # attrib value
+        p3 = inventoryKeyPrt.rjust(long_inv_key)  # item name (inventory)
+        p4 = inventoryValuePrt.ljust(long_inv_val)  # item quantity (inventory)
+        p5 = onbodyKeyPrt.rjust(long_onbody_key)  # body part
+        p6 = onbodyValuePrt.ljust(long_onbody_val)  # item on body
+        p7 = otherKeyPrt.rjust(long_other_key)  # other spec name
+        p8 = otherValuePrt.ljust(long_other_val)  # other spec value
+        
+        # display table's body:
+        print('', p1, p2, p3, p4, p5, p6, p7, p8)
+    
+    # display table's footer (----):
+    display_hyphen_multiply(
+        multiplier=(sum_longest_arg+printing_var_head_bottom)
+        )
 
 
 def display_inventory_chart(hero):
@@ -269,52 +275,74 @@ def display_shop(hero, items_to_buy):
     display event shop
     '''
     clear_screen()
-    items_to_buy_list = [item[0] for item in items_to_buy.values()] # shop item names to buy (list type)
-    items_to_sell_list = [item for item in hero.inventory_dict.keys()] # hero item names to sell (list type)
+    # shop item names to buy (list type)
+    items_to_buy_list = [item[0] for item in items_to_buy.values()]
+    # hero item names to sell (list type)
+    items_to_sell_list = [item for item in hero.inventory_dict.keys()]
     # check lenght of longest item name
     all_list = items_to_buy_list + items_to_sell_list
-    printing_var = 8 # variable used in printing below
-    longest_word = (max(len(x) for x in all_list))+printing_var # # set lenght of longest item name
-    multiplier = 90 # variable used in proper printing ------ ('display_hyphen_multiply' function):
-    shop_margin = 1.2 # item price + 20%
+    printing_var = 8  # variable used in printing below
+    # set lenght of longest item name
+    longest_word = (max(len(x) for x in all_list))+printing_var
+    multiplier = 90  # multiplier used in display_hyphen_multiply function
+    shop_margin = 1.2  # item price + 20%
     print(hero.name+", witaj w moim sklepie.\nOto moje towary:\n")
+    # SHOP ITEMS (to buy)
     for item in items_to_buy.keys():
         # variable used in printing below:
-        el_to_pr_1 = item+':' # el_to_pr_1 means 'element to print'
-        el_to_pr_2 = items_to_buy[item][0] # item name
+        # (el_to_pr_.. means 'element to print')
+        el_to_pr_1 = item+':'
+        el_to_pr_2 = items_to_buy[item][0]  # item name
         el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-        el_to_pr_4 = str(int(int(items_to_buy[item][1])*shop_margin)) # item price + 20% (string -> float -> integer)
+        # item price + 20% (string -> float -> integer):
+        el_to_pr_4 = str(int(int(items_to_buy[item][1])*shop_margin))
         printing_var = 12
         el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-        el_to_pr_6 = items_to_buy[item][2] # item info
-        print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
+        el_to_pr_6 = items_to_buy[item][2]  # item info
+        # display elements:
+        print(
+            el_to_pr_1, el_to_pr_2, el_to_pr_3,
+            el_to_pr_4, el_to_pr_5, el_to_pr_6
+            )
 
+    # HERO ITEMS (to sell)
     print("\nPosiadane rzeczy w Twojej torbie:")
-    
+    # if hero inventory is empty:
     if len(hero.inventory_dict.keys()) == 0:
-        print('\r-torba jest pusta, nie masz niczego na sprzedaż.. Posiadane złoto:',str(hero.gold)+'\n\n\n\n')
-    
-    else:    
-    
+        print(
+            '\r-torba jest pusta, nie masz niczego na sprzedaż..\
+            \nPosiadane złoto:',
+            str(hero.gold)+'\n\n\n'
+            )
+    # if hero has some items in inventory:
+    else:
+        # display '--------'
         display_hyphen_multiply(multiplier)
         # display items in hero inventory:
         for number, item_name in enumerate(hero.inventory_dict.keys()):
             # set item data:
-            item = mod_items.import_item(
-                name=item_name, loc=None, lvl=None, gen=None, hero=None, all=None
-                )
+            item = mod_items.import_item(name=item_name)
             # variable used in printing below:
-            el_to_pr_1 = str(number+1)+':' # el_to_pr_1 means 'element to print'
-            el_to_pr_2 = item_name + ' ('+str(hero.inventory_dict[item_name])+')' # item name + quantity of items in bag
+            el_to_pr_1 = str(number+1)+':'  # item number
+            el_to_pr_2 = (
+                item_name +
+                ' (' +
+                str(hero.inventory_dict[item_name]) +
+                ')')  # item name + quantity of items in bag (e.g. sword (2))
+
             el_to_pr_3 = "cena:".rjust(longest_word-len(el_to_pr_2))
-            el_to_pr_4 = str(item.price)
+            el_to_pr_4 = str(item.price)  # item price
             printing_var = 12
             el_to_pr_5 = "info:".rjust(printing_var - len(el_to_pr_4))
-            el_to_pr_6 = str(item.item_info)
+            el_to_pr_6 = str(item.item_info)  # item info
 
-            print(el_to_pr_1, el_to_pr_2, el_to_pr_3, el_to_pr_4, el_to_pr_5, el_to_pr_6)
-
-        print("\nPosiadane złoto:",str(hero.gold)+"\n\n")
+            # display elements:
+            print(
+                el_to_pr_1, el_to_pr_2, el_to_pr_3,
+                el_to_pr_4, el_to_pr_5, el_to_pr_6
+                )
+        # display info about hero gold:
+        print("\nPosiadane złoto:", str(hero.gold)+"\n\n")
 
     return items_to_buy
 
