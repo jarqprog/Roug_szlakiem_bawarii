@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 # mod_hero - custom mod, contains hero data
 
-import math
-
 # import custom modules:
 import mod_items
-import mod_npc
 import mod_display
 
 
@@ -240,13 +237,6 @@ def display_damage(hero):
     display hero's actual min and max damage
     '''
     return ''.join((str(hero.dmg_list[0]), '-', (str(hero.dmg_list[1]))))
-
-
-def display_armour(hero):
-    '''
-    used to display actual and max armour points
-    '''
-    return ''.join((str(hero.act_armour), '/', (str(hero.max_armour))))
 
 
 def display_armour(hero):

@@ -11,7 +11,6 @@ import sys
 # import custom mods
 import mod_hero
 import mod_enemy
-import mod_npc
 import mod_event
 import mod_items
 
@@ -47,7 +46,7 @@ def dot_loop():
     for i in ('...'):
         # don't know how tu handle with pep8 in this line
         print(i, end='', flush=True)
-        time.sleep(.2)
+        # time.sleep(.2)
 
 
 def display_hyphen_multiply(multiplier=None):
@@ -530,8 +529,9 @@ def shop_hero_sell(hero):
 
 def user_choice_input(condition, expression):
     '''
-    helper function: take input from user 
-    display expression, for ex. 'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
+    helper function: take input from user
+    display expression, for e.g.:
+    'wybierz 1 (kup) lub 2 (sprzedaj) i zatwierdź <enter> ---> '
     condition should be tuple or list
     work in loop - if condition is true, for ex.: condition = ('1', '2')
     ---> break loop and return input
@@ -540,63 +540,65 @@ def user_choice_input(condition, expression):
     # changed na Ania
 
     while True:
-
-        if os.name != 'nt': # if not windows
-            sys.stdout.write("\033[F") # Cursor up one line
-        
+        if os.name != 'nt':  # if not windows
+            sys.stdout.write("\033[F")  # Cursor up one line
         user_choice = (input('\t'+expression+'\r')).upper()
-
         try:
             if user_choice in condition:
-                
+
                 return user_choice.upper()
 
         except:
-            pass # wonna avoid error info
-        
+            pass  # wonna avoid error info
+
 
 def display_enemy_vs_hero(hero, enemy=None, attacker=None):
     '''
-    display basic info about enemy compared to hero's stats 
+    display basic info about enemy compared to hero's stats
     '''
     clear_screen()
     mod_enemy.enemy_info(enemy)
     # check what is main enemy attribut in combat
 
-    enemy_dmg = "".join([str(enemy.dmg_list[0]),"-", str(enemy.dmg_list[1])]) # used below in enemy_to_display_list
-    printing_var = 2 # variable that helps in printing (used below)
-    # check max lenght of hero name and enemy name (which of them is longer) - used below in printing:
-    longest_name_lenght = max(len(str(x)) for x in (hero.name,enemy.name))
-    # make list of attributes names to print in table's head (siła, zwinność, percepcja...):
+    enemy_dmg = (
+        "".join([str(enemy.dmg_list[0]), "-", str(enemy.dmg_list[1])])
+        )  # used below in enemy_to_display_list
+    printing_var = 2  # variable that helps in printing (used below)
+    # make list of attributes names to print in table's head
+    # (siła, zwinność, percepcja...):
     head_to_display_list1 = [""]+list(hero.attrib_dict.keys())
     # make list of hero attributes values to print:
     hero_to_display_list1 = [hero.name+':']+list(hero.attrib_dict.values())
     # make list of enemy attributes values to print:
     enem_to_display_list1 = [enemy.name+':']+list(enemy.attrib_dict.values())
-    # make list of other attributes names to print in table's head (życie, obrażenia, atak..)
-    head_to_display_list2 = ["", "życie", "obrażenia", "atak", "obrona", "cecha wiodąca"]
+    # make list of other attributes names to print in table's head
+    # (życie, obrażenia, atak..)
+    head_to_display_list2 = [
+        "", "życie", "obrażenia", "atak", "obrona", "cecha wiodąca"
+        ]
     # make list of hero attributes values to print:
-    hero_to_display_list2 = (
-        [hero.name+':', str(hero.actualLife),
-        str(mod_hero.display_damage(hero))] +
-        list([str(hero.attack), str(hero.defend),
-        str(hero.combat_attribute)])
+    hero_to_display_list2 = [
+        hero.name+':', str(hero.actualLife),
+        str(mod_hero.display_damage(hero))] + list(
+        [str(hero.attack), str(hero.defend), str(hero.combat_attribute)]
         )
     # make list of enemy attributes values to print:
     enem_to_display_list2 = ([
-        enemy.name+':', enemy.actualLife, enemy_dmg] +
-        list([str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
+        enemy.name+':', enemy.actualLife, enemy_dmg] + list(
+        [str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
         )
-    # search for the longest element in each lists (needed to print nice table with stats):
-
+    # search for the longest element in each lists
+    # (needed to print nice table with stats):
     long_head = max(len(str(x)) for x in head_to_display_list1)+printing_var
     long_hero = max(len(str(x)) for x in hero_to_display_list1)+printing_var
     long_enem = max(len(str(x)) for x in enem_to_display_list1)+printing_var
     # search for longest of the longest elements in lists:
-    longest_arg = max(list((int(x)) for x in (long_head,long_hero,long_enem)))
-
-    # this part of code helps display_hyphen_multiply function (display ----- in proper lenght):
-    printing_var_add = 4 # variable used in printing below
+    longest_arg = max(
+        list((int(x)) for x in (long_head, long_hero, long_enem))
+        )
+    # this part of code helps display_hyphen_multiply function
+    # (display ----- in proper lenght):
+    printing_var_add = 4  # variable used in printing below
     # search for sum of lenght of element in all lists:
     all_lists = [
         head_to_display_list1 +
@@ -608,7 +610,7 @@ def display_enemy_vs_hero(hero, enemy=None, attacker=None):
         max(len(str(x)) for x in all_lists) +
         printing_var + printing_var_add
         )
-    
+
     # attacker is first to display:
     if attacker == hero:
         defender = enemy
@@ -616,33 +618,47 @@ def display_enemy_vs_hero(hero, enemy=None, attacker=None):
         defender_list1 = enem_to_display_list1
         attacker_list2 = hero_to_display_list2
         defender_list2 = enem_to_display_list2
-    else: 
+    else:
         defender = hero
         attacker_list1 = enem_to_display_list1
         defender_list1 = hero_to_display_list1
         attacker_list2 = enem_to_display_list2
         defender_list2 = hero_to_display_list2
 
-
-    # for ex.:
-    # display_enemy(enemy=summon_enemy(name=None, loc=hero.location, lvl=None, gen=None))
-
     # prints info about enemy and hero/enemy stats (table form):
     print("\nstatystki:".rjust(longest_arg))
-    display_hyphen_multiply(multiplier=longest_of_all_lists) # display ------
-    for i in range(len(head_to_display_list1)): print(str(head_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    display_hyphen_multiply(multiplier=longest_of_all_lists)  # display '----'
+    for i in range(len(head_to_display_list1)):
+        print(
+            str(head_to_display_list1[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print("\r")
-    for i in range(len(head_to_display_list1)): print(str(hero_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    for i in range(len(head_to_display_list1)):
+        print(
+            str(hero_to_display_list1[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print("\r")
-    for i in range(len(head_to_display_list1)): print(str(enem_to_display_list1[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    for i in range(len(head_to_display_list1)):
+        print(
+            str(enem_to_display_list1[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print('\n')
-    for i in range(len(head_to_display_list2)): print(str(head_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    for i in range(len(head_to_display_list2)):
+        print(
+            str(head_to_display_list2[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print("\r")
-    for i in range(len(head_to_display_list2)): print(str(hero_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    for i in range(len(head_to_display_list2)):
+        print(
+            str(hero_to_display_list2[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print("\r")
-    for i in range(len(head_to_display_list2)): print(str(enem_to_display_list2[int(i)]).rjust(longest_arg)," ", sep='', end='', flush=True)
+    for i in range(len(head_to_display_list2)):
+        print(
+            str(enem_to_display_list2[int(i)]).rjust(longest_arg),
+            " ", sep='', end='', flush=True)
     print("")
-    display_hyphen_multiply(multiplier=longest_of_all_lists) # display ------
+    display_hyphen_multiply(multiplier=longest_of_all_lists)  # display '----'
 
 
 def calendar(hero):
@@ -651,11 +667,12 @@ def calendar(hero):
     '''
     turn_counter = mod_hero.calendar(hero)
 
-    week_list = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+    week_list = [
+        "poniedziałek", "wtorek", "środa", "czwartek",
+        "piątek", "sobota", "niedziela"
+        ]
     day_time_list = ["poranek", "południe", "popołudniu", "wieczór"]
-    day = math.floor(turn_counter/4)
-    
-    #4 # for four day times (morning, noon...)
+    day = math.floor(turn_counter/4)  # 4 - for four day times
     if turn_counter % 4 == 0:
         day_time = day_time_list[3]
     elif turn_counter % 3 == 0:
@@ -664,7 +681,7 @@ def calendar(hero):
         day_time = day_time_list[1]
     else:
         day_time = day_time_list[0]
-    
+
     return print(
         "Dzień", str(day) +
         ",", day_time +
@@ -680,28 +697,32 @@ def display_looted_items(add_remove_items_dict):
     time.sleep(.2)
     if len(add_remove_items_dict) > 0:
         print("\nW torbie:")
-        multiplier = 30 # variable used in proper printing ------:
+        multiplier = 30  # variable used in proper printing ------:
         display_hyphen_multiply(multiplier)
         for item in add_remove_items_dict:
-            print(item,": ", add_remove_items_dict[item],"; ", sep='', end='', flush=True) #prints in line (place economy)
+            print(item, ":", add_remove_items_dict[item])
 
 
 def display_calendar_location(hero):
     '''
-    display short info about day, day time, location, weather info, eventually random npc statement
+    display short info about day, day time,
+    location, weather info, eventually random npc statement
     '''
     calendar_list = hero.calendar_list
     location = mod_hero.display_location(hero)
     mod_hero.calendar(calendar_list)
-    print("dzień:", hero.calendar_list[0], ",", hero.calendar_list[1] +", "+ hero.calendar_list[2] +". Miejsce:", location)
-    multiplier = 81 # variable used in proper pronting ------:
+    print(
+        "dzień:", hero.calendar_list[0], ",", hero.calendar_list[1] +
+        ", " + hero.calendar_list[2] + ". Miejsce:", location)
+    multiplier = 81  # variable used in proper pronting ------:
     display_hyphen_multiply(multiplier)
-    chance_to_random_npc_meet = random.randint(1,100)
-    if chance_to_random_npc_meet <= 80: # usually display only weather info
+    chance_to_random_npc_meet = random.randint(1, 100)
+    if chance_to_random_npc_meet <= 80:  # usually display only weather info
         display_varied_info()
     else:
-        mod_event.event_random_npc(hero=hero) # sometimes info about friendly NPC thah hero has met 
- 
+        # sometimes info about friendly NPC thah hero has met:
+        mod_event.event_random_npc(hero=hero)
+
     return calendar_list
 
 
@@ -717,40 +738,55 @@ def display_event_quest(hero, npc=None):
     '''
     display quest info, dialogs, info about quest result
     '''
-    # random speach is short npc's 'small talk' 
-    random_speach = "".join('\n'+npc.name + " do Ciebie: " + random.choice(npc.speach_list))
+    # random speach is short npc's 'small talk'
+    random_speach = "".join(
+            '\n'+npc.name + " do Ciebie: " +
+            random.choice(npc.speach_list)
+            )
     print(random_speach)
     # if quest is not completed yet:
     if npc.quest_name not in hero.quest_completed_list:
         # display npc's statement associated with quest:
-        elements = '' # stores npc's statments to display
-        for element in hero.quest_info[npc.quest_name]: # element is npc statement connected with quest
-            if element not in hero.quest_blocked_list: # quest_blocked_list stores statement,
-            # ..that have been already used by npc                 
+        elements = ''  # stores npc's statments to display
+        # element is npc statement connected with quest:
+        for element in hero.quest_info[npc.quest_name]:
+            if element not in hero.quest_blocked_list:
+                # quest_blocked_list stores statement,
+                # that have been already used by npc
                 elements += '\n'+element
-                hero.quest_blocked_list.append(element) # block already displayed statements
+                # block already displayed statements:
+                hero.quest_blocked_list.append(element)
 
-        quest_name_to_display = "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."
-        if npc.quest_condition not in hero.quest_condition_list: # quest is not finished
-            # display info about quest and quest log:                   
+        quest_name_to_display = (
+            "Zadanie: ", npc.quest_name, " (przywołaj dziennikiem zadań).."
+            )
+        # quest is not finished:
+        if npc.quest_condition not in hero.quest_condition_list:
+            # display info about quest and quest log:
             print('\n'+elements)
             print("".join(quest_name_to_display))
-            
-        else: # quest is finished
-            # add quest name to hero quest completed list (block this quest in future):
+        
+        # quest is finished:
+        else:
+            # add quest name to hero quest completed list
+            # (block this quest in future):
             hero.quest_completed_list.append(npc.quest_name)
             # display info if quest is completed:
-            print('\n'+elements) # display statement
+            print('\n'+elements)  # display statement
             print("".join(quest_name_to_display))
             print("\r - wykonane.")
-            print("\n\nGratulacje, zdobyto: "+ str(npc.xp_reward)+" punktów doświadczenia!")
+            print(
+                "\n\nGratulacje, zdobyto: " + str(npc.xp_reward) +
+                " punktów doświadczenia!")
             pause()
-            hero.actualExp += npc.xp_reward # xp points reward for completion quest
+            # xp points reward for completion quest:
+            hero.actualExp += npc.xp_reward
             items_dict = {}  # create empty dict used below:
-            # check if quest condition is related with handing out items (to npc):
+            # check if quest condition is related
+            # with handing out items (to npc):
             if len(npc.quest_items) > 0:
-                # give items to npc (result is items_dict winth negative values)
-                # items_dict =  mod_hero.dict_update(items_dict, add_remove_items_dict=npc.quest_items)
+                # give items to npc
+                # (result is items_dict winth negative values)
                 items_dict = npc.quest_items
             # if there is extra reward: recieve items from npc inventory:
             add_remove_items_dict = mod_hero.dict_update(
@@ -759,10 +795,11 @@ def display_event_quest(hero, npc=None):
 
             # check if it is some items to remove or add to hero inventory
             if len(add_remove_items_dict) > 0:
-                mod_hero.inventory_update(hero, add_remove_items_dict)  # update inventory
-                display_looted_items(add_remove_items_dict)  # display result
-              
-    
+                # update inventory:
+                mod_hero.inventory_update(hero, add_remove_items_dict)
+                # display result:
+                display_looted_items(add_remove_items_dict)
+
     # check if there is special reward for quest:
     # teleport to next level (map),
     # display info about opened portal:
@@ -775,44 +812,53 @@ def display_event_quest(hero, npc=None):
 def display_next_level_promotion(hero):
     '''
     display hero attributes for lvl promotion function
-    '''           
-    for number, (key, value) in enumerate(hero.attrib_dict.items()):  # display hero attributes
-        print(str(number+1).ljust(0)+':',key.ljust(0),'(aktualna wartość: '+str(value).ljust(0)+')')
+    '''
+    # display hero attributes
+    for number, (key, value) in enumerate(hero.attrib_dict.items()):
+        print(
+            str(number+1).ljust(0)+':', key.ljust(0),
+            '(aktualna wartość: '+str(value).ljust(0)+')')
     #  player decide, which attribute to increase:
-    player_choice = input("\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu, który chcesz podnieść i zatwierdź <enter>: ") 
+    player_choice = input(
+        "\nAwans! Otrzymujesz punkt rozwoju, wybierz numer atrybutu,\
+        który chcesz podnieść i zatwierdź <enter>: ")
     display_hyphen_multiply(multiplier=82)
 
     while True:
-        try: 
+        try:
             int(player_choice) in range(1, 5)
             break
 
         except:
             player_choice = input("podaj numer atrybutu.. ")
-    
+
     return player_choice
 
 
-def display_info_about_next_map_portal(hero=None):
+def display_info_about_next_map_portal(hero):
     '''
-    check if hero has opened portal to next level (success in quest or fight with special enemy)
+    check if hero has opened portal to next level
+    (success in quest or fight with special enemy)
     display info about portal
     '''
     if hero.location != hero.new_location:
-        print('\n\n'+hero.name+", udało Ci się, wkrótce wkroczysz do następnej krainy!\n")
+        print(
+            '\n\n'+hero.name +
+            ", udało Ci się, wkrótce wkroczysz do następnej krainy!\n"
+            )
 
 
 def display_text_from_file(filename=None, color=None):
     '''
     import text from text file, display it
     additional feature is text coloring (if color != None) 
-    ''' 
+    '''
     # opens file, import data in string format:
     try:
         imported_file = open(filename, encoding="utf-8")
         text_from_file = imported_file.read()
         imported_file.close()
-        if color == None: # color feature not implemented yet
+        if color is None:  # color feature not implemented yet
             print('\n'+text_from_file)
             # color feature not implemented yet
 
@@ -825,7 +871,7 @@ def display_help_chart():
     work in progress
     '''
     pass
-    
+
 
 
 

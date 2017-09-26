@@ -2,7 +2,6 @@
 # export specified or random item to main
 
 import random
-import time
 
 # import custom modules
 import mod_hero
@@ -240,7 +239,7 @@ def import_item(
     # if item's name was specified, it will export item by given name:
     # (we may use it to random generate enemies treasures)
     item_exported_to_main = ''
-    if name:  
+    if name:
         for element in items_all_list:
             if element.name == name:
                 item_exported_to_main = element
@@ -254,7 +253,7 @@ def import_item(
             (gen == element.genre or gen is None)):
         item_export_list = []  # temporary helper list
         for element in items_all_list:
-            item_random_list.append(element)
+            item_export_list.append(element)
 
         return item_export_list
 
@@ -262,7 +261,7 @@ def import_item(
     # (random using optional filters - level, location, genre):
     else:
         item_random_list = []  # temporary helper list
-        for element in items_all_list:        
+        for element in items_all_list:
             if (
                     (loc in element.location or loc is None) and
                     (lvl == element.level or lvl is None) and
@@ -276,8 +275,7 @@ def import_item(
 
 
 def treasure_generator(
-        maxloops=None, maxitem_lvl=None, item_gen=None, hero=None
-        ):
+        maxloops, maxitem_lvl, item_gen, hero):
     '''
     generates list with random items, maxloops - max number of generated items,
     maxitem_lvl = max item level (from "items Class")
@@ -296,17 +294,15 @@ def treasure_generator(
                 # randomly generates item level for each loop:
                 random_level = random.randint(1, maxitem_lvl)
                 generated_item = import_item(
-                    name=None, loc=None, lvl=random_level,
-                    gen=item_gen, hero=None
+                    lvl=random_level, gen=item_gen
                     )
                 if generated_item.genre != "quest":  # block quest items
                     treasure_list.append(generated_item.name)
-      
+
         # transform treasure list to dict:
         # then update hero's inventory:
         add_remove_items_dict = mod_hero.items_list_to_dict(treasure_list)
         mod_hero.inventory_update(hero, add_remove_items_dict)
-        mod_display.display_hero_chart(hero)
         mod_display.display_looted_items(add_remove_items_dict)
         mod_display.pause()
 
@@ -314,9 +310,10 @@ def treasure_generator(
 
     else:  # if nothing added to hero inventory (bag)
         print('\n- więcej skarbów nie znaleziono...')
+        mod_display.pause()
 
 
-def item_dict_generator(hero=None, level=None):
+def item_dict_generator():
     '''
     generate items dict: key = item number,
     value = list of item specs (name, price, info)..
@@ -332,9 +329,7 @@ def item_dict_generator(hero=None, level=None):
         # specify how high level items can be added to sell assortment:
         level = random.randint(1, 4)
         # import item attributes by name of item from mod_items:
-        item = import_item(
-            name=None, loc=None, lvl=level, gen=None, hero=None, all=None
-            )
+        item = import_item()
         # condition to block unwanted items:
         if item.name not in item_already_gen and item.genre != 'quest':
             item_already_gen.append(item.name)
@@ -345,7 +340,7 @@ def item_dict_generator(hero=None, level=None):
             count += 1
             # result is dict with numbers (keys)
             # and list od object attributes (values)
-            
+
     return items_gen_dict
 
 
@@ -375,7 +370,7 @@ def generate_hero_items_to_sell_dict(hero):
         items_to_sell_dict[str(number+1)] = item_parametres
         # result is dict with numbers (keys) and list
         # of object attributes (values)
-            
+
     return items_to_sell_dict
 
 

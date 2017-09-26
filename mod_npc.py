@@ -5,10 +5,6 @@
 
 import random
 
-# custom modules:
-import mod_hero
-import mod_items
-
 # NPC class:
 
 
@@ -47,7 +43,7 @@ class Npc:
 
 def npc_settings(name=None, loc=None, gen=None):
     '''
-    Stores NPC data base. 
+    Stores NPC data base.
     Creates NPC and export to MAIN using specific arguments:
     name = imports by name, for expample: if name = "wilk",
     function exports object WOLF
@@ -207,9 +203,9 @@ def npc_settings(name=None, loc=None, gen=None):
 
     # npc_regular_list contains list with not quest npc
     # to generate and export to main:
-    npc_regular_list = [   
+    npc_regular_list = [
         villager, mushrooman, hans, gretchel, wrongly_smashed, villager1,
-        villager2, villager3, mountainman, joulderadom,
+        villager2, villager21, villager3, mountainman, joulderadom,
         villager4, oblibghost, oldtroll, oldhunter, warrior
         ]
 
@@ -268,7 +264,7 @@ def npc_settings(name=None, loc=None, gen=None):
 
     # Zły wilk (QUEST in lvl 1) - quest czerwonego kapturka
     bad_wolf = Npc("Zły Wilk", [1])
-    bad_wolf.speach_list = [u"wrrr.."]
+    bad_wolf.speach_list = ["wrrr.."]
     bad_wolf.quest_name = "Zły Wilk zabity!"
     bad_wolf.xp_reward = 30
     bad_wolf.quest_condition = "Babcia uratowana"
@@ -360,8 +356,8 @@ def npc_settings(name=None, loc=None, gen=None):
         \nPomóż mi ze skurczybykami - nie dają nam spokoju!\
         \nPrzynieś pierścień skurczybyka, to Cię przepuszczę..",
         "Już pogoniłeś szubrawca? Nie doceniałem Cię.\
-        \nOwtwieram portal - przejdź proszę!\
-         \nUważaj jeno na podstępnego czarownika! Masz też coś na drogę.. " 
+        \nOtwieram portal - przejdź proszę!\
+         \nUważaj jeno na podstępnego czarownika! Masz też coś na drogę.. "
         ]
     portal_keeper.quest_condition = "Zdobyto pierścień skurczybyka"
     portal_keeper.inventory_dict = {"placek śliwkowy": 2}
@@ -412,7 +408,6 @@ def npc_settings(name=None, loc=None, gen=None):
     else:
         npc_random_list = []
         # temporary helper list
-        tmp_lvl = 0  # helps in loop below:
         for element in npc_regular_list:
             if (loc in element.location_list or loc is None):
                 npc_random_list.append(element)

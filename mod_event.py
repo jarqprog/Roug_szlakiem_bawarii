@@ -3,8 +3,6 @@
 
 import time
 import random
-import os
-import math
 
 # custom modules:
 import mod_hero
@@ -54,7 +52,7 @@ def priority_test(hero, enemy=None):
     return attacker
 
 
-def win_fight(enemy=None, hero=None):
+def win_fight(hero, enemy):
     print(
         "Zwycięstwo,", enemy.name,
         "został pokonany! Sława i doświadczenie są Twoje,\
@@ -75,8 +73,6 @@ def win_fight(enemy=None, hero=None):
     if looted_gold > 0:
         print("\n\nzdobyto", looted_gold, "sztuk złota\n")
         hero.gold += looted_gold
-        mod_display.pause()
-    time.sleep(.3)
     # and some random generated items:
     mod_items.treasure_generator(
         maxloops=enemy.maxdrop, maxitem_lvl=enemy.maxdrop_lvl,
@@ -135,7 +131,7 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
         if defender == hero:
             hero.actualExp += damage
             print(hero.name+", zdobyto doświadczenie:", damage)
-            
+
             return hero.actualExp
 
         if defender.actualLife < 0:
@@ -149,9 +145,9 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
         attacker_change = 1
 
         return attacker_change
-            
 
-def fight(enemy=None, hero=None, attacker=None):
+
+def fight(hero, enemy, attacker):
     '''
     fight mechanic = hit
     '''
@@ -160,7 +156,7 @@ def fight(enemy=None, hero=None, attacker=None):
     if attacker == hero:
         defender = enemy
     elif attacker == enemy:
-        defender = hero 
+        defender = hero
 
     attacker_change = 0
 
@@ -240,7 +236,7 @@ def event_fight_spec_enemy(enemy=None, hero=None):
         print(
             "Szykuj się do walki. Twój przeciwnik to", end=''
             ), mod_display.dot_loop()
-        
+
         print(' ', enemy.name.upper()+'!', '\n')
         mod_display.pause()
         mod_display.clear_screen()
@@ -253,29 +249,21 @@ def event_fight_spec_enemy(enemy=None, hero=None):
         ):
             # initiative test:
             attacker = priority_test(hero, enemy=enemy)
-            # define attacker and defender:
-            if attacker == hero:
-                defender = enemy
-            elif attacker == enemy:
-                defender = hero
-
             # if attacker_change == 1:
-            # loop is break and repeat initiative test  
+            # loop is break and repeat initiative test
             attacker_change = 0
             while True:
                 mod_display.display_enemy_vs_hero(
                     hero, enemy=enemy, attacker=attacker
                     )
-                attacker_change = fight(
-                    enemy=enemy, hero=hero, attacker=attacker
-                    )
+                attacker_change = fight(hero, enemy, attacker)
                 mod_display.pause()
                 mod_display.clear_screen()
                 if hero.actualLife < 1:
                     hero.actualLife = 0
                     combat_end = 1
-                    break 
-                    
+                    break
+         
                 elif enemy.actualLife < 1:
                     # enemy is dead:
                     enemy.actualLife = 0
@@ -312,7 +300,7 @@ def event_fight_spec_enemy(enemy=None, hero=None):
                         # (element of enemy quest list):
                         print(enemy.quest_info)
 
-                    win_fight(enemy, hero)
+                    win_fight(hero, enemy)
                     combat_end = 1  # combat_end == 1: break fight loop
                     break
 
@@ -322,7 +310,7 @@ def event_fight_spec_enemy(enemy=None, hero=None):
     return hero
 
 
-def event_fight(enemy=None, hero=None):
+def event_fight(hero, enemy):
     '''
     event == fight with random enemy
     '''
@@ -340,11 +328,6 @@ def event_fight(enemy=None, hero=None):
     while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
         # initiative test:
         attacker = priority_test(hero, enemy=enemy)
-        # define attacker and defender:
-        if attacker == hero:
-            defender = enemy
-        elif attacker == enemy:
-            defender = hero
         attacker_change = 0
         # if attacker_change == 1,
         # loop is break and we repeat initiative test
@@ -353,22 +336,22 @@ def event_fight(enemy=None, hero=None):
             mod_display.display_enemy_vs_hero(
                 hero, enemy=enemy, attacker=attacker
                 )
-            attacker_change = fight(enemy=enemy, hero=hero, attacker=attacker)
+            attacker_change = fight(hero, enemy, attacker)
             mod_display.pause()
             mod_display.clear_screen()
             if hero.actualLife < 1:
                 combat_end = 1
                 hero.actualLife = 0
                 break
-            
+
             elif enemy.actualLife < 1:
-                win_fight(enemy=enemy, hero=hero)
+                win_fight(hero, enemy)
                 combat_end = 1
                 break
 
             elif attacker_change == 1:
                 break
-    
+
     return hero
 
 
@@ -398,10 +381,8 @@ def event_question_mark(hero):
     mod_display.pause()
     chance_factor = random.randint(1, 100)
     if chance_factor < 90:
-        enemy = mod_enemy.summon_enemy(
-            name=None, loc=hero.location, lvl=None, gen=None
-            )
-        event_fight(enemy=enemy, hero=hero)
+        enemy = mod_enemy.summon_enemy(loc=hero.location)
+        event_fight(hero, enemy)
 
     else:
         # looted gold depends on luck, hero level and hero location
@@ -412,7 +393,7 @@ def event_question_mark(hero):
             looted_gold, "sztuk złota\n"
             )
         mod_display.pause()
-   
+
     return hero
           
 
@@ -515,7 +496,7 @@ def event_shop(hero):
     shop event - display shop, selling and buying
     '''
     # shop items to buy (dict type)
-    items_to_buy = mod_items.item_dict_generator(hero, level=None)
+    items_to_buy = mod_items.item_dict_generator()
     user_choice = ''
     # shop loop, display shop and hero assortment:
     while user_choice != 'W':
