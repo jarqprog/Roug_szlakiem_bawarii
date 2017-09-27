@@ -9,18 +9,23 @@ import mod_display  # don't know why pep8 raises error..
 
 
 class Items:
-
+    '''
+    the class contains items, that can be put in hero inventory,
+    some of them could be weared
+    (in this case they will modify hero attributes)
+    class specify items attributes
+    '''
     def __init__(self, name, level, genre, price, location):
         # item name:
         self.name = name
-        
+
         # item level - stronger item = higher level
         # (ex. level 4 = unique, powerful item)
         self.level = level
-        
+
         # item genre is for ex. armour/weapon/other/special(quest)
         self.genre = genre
-        
+
         # price in buy/sell (concerns shops)
         self.price = price
 
@@ -34,6 +39,7 @@ class Items:
         # buff_str = 2 means: hero's "siła" += 2, etc.
         # if buff has negativ value, it decrases value of attrib
         # default value of buff is 0:
+
         self.buff_str = 0  # + "siła"
         self.buff_ag = 0  # + "zwinność" - agility
         self.buff_per = 0  # + "percepcja" - perception
@@ -227,7 +233,7 @@ def import_item(
         dagger, axe, spear,
         dagger_of_agility,
         helmet_pot, armour_lether,
-        ring_of_strenght, ring_of_agility,  
+        ring_of_strenght, ring_of_agility,
         diament, ruby, jantar, heart_of_mountain, silver_bar,
         gold_nugget, gold_nugget_big,
         tunic,
@@ -329,7 +335,7 @@ def item_dict_generator():
         # specify how high level items can be added to sell assortment:
         level = random.randint(1, 4)
         # import item attributes by name of item from mod_items:
-        item = import_item()
+        item = import_item(lvl=level)
         # condition to block unwanted items:
         if item.name not in item_already_gen and item.genre != 'quest':
             item_already_gen.append(item.name)
@@ -344,7 +350,7 @@ def item_dict_generator():
     return items_gen_dict
 
 
-def generate_hero_items_to_sell_dict(hero):
+def generate_items_to_sell(hero):
     '''
     generate items dict from hero inventory,
     used in shop sell function and in inventory chart
@@ -357,10 +363,7 @@ def generate_hero_items_to_sell_dict(hero):
         # list with item parametres (to add to dict key value):
         item_parametres = []
         # import item attributes by name of item from mod_items:
-        item = import_item(
-            name=item_name, loc=None, lvl=None,
-            gen=None, hero=None, all=None
-            )
+        item = import_item(name=item_name)
         # list (future dict values) append by item name,
         # price and quantity in hero inventory:
         item_parametres += [
@@ -376,7 +379,7 @@ def generate_hero_items_to_sell_dict(hero):
 
 def gen_hero_items_onbody(hero):
     '''
-
+    todo
     '''
     # work in progress
     # item = import_item(
@@ -384,4 +387,3 @@ def gen_hero_items_onbody(hero):
     # gen = None, hero = None, all = None)
 
     # print(item.__dict__['level'])
-

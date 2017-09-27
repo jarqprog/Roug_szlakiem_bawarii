@@ -34,8 +34,8 @@ class Hero:
             'palec': '',
             'kieszeń': ''
             }
-        self.maxLife = 40  # max life points (limit)
-        self.actualLife = 40  # actual number of life points
+        self.max_life = 40  # max life points (limit)
+        self.actual_life = 40  # actual number of life points
         self.actualExp = 1  # actual number of exp points
         self.location = 1  # actual map level
         self.map_position = 0  # hero map position ????????????????????????
@@ -207,7 +207,7 @@ def display_life(hero):
     display actual life points and max life points
     '''
 
-    return ''.join((str(hero.actualLife), '/', (str(hero.maxLife))))
+    return ''.join((str(hero.actual_life), '/', (str(hero.max_life))))
 
 
 def display_gold(hero):
@@ -430,8 +430,8 @@ def next_level_promotion(hero):
                 continue
         
         hero.level += 1
-        hero.maxLife += 30  # buff to max life
-        hero.actualLife = hero.maxLife  # full life regeneration 
+        hero.max_life += 30  # buff to max life
+        hero.actual_life = hero.max_life  # full life regeneration 
                 
     return hero
 

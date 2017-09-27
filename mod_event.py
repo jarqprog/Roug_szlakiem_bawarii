@@ -20,18 +20,18 @@ def priority_test(hero, enemy=None):
     mod_display.display_enemy_vs_hero(hero, enemy=enemy, attacker=None)
     # zwinność, percepcja i inteligencja have influence on this test:
     hero_test_stats = (
-        int(hero.attrib_dict["zwinność"])
-        + int(hero.attrib_dict["percepcja"])
-        + int(hero.attrib_dict["inteligencja"]))
+        int(hero.attrib_dict["zwinność"]) +
+        int(hero.attrib_dict["percepcja"]) +
+        int(hero.attrib_dict["inteligencja"]))
     enem_test_stats = (
-        int(enemy.attrib_dict["zwinność"])
-        + int(enemy.attrib_dict["percepcja"])
-        + int(enemy.attrib_dict["inteligencja"]))
+        int(enemy.attrib_dict["zwinność"]) +
+        int(enemy.attrib_dict["percepcja"]) +
+        int(enemy.attrib_dict["inteligencja"]))
     print("\nKto uzyskał inicjatywę? (test inicjatywy)\n")
 
     while True:
         test_var1 = hero_test_stats + enem_test_stats
-        test_var2 = random.randint(1, test_var1)      
+        test_var2 = random.randint(1, test_var1) 
         print('\r\r'+hero.name+":", hero_test_stats)
         print('\r\r'+enemy.name+":", test_var2)
         if hero_test_stats > test_var2:
@@ -39,7 +39,7 @@ def priority_test(hero, enemy=None):
             print("\n\natakuje", hero.name+'!')
             attacker = hero
             break
-          
+
         elif hero_test_stats < test_var2:
             print("\nRezultat:", end=''), mod_display.dot_loop()
             print("\n\natakuje", enemy.name+'!')
@@ -120,9 +120,9 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
         )
     print(attacker.name+':', attack), time.sleep(0.3)
     if attack < counterattack_result+defender.attack:
-        if damage > attacker.actualLife:
-            damage = attacker.actualLife
-        attacker.actualLife -= damage
+        if damage > attacker.actual_life:
+            damage = attacker.actual_life
+        attacker.actual_life -= damage
         print(
             defender.name, "zadał obrażenia:", attacker.name,
             "stracił", damage, "pkt. życia"
@@ -134,8 +134,8 @@ def counterattack(enemy=None, hero=None, attacker=None, attack=None):
 
             return hero.actualExp
 
-        if defender.actualLife < 0:
-            defender.actualLife = 0
+        if defender.actual_life < 0:
+            defender.actual_life = 0
             combat_end = 1  # break fight loop
 
             return combat_end
@@ -205,19 +205,19 @@ def fight(hero, enemy, attacker):
 
     else:
         damage = random.randint(attacker.dmg_list[0], attacker.dmg_list[1])
-        if damage > defender.actualLife:
-            damage = defender.actualLife
+        if damage > defender.actual_life:
+            damage = defender.actual_life
         print(
             '\n'+attacker.name, "zadał obrażenia:",
             defender.name, "stracił", damage, "pkt. życia"
             )
         time.sleep(0.3)      
-        defender.actualLife -= damage
+        defender.actual_life -= damage
         if attacker == hero:
             hero.actualExp += damage
             print(hero.name+", zdobyto doświadczenie:", damage)
-        if defender.actualLife < 0:
-            defender.actualLife = 0
+        if defender.actual_life < 0:
+            defender.actual_life = 0
             combat_end = 1
             time.sleep(0.3)
 
@@ -244,8 +244,8 @@ def event_fight_spec_enemy(enemy=None, hero=None):
         combat_end = 0
         while (
             combat_end == 0 and
-            hero.actualLife > 0 and
-            enemy.actualLife > 0
+            hero.actual_life > 0 and
+            enemy.actual_life > 0
         ):
             # initiative test:
             attacker = priority_test(hero, enemy=enemy)
@@ -259,14 +259,14 @@ def event_fight_spec_enemy(enemy=None, hero=None):
                 attacker_change = fight(hero, enemy, attacker)
                 mod_display.pause()
                 mod_display.clear_screen()
-                if hero.actualLife < 1:
-                    hero.actualLife = 0
+                if hero.actual_life < 1:
+                    hero.actual_life = 0
                     combat_end = 1
                     break
          
-                elif enemy.actualLife < 1:
+                elif enemy.actual_life < 1:
                     # enemy is dead:
-                    enemy.actualLife = 0
+                    enemy.actual_life = 0
                     hero.quest_condition_list.append(enemy.quest_condition)
                     if enemy.genre == "quest":  # quest enemies are unique
                         # block enemy for future:
@@ -325,7 +325,7 @@ def event_fight(hero, enemy):
     mod_display.clear_screen()
     # pętla walki:
     combat_end = 0
-    while combat_end == 0 and hero.actualLife > 0 and enemy.actualLife > 0:
+    while combat_end == 0 and hero.actual_life > 0 and enemy.actual_life > 0:
         # initiative test:
         attacker = priority_test(hero, enemy=enemy)
         attacker_change = 0
@@ -339,12 +339,12 @@ def event_fight(hero, enemy):
             attacker_change = fight(hero, enemy, attacker)
             mod_display.pause()
             mod_display.clear_screen()
-            if hero.actualLife < 1:
+            if hero.actual_life < 1:
                 combat_end = 1
-                hero.actualLife = 0
+                hero.actual_life = 0
                 break
 
-            elif enemy.actualLife < 1:
+            elif enemy.actual_life < 1:
                 win_fight(hero, enemy)
                 combat_end = 1
                 break
@@ -452,9 +452,9 @@ def event_well_of_life(hero=None):
     full life regeneration event (healer)
     '''
     # price is 1 gold for every 1 life point to recover
-    price = hero.maxLife - hero.actualLife
+    price = hero.max_life - hero.actual_life
     print("Witaj,", hero.name+", jestem uzdrowicielem.")
-    if hero.actualLife == hero.maxLife:  # ckeck if hero need 'health care'
+    if hero.actual_life == hero.max_life:  # ckeck if hero need 'health care'
         print(
             "\nWidzę, że nie potrzebujesz leczenia! Nie trwoń mojego czasu.."
             )
@@ -473,7 +473,7 @@ def event_well_of_life(hero=None):
                     if player_choice == 't' or player_choice == 'n':
                         if player_choice == 't':
                             print("Uzupełniono życie!")
-                            hero.actualLife = hero.maxLife
+                            hero.actual_life = hero.max_life
                             hero.gold -= price
                             mod_display.pause()
                         elif player_choice == 'n':

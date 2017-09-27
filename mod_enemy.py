@@ -7,13 +7,15 @@ import random
 
 
 class Enemy:
-
+    '''
+    define hero's opponents
+    '''
     def __init__(
-        self, name, actualLife, level,
+        self, name, actual_life, level,
         act_armour, genre, location, dmg_list
     ):
         self.name = name  # enemy name
-        self.actualLife = actualLife  # enemylife points
+        self.actual_life = actual_life  # enemylife points
         self.level = level  # enemy exp level
         self.act_armour = act_armour  # armour points - buffs enemy defend
         self.genre = genre  # enemy genre (beast/animal/quest, etc..)
@@ -269,13 +271,13 @@ def summon_enemy(name=None, loc=None, lvl=None, gen=None):
         wolf, ratman, goblin, hobgoblin, scoundrel, bear, ogr,
         troll, mountain_giant, werewolf, outlaw
         ]
-    
+
     # if enemy name was specified, it will export enemy by given name:
-    enemy_exported_to_main = ''
     if name:
         for element in enemies_all_list:
             if element.name == name:
                 enemy = element
+                break
 
     # if enemy name wasn't specified, it will export random enemy
     # (random using optional filters - level, location, genre):
@@ -287,9 +289,9 @@ def summon_enemy(name=None, loc=None, lvl=None, gen=None):
                     (loc in element.location or loc is None) and
                     (lvl == element.level or lvl is None) and
                     (gen == element.genre or gen is None)
-                    ):
+            ):
                 enemy_random_list.append(element)
-        
+
         # export random enemy to main function:
         if loc:  # if location != None - filter enemy by location:
             enemy_filtered_by_location = [
@@ -299,7 +301,7 @@ def summon_enemy(name=None, loc=None, lvl=None, gen=None):
 
         else:
             enemy = random.choice(enemy_random_list)
-    
+
     # create dictionary with attributes, e.g.:
     # {"siła": 2, "zwinność": 3...}
     # from enemy.attrib (tuple) - in tuple attributes
@@ -386,9 +388,3 @@ def create_enemy_attrib_dict(enemy):
         enemy.attrib_dict[element] = enemy.attrib[number]
 
     return enemy.attrib_dict
-
-
-
-
-
-

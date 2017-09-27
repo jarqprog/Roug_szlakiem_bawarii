@@ -610,7 +610,7 @@ def movement(hero, start_time, board, position_hor, position_ver):
                 hero.attrib_dict["percepcja"] += 2
         # Event_results value reset.
         event_result = None
-        if int(hero.actualLife) < 1:
+        if int(hero.actual_life) < 1:
             loose_screen(hero, start_time)
         mod_hero.next_level_promotion(hero)
         if input_char.upper() not in ["L", "K"]:

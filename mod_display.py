@@ -72,13 +72,14 @@ def display_varied_info():
     info_to_display_list = [
         "Ładny dzień", "Zbiera się na burzę", "Trochę zimno",
         "Mam przeczucie, że coś się wydarzy...",
-        "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu", "Coś tu nie tak",
+        "Jest bezpiecznie", "Coś mnie niepokoi w tym miejscu",
+        "Coś tu nie tak",
         "Oby nikt tu na mnie nie czyhał", "Trochę wieje",
         "Mam nadzieję, że zaliczę checkpoint..",
         "Gdzie ten Oblib?", "Ech, Mullog zmarnieje bez obrączki!",
         "Co by tu zrobić?", "Mam złe przeczucie..",
         "Porada: źródło życia na mapce oznaczone jest znakiem '+'",
-        "Porada: symbol '?' oznacza zagadkowe zdarzenie - kto wie, co to może być?"
+        "Porada: symbol '?' oznacza zagadkowe zdarzenie, co to może być?"
         ]
 
     random_chance = random.randint(1, 10)
@@ -200,7 +201,7 @@ def display_hero_chart(hero):
         )
 
     for i in range(int(total_number_of_items)):
-        
+
         # printing attributes (siła, zwinność...):
         # (if one of the columns is shorter, program will print empty string,
         # to not copy same thing):
@@ -225,7 +226,7 @@ def display_hero_chart(hero):
             inventoryKeyPrt = ""
             inventoryValuePrt = ""
         try:
-            int(len(onbody_key_list)) >= i         
+            int(len(onbody_key_list)) >= i
             if int(len(onbody_key_list)) >= i:
                 ionbody = int(i)
                 onbodyKeyPrt = str(onbody_key_list[ionbody])+':'
@@ -234,7 +235,7 @@ def display_hero_chart(hero):
             onbodyKeyPrt = ""
             onbodyValuePrt = ""
         try:
-            int(len(other_key_list)) >= i         
+            int(len(other_key_list)) >= i
             if int(len(other_key_list)) >= i:
                 iother = int(i)
                 otherKeyPrt = str(other_key_list[iother])+':'
@@ -252,10 +253,10 @@ def display_hero_chart(hero):
         p6 = onbodyValuePrt.ljust(long_onbody_val)  # item on body
         p7 = otherKeyPrt.rjust(long_other_key)  # other spec name
         p8 = otherValuePrt.ljust(long_other_val)  # other spec value
-        
+
         # display table's body:
         print('', p1, p2, p3, p4, p5, p6, p7, p8)
-    
+
     # display table's footer (----):
     display_hyphen_multiply(
         multiplier=(sum_longest_arg+printing_var_head_bottom)
@@ -397,7 +398,7 @@ def shop_hero_buy(hero, items_to_buy):
             '\nWybrano:', item_name + ', cena:', str(price) +
             ', Twoje złoto:', str(hero.gold)+', czy potwierdzasz?\n\n'
             )
-    
+
         exp_middle = "'t' - tak, 'n' - nie"
         expression = exp_start + exp_middle + exp_end
         condition = ('T', 'N', 'W')
@@ -456,7 +457,7 @@ def shop_hero_sell(hero):
             # make dict with hero items
             # (key is number, value is list with item attributes:
             # name, price, quantity):
-            items_to_sell = mod_items.generate_hero_items_to_sell_dict(hero)
+            items_to_sell = mod_items.generate_items_to_sell(hero)
             item_name = items_to_sell[user_choice][0]
             item_price = int(items_to_sell[user_choice][1])
             if item_price == 0:
@@ -505,11 +506,11 @@ def shop_hero_sell(hero):
             condition = ('T', 'N', 'W')
             user_choice = user_choice_input(condition, expression)
             if user_choice == 'W':
-                
+
                 return user_choice  # exit shop
 
             elif user_choice == 'N':
-                
+
                 return user_choice  # back to begining
 
             else:  # selling is confirmed
@@ -578,13 +579,13 @@ def display_enemy_vs_hero(hero, enemy=None, attacker=None):
         ]
     # make list of hero attributes values to print:
     hero_to_display_list2 = [
-        hero.name+':', str(hero.actualLife),
+        hero.name+':', str(hero.actual_life),
         str(mod_hero.display_damage(hero))] + list(
         [str(hero.attack), str(hero.defend), str(hero.combat_attribute)]
         )
     # make list of enemy attributes values to print:
     enem_to_display_list2 = ([
-        enemy.name+':', enemy.actualLife, enemy_dmg] + list(
+        enemy.name+':', enemy.actual_life, enemy_dmg] + list(
         [str(enemy.attack), str(enemy.defend), str(enemy.combat_attribute)])
         )
     # search for the longest element in each lists
@@ -765,7 +766,7 @@ def display_event_quest(hero, npc=None):
             # display info about quest and quest log:
             print('\n'+elements)
             print("".join(quest_name_to_display))
-        
+
         # quest is finished:
         else:
             # add quest name to hero quest completed list
@@ -851,7 +852,7 @@ def display_info_about_next_map_portal(hero):
 def display_text_from_file(filename=None, color=None):
     '''
     import text from text file, display it
-    additional feature is text coloring (if color != None) 
+    additional feature is text coloring (if color != None)
     '''
     # opens file, import data in string format:
     try:
@@ -871,21 +872,3 @@ def display_help_chart():
     work in progress
     '''
     pass
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-    
-
- 
